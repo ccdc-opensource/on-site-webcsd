@@ -94,8 +94,11 @@ which should show the state of the services to all be `Up`. If any services have
 
 During the Alpha release some of these services will be unhealthy - this is expected and will be fixed before the final release.
 The services which will be unhealthy are:
+
+```
 onsite-webcsd_ccdc-csd-searchservice_1
 onsite-webcsd_ccdc-csd-resultstore_1
+```
 
 ## Local Database Configuration
 
