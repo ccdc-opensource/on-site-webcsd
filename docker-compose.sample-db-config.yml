@@ -1,0 +1,36 @@
+# Configure local database volumes here
+
+version: "3.6"
+
+services:
+  webcsdbackend:
+    volumes:
+      - ./csd-data:/csd-data
+      - /path/to/database-1:/csd-data/database-1
+      - /path/to/database-2:/csd-data/database-2
+    environment:
+      - ServiceSettings__Databases__1__Name=database-1
+      - ServiceSettings__Databases__1__ConnectionString=/csd-data/database-1
+      - ServiceSettings__Databases__2__Name=database-2
+      - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-2
+# Notes:
+#   The path in which the databases must be mounted is `/csd-data`.
+#   For each database there must be 2 corresponding environment variables:
+#      - ServiceSettings__Databases__N__Name=<database name>
+#      - ServiceSettings__Databases__N__ConnectionString=<database path>
+#     where
+#      - N is a unique integer for each pair of vairiables
+#      - <database name> is how the name of the database will appear in the UI
+#      - <database path> should match the right side of the volume definition above.
+
+#Example:
+#If you have a database called test-db at the location /usr/local/data/test-db.csdsqlx
+#To use the test-db.csdsqlx database the file will look like this
+#services:
+#  webcsdbackend:
+#    volumes:
+#      - ./csd-data:/csd-data
+#      - /usr/local/data/test-db.csdsqlx:/csd-data/test-db.csdsqlx
+#    environment:
+#      - ServiceSettings__Databases__1__Name=test-db
+#      - ServiceSettings__Databases__1__ConnectionString=/csd-data/test-db.csdsqlx

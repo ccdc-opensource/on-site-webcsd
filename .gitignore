@@ -1,0 +1,10 @@
+# Check-in only sample.env, all other env files used for testing should be ignored
+**.env
+!sample.env
+
+# Check-in only 
+docker-compose.*.yml
+!docker-compose.sample-db-config.yml
+
+# Other
+**.swp
