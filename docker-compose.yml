@@ -8,7 +8,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsd:latest
+    image: ccdcrepository.azurecr.io/webcsd:0.1.2
     ports:
       - 80:80
 
@@ -16,7 +16,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsdbackend:latest
+    image: ccdcrepository.azurecr.io/webcsdbackend:0.1.2
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENCING_CONFIGURATION};
 
@@ -26,7 +26,7 @@ services:
     command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
     
   database-server:
-    image: ccdcrepository.azurecr.io/csd-database
+    image: ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha1
     restart: always
     environment:
       - POSTGRES_PASSWORD=${CSD_DB_PASSWORD}
@@ -36,7 +36,7 @@ services:
       - "max_connections=1000"
 
   ccdc-csd-substructuresearch:
-    image: ccdcrepository.azurecr.io/ccdc-csd-substructuresearch:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-substructuresearch:0.1.2
     depends_on:
       - database-server
       - ccdc-csd-resultstore
@@ -47,7 +47,7 @@ services:
       - StructureSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=optimisation
 
   ccdc-csd-deposition:
-    image: ccdcrepository.azurecr.io/ccdc-csd-deposition:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-deposition:0.1.2
     depends_on:
       - database-server
     environment:
@@ -56,7 +56,7 @@ services:
   ccdc-csd-textnumericsearch:
     depends_on:
       - database-server
-    image: ccdcrepository.azurecr.io/ccdc-csd-textnumericsearch:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-textnumericsearch:0.1.2
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
 
@@ -65,28 +65,28 @@ services:
       - ccdc-csd-textnumericsearch
       - ccdc-csd-substructuresearch
       - ccdc-csd-resultstore
-    image: ccdcrepository.azurecr.io/ccdc-csd-searchservice:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-searchservice:0.1.2
 
   csd-request-entry:
     depends_on:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
       - database-server
-    image: ccdcrepository.azurecr.io/csd-request-entry:latest
+    image: ccdcrepository.azurecr.io/csd-request-entry:0.1.2
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
 
   ccdc-csd-resultstore:
-    image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:0.1.2
 
   ccdc-csd-fingerprint:
-    image: ccdcrepository.azurecr.io/ccdc-csd-fingerprint-service:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-fingerprint-service:0.1.2
 
   ccdc-csd-substructure-filter:
-    image: ccdcrepository.azurecr.io/ccdc-csd-substructure-filter-service:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-substructure-filter-service:0.1.2
 
   ccdc-csd-crystal-structure-export:
-    image: ccdcrepository.azurecr.io/ccdc-csd-crystal-structure-export-service:latest
+    image: ccdcrepository.azurecr.io/ccdc-csd-crystal-structure-export-service:0.1.2
 
 volumes:
   csd_data: {}
