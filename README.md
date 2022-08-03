@@ -45,10 +45,10 @@ CSD_CACHE_PASSWORD='A password of your choosing'
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set. Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
 
 ```
-docker login -u <user> -p <password> dbeonsite.azurecr.io
+docker login -u <user> -p <password> ccdcrepository.azurecr.io
 
 # or to be prompted for the password
-docker login -u <user> --password-stdin dbeonsite.azurecr.io
+docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 docker-compose up -d
 ```
