@@ -11,6 +11,8 @@ services:
     image: ccdcrepository.azurecr.io/webcsd:0.1.3
     ports:
       - 80:80
+    volumes:
+      - ./userdata:/app/OnSite      
 
   webcsdbackend:
     depends_on:
