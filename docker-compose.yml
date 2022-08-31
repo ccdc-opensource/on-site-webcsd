@@ -21,6 +21,8 @@ services:
     image: ccdcrepository.azurecr.io/webcsdbackend:0.1.6
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENCING_CONFIGURATION};
+    ports:
+       - 5001:80
 
   redis:
     image: redis
@@ -78,6 +80,21 @@ services:
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
 
+  ccdc-csd-formulasearch:
+    depends_on:
+      - database-server
+    image: ccdcrepository.azurecr.io/ccdc-csd-formulasearch:0.1.6
+    environment:
+      - FormulaSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=formula
+
+  ccdc-csd-unitcellsearch:
+    depends_on:
+      - database-server
+      - ccdc-csd-reducedcell-calculation-service
+    image: ccdcrepository.azurecr.io/ccdc-csd-unitcellsearch:0.1.6
+    environment:
+      - UnitCellSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=unitcell
+
   ccdc-csd-resultstore:
     image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:0.1.6
 
@@ -89,6 +106,9 @@ services:
 
   ccdc-csd-crystal-structure-export:
     image: ccdcrepository.azurecr.io/ccdc-csd-crystal-structure-export-service:0.1.6
+
+  ccdc-csd-reducedcell-calculation-service:
+    image: ccdcrepository.azurecr.io/ccdc-csd-reducedcell-calculation-service:0.1.6
 
 volumes:
   csd_data: {}
