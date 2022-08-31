@@ -46,7 +46,7 @@ services:
       - ccdc-csd-fingerprint
       - ccdc-csd-deposition
     environment:
-      - StructureSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=optimisation
+      - StructureSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=substructure
 
   ccdc-csd-deposition:
     image: ccdcrepository.azurecr.io/ccdc-csd-deposition:0.1.6
