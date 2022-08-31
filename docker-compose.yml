@@ -95,6 +95,8 @@ services:
 
   ccdc-csd-resultstore:
     image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:0.1.6
+    environment:
+      - OrderedCachePassword=${CSD_CACHE_PASSWORD}
 
   ccdc-csd-fingerprint:
     image: ccdcrepository.azurecr.io/ccdc-csd-fingerprint-service:0.1.6
