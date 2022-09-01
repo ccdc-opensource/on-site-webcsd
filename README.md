@@ -133,6 +133,9 @@ e.g.
 5. Update your local docker-compose.db-config.yml to point each service to its new image location
 e.g. 
 ```
+services:
+...
+....
 webcsd:
    image: my.internal.registry/webcsd:0.1.6
 ```
