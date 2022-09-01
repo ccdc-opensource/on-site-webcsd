@@ -110,6 +110,33 @@ docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
+## Storing the docker images in your local repository
+
+If you want to store the docker images in your own repository follow the below steps:
+
+1. Get a copy of this git repository as in the Prerequisites section above.
+
+2. Run "Docker-compose pull" to download the docker images
+
+3. For each docker image run "docker tag {oldrepo/service:version} {newrepo/service:version}"
+e.g. 
+```
+"Docker tag ccdcrepository.azurecr.io/webcsd:0.1.6  my.internal.registry/webcsd:0.1.6"
+```
+
+4. Run "docker push {newrepo/service:version}"
+e.g.
+```
+"docker push my.internal.registry/webcsd:0.1.6"
+```
+
+5. Update your local docker-compose.db-config.yml to point each service to its new image location
+e.g. 
+```
+webcsd:
+   image: my.internal.registry/webcsd:0.1.6
+```
+
 ## Usage
 
 To access the WebCSD service locally go to http://localhost in a browser.
