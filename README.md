@@ -136,7 +136,7 @@ e.g.
 "docker push my.internal.registry/webcsd:0.1.6"
 ```
 
-5. Create a new docker-compose file to keep your image overrides seperate and avoid them being reverted in updates. e.g. "docker-compose.service-config.yml"
+5. Create a new docker-compose file to keep your image overrides seperate and avoid them being reverted in updates e.g. "docker-compose.service-config.yml".
 The file will need to contain the new image location for each service copied into a new location.
 e.g. 
 
