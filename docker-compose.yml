@@ -1,10 +1,10 @@
-version: '3.6'
+version: "3.6"
 
 services:
-
   webcsd:
     environment:
       - CsdRepository__ServiceLocation=webcsdbackend
+      - CspRepository__ServiceLocation=webcsd-theory
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
@@ -12,7 +12,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./userdata:/app/OnSite      
+      - ./userdata:/app/OnSite
 
   webcsdbackend:
     depends_on:
@@ -26,7 +26,7 @@ services:
     image: redis
     restart: always
     command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
-    
+
   database-server:
     image: ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha2
     restart: always
@@ -109,6 +109,9 @@ services:
 
   ccdc-csd-reducedcell-calculation-service:
     image: ccdcrepository.azurecr.io/ccdc-csd-reducedcell-calculation-service:0.1.6
+
+  webcsd-theory:
+    image: ccdcrepository.azurecr.io/csd-theory:latest
 
 volumes:
   csd_data: {}

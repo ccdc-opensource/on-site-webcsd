@@ -13,24 +13,56 @@ services:
       - ServiceSettings__Databases__1__ConnectionString=/csd-data/database-1
       - ServiceSettings__Databases__2__Name=database-2
       - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-2
+  # Notes:
+  #   The path in which the databases must be mounted is `/csd-data`.
+  #   For each database there must be 2 corresponding environment variables:
+  #      - ServiceSettings__Databases__N__Name=<database name>
+  #      - ServiceSettings__Databases__N__ConnectionString=<database path>
+  #     where
+  #      - N is a unique integer for each pair of variables
+  #      - <database name> is how the name of the database will appear in the UI
+  #      - <database path> should match the right side of the volume definition above.
+
+  #Example:
+  #If you have a database called test-db at the location /usr/local/data/test-db.csdsqlx
+  #To use the test-db.csdsqlx database the file will look like this
+  #services:
+  #  webcsdbackend:
+  #    volumes:
+  #      - ./csd-data:/csd-data
+  #      - /usr/local/data/test-db.csdsqlx:/csd-data/test-db.csdsqlx
+  #    environment:
+  #      - ServiceSettings__Databases__1__Name=test-db
+  #      - ServiceSettings__Databases__1__ConnectionString=/csd-data/test-db.csdsqlx
+
+  webcsd-theory:
+    volumes:
+      - /path/to/CSD-Theory Metadata Database:/app/CSPDatabase.db
+      - /path/to/CSD-Theory Landscape Database:/app/databases/CSPLandscape.csdsqlx
 # Notes:
-#   The path in which the databases must be mounted is `/csd-data`.
-#   For each database there must be 2 corresponding environment variables:
-#      - ServiceSettings__Databases__N__Name=<database name>
-#      - ServiceSettings__Databases__N__ConnectionString=<database path>
-#     where
-#      - N is a unique integer for each pair of vairiables
-#      - <database name> is how the name of the database will appear in the UI
-#      - <database path> should match the right side of the volume definition above.
+# CSD-Theory requires 2 databases.
+# 1. A CSD Search database for initial searching of landscape structures. This must be named CSPLandscape.csdsqlx.
+# 2. A CSD-Theory metadata database containing additional theoretical data. This must be name CSPDatabase.db.
+# These 2 database are used in conjunction to create the CSD-Theory charts and reports.
+# IMPORTANT: The CSD Search database must also be included in the webcsdbackend volumes.
 
 #Example:
-#If you have a database called test-db at the location /usr/local/data/test-db.csdsqlx
-#To use the test-db.csdsqlx database the file will look like this
+# If you have a landscape database called landscape-db at the location /usr/local/data/landscape-db.csdsqlx
+# and a metadata database called metadata-db at the location /usr/local/data/metadata-db.db
+# To use these databases the csd-theory section of the file will look like this
+#
 #services:
-#  webcsdbackend:
+#  csd-theory:
 #    volumes:
-#      - ./csd-data:/csd-data
-#      - /usr/local/data/test-db.csdsqlx:/csd-data/test-db.csdsqlx
+#      - /usr/local/data/metadata-db.db:/app/CSPDatabase.db
+#      - /usr/local/data/landscape-db.csdsqlx:/app/databases/CSPLandscape.csdsqlx
+#
+# Also add an entry to webcsdbackend for the landscape database
+#
+#  webcsdbackend
+#    volumes:
+#      - /usr/local/data/landscape-db.csdsqlx:/csd-data/CSPLandscape.csdsqlx
 #    environment:
-#      - ServiceSettings__Databases__1__Name=test-db
-#      - ServiceSettings__Databases__1__ConnectionString=/csd-data/test-db.csdsqlx
+#      - ServiceSettings__Databases__X__Name=Landscape
+#      - ServiceSettings__Databases__X__ConnectionString=/csd-data/CSPLandscape.csdsqlx
+
