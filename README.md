@@ -114,6 +114,61 @@ For more information see the [Docker volumes documentation](https://docs.docker.
 
 On-Site WebCSD can be configured to display links associated with a structure, e.g DOI links or File links. To do this you will need a CSV file containing structures with their associated data and any files you may want to download. The CSV file belongs in `webcsdbackend` and is configured in the `environment` section. Any related files belong to `webcsd` where the location is configured in the `volumes` section. It is important to note that any file links set up in the CSV file, must point to the correct location of these files, otherwise the file will not download when the link is clicked.
 
+## Storing the docker images in your local repository
+
+If you want to store the docker images in your own repository follow the below steps:
+
+1. Get a copy of this git repository as in the Prerequisites section above.
+
+2. Run the below command to download the docker images
+
+```
+"Docker-compose pull"
+```
+
+3. For each docker image run "docker tag <oldrepo/service:version> <newrepo/service:version>"
+   e.g.
+
+```
+"Docker tag ccdcrepository.azurecr.io/webcsd:0.1.6  my.internal.registry/webcsd:0.1.6"
+```
+
+4. Run "docker push <newrepo/service:version>"
+   e.g.
+
+```
+"docker push my.internal.registry/webcsd:0.1.6"
+```
+
+5. Create a new docker-compose file to keep your image overrides seperate and avoid them being reverted in updates e.g. "docker-compose.service-config.yml".
+   The file will need to contain the new image location for each service copied into a new location.
+   e.g.
+
+```
+version: '3.6'
+
+services:
+  webcsdbackend:
+    image: my.internal.registry/webcsdbackend:0.1.6
+
+  webcsd:
+    image: my.internal.registry/webcsd:0.1.6
+
+  database-server:
+    image: my.internal.registry/csd-database:2022.1.0.alpha1
+
+...
+etc
+```
+
+6. Include the new file in the startup command, so if you are also using local database configurations the command will be:
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.service-config.yml up -d
+```
+
+Please note that process will need to be repeated to copy further updates to your local repository.
+
 ## Usage
 
 To access the WebCSD service locally go to http://localhost in a browser.
