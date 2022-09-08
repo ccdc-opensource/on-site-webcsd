@@ -14,27 +14,36 @@ Access to the CCDC container registry will require a username and password that 
 
 A valid license key will be required to use the software.
 
-A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases) or a clone of this repository (this will require a [git installation](https://git-scm.com/downloads)).
+You will need either:
 
-```
+A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases).
+Click on the release you want to use, and download the source code zip and unpack.
+
+or
+
+A clone of this repository (this will require a git installation).
 git clone https://github.com/ccdc-opensource/onsite-webcsd.git
-```
 
 ## Initial recommended specification
 
 This is our initial estimate of what will be required to run WebCSD well.
 170GB free hd space, 32GB ram, 8 core cpu, Linux OS
 
+## Local Database Configuration
+
+On-Site WebCSD can be configured to read from local databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any local databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+
 ## Installation
 
-After cloning the repository onto the server which the software will be installed you will need to go into the onsite-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
+After either unpacking the release source code onto the server on which the software will be installed or cloning the git repo and pulling it you will need to go into the onsite-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
 
 ```
 cd onsite-webcsd
 cp sample.env .env
 ```
 
-The values in the .env file are as follows and here are some examples of how it should look:
+You will need to update the .env file with your licence key and the two passwords you would like to use.
+Here is an example of the .env file:
 
 ```
 CCDC_LICENSING_CONFIGURATION='la-code;123456-123456-123456-123456-123456-123456;'
@@ -50,7 +59,12 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
+#Use one of the following two commands depending on if you have local database configuration
+#Use this command if you have no local database configuration
 docker-compose up -d
+
+#Use this command if you have local database configuration
+docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
 ### Offline Installation
@@ -59,16 +73,17 @@ This release will be only available online, if this is a problem please contact 
 
 ## Updates
 
-When you have been notified when there is an update available, checkout the tag for the release.
+When you have been notified when there is an update available you can either
 
-```sh
+Checkout the tag for the release.
+
+```
+git checkout tags/<specific release tag>
 cd <onsite installation directory>
 git pull
-
-# Optionally
-git checkout tags/<specific release tag>
 ```
 
+Or you can download the newest release from the github repository
 If the installation files have been downloaded from the release page you will need to download the latest version again from there and ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack. The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
@@ -77,10 +92,13 @@ Once the latest installation files have been obtained, to update the software, p
 docker-compose pull
 
 docker-compose down
+#Use one of the following two commands depending on if you have local database configuration
+#Use this command if you have no local database configuration
 docker-compose up -d
-```
 
-Note: if custom databases have been defined using an override file, use the command shown in the [Local Database Configuration](#local-database-configuration) section.
+#Use this command if you have local database configuration
+docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+```
 
 ## Verifying the Installation/Update
 
@@ -98,14 +116,6 @@ The services which will be unhealthy are:
 ```
 onsite-webcsd_ccdc-csd-searchservice_1
 onsite-webcsd_ccdc-csd-resultstore_1
-```
-
-## Local Database Configuration
-
-On-Site WebCSD can be configured to read from local databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any local databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command:
-
-```
-docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
