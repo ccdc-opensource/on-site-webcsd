@@ -15,10 +15,13 @@ Access to the CCDC container registry will require a username and password that 
 A valid license key will be required to use the software.
 
 You will need either:
--A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases).
+
+A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases).
 Click on the release you want to use, and download the source code zip and unpack.
 
--A clone of this repository (this will require a git installation).
+or
+
+A clone of this repository (this will require a git installation).
 git clone https://github.com/ccdc-opensource/onsite-webcsd.git
 
 ## Initial recommended specification
@@ -71,7 +74,8 @@ This release will be only available online, if this is a problem please contact 
 ## Updates
 
 When you have been notified when there is an update available you can either
--Checkout the tag for the release.
+
+Checkout the tag for the release.
 
 ```
 git checkout tags/<specific release tag>
@@ -79,7 +83,7 @@ cd <onsite installation directory>
 git pull
 ```
 
--Or you can download the newest release from the github repository
+Or you can download the newest release from the github repository
 If the installation files have been downloaded from the release page you will need to download the latest version again from there and ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack. The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
