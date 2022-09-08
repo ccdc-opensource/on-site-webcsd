@@ -120,6 +120,10 @@ onsite-webcsd_ccdc-csd-resultstore_1
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
+## Associated Structure Links Configuration
+
+On-Site WebCSD can be configured to display links associated with a structure, e.g DOI links or File links. To do this you will need a CSV file containing structures with their associated data and any files you may want to download. The CSV file belongs in `webcsdbackend` and is configured in the `environment` section. Any related files belong to `webcsd` where the location is configured in the `volumes` section. It is important to note that any file links set up in the CSV file, must point to the correct location of these files, otherwise the file will not download when the link is clicked.
+
 ## Storing the docker images in your local repository
 
 If you want to store the docker images in your own repository follow the below steps:
