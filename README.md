@@ -96,6 +96,22 @@ To change the text displayed before the identifier in the main title, when viewi
 - Customisations__NonCsdEntryTitle=<In-house entry text>
 ```
 
+#### Customised Header and Information pages
+
+To add custom HTML above the search form on the home page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section
+
+```
+- /path/to/<Custom_Header.html>:/app/wwwroot/static/HomeHeader.html
+```
+
+Clicking on `About This Service` in the footer or accessing `/access-structures-information` brings up the information page. To add custom HTML for this page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section
+
+```
+- /path/to/<Custom_Information.html>:/app/wwwroot/static/Information.html
+```
+
+**PLEASE NOTE:** The content of these pages is rendered by the site as is, without encoding or validation. Any embedded scripts in HomeHeader.html or Information.html will run. It is the site administrator's responsibility to ensure that these pages are properly secured.
+
 ### Offline Installation
 
 This release will be only available online, if this is a problem please contact us. In the future we plan on supporting offline installs.
