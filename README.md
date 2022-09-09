@@ -81,7 +81,7 @@ As there is no height or width specified when displaying this image, please ensu
 
 #### Changing the Identifier text
 
-To change the label used for entry identifiers in the search results list add the following settings to the `webcsd` enironment section
+To change the label used for entry identifiers in the search results list, add the following settings to the `webcsd` enironment section
 
 ```
 - Customisations__Identifier__Full=<Identifier text>
