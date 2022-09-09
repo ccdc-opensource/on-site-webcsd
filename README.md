@@ -67,6 +67,35 @@ docker-compose up -d
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
+### Customization of the User Interface
+
+#### Adding your own company logo
+
+To replace the standard "CCDC On-Site WebCSD" logo at the top right of the page, with your own company logo, add the following to the `webcsd` volumes section
+
+```
+- /path/to/logo/<CompanyLogo.png>:/app/wwwroot/images/OnSite-logo.png
+```
+
+As there is no height or width specified when displaying this image, please ensure the replacement is of a reasonable size, to integrate with the layout of the page. For example, the CCDC logo, at the top left of the page, is 142 x 50 pixels.
+
+#### Changing the Identifier text
+
+To change the label used for entry identifiers in the search results list add the following settings to the `webcsd` enironment section
+
+```
+- Customisations__Identifier__Full=<Identifier text>
+- Customisations__Identifier__Short=<Identifier text short version>
+```
+
+#### Changing the non-CSD entry title
+
+To change the text displayed before the identifier in the main title, when viewing a non-CSD entry, add the following setting to the `webcsd` environment section
+
+```
+- Customisations__NonCsdEntryTitle=<In-house entry text>
+```
+
 ### Offline Installation
 
 This release will be only available online, if this is a problem please contact us. In the future we plan on supporting offline installs.
