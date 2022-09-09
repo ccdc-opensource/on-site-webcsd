@@ -243,6 +243,22 @@ Please note that process will need to be repeated to copy further updates to you
 
 To access the WebCSD service locally go to http://localhost in a browser.
 
+## Troubleshooting
+
+To view the container logs, use the following command:
+
+```sh
+docker logs [OPTIONS] <CONTAINER>
+```
+
+For a list of containers, use the following command:
+
+```sh
+docker-compose ps
+```
+
+For more information see the Docker documentation: https://docs.docker.com/engine/reference/commandline/logs/
+
 ## Contact support
 
 If you experience any difficulties with installing or using OnSite WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
