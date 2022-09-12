@@ -13,6 +13,7 @@ services:
       - 80:80
     volumes:
       - ./userdata:/app/OnSite
+      - ./structure-files:/structure-files
 
   webcsdbackend:
     depends_on:
@@ -20,6 +21,7 @@ services:
       - csd-request-entry
     image: ccdcrepository.azurecr.io/webcsdbackend:0.1.6
     environment:
+      - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENCING_CONFIGURATION};
 
   redis:

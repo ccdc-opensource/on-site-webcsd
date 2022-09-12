@@ -14,27 +14,36 @@ Access to the CCDC container registry will require a username and password that 
 
 A valid license key will be required to use the software.
 
-A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases) or a clone of this repository (this will require a [git installation](https://git-scm.com/downloads)).
+You will need either:
 
-```
+A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases).
+Click on the release you want to use, and download the source code zip and unpack.
+
+or
+
+A clone of this repository (this will require a git installation).
 git clone https://github.com/ccdc-opensource/onsite-webcsd.git
-```
 
 ## Initial recommended specification
 
 This is our initial estimate of what will be required to run WebCSD well.
 170GB free hd space, 32GB ram, 8 core cpu, Linux OS
 
+## Local Database Configuration
+
+On-Site WebCSD can be configured to read from local databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any local databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+
 ## Installation
 
-After cloning the repository onto the server which the software will be installed you will need to go into the onsite-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
+After either unpacking the release source code onto the server on which the software will be installed or cloning the git repo and pulling it you will need to go into the onsite-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
 
 ```
 cd onsite-webcsd
 cp sample.env .env
 ```
 
-The values in the .env file are as follows and here are some examples of how it should look:
+You will need to update the .env file with your licence key and the two passwords you would like to use.
+Here is an example of the .env file:
 
 ```
 CCDC_LICENSING_CONFIGURATION='la-code;123456-123456-123456-123456-123456-123456;'
@@ -50,7 +59,34 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
+#Use one of the following two commands depending on if you have local database configuration
+#Use this command if you have no local database configuration
 docker-compose up -d
+
+#Use this command if you have local database configuration
+docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+```
+
+### Running WebCSD under SSL
+
+To run WebCSD using HTTPS, you will need to do the following:
+
+1. Obtain a certificate and store it in a folder that can be referenced in the volumes section (path/to/certificate).
+
+2. Update sections of `webcsd` to add HTTPS support. An example of what to add and in which section, is shown below:
+
+```
+  webcsd:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<password used to create certificate>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/container/path/certificate.pfx
+
+    ports:
+      - 443:443
+
+    volumes:
+      - /path/to/certificate:/container/path:ro   # with read-only attributes (:ro)
 ```
 
 ### Offline Installation
@@ -59,16 +95,17 @@ This release will be only available online, if this is a problem please contact 
 
 ## Updates
 
-When you have been notified when there is an update available, checkout the tag for the release.
+When you have been notified when there is an update available you can either
 
-```sh
+Checkout the tag for the release.
+
+```
+git checkout tags/<specific release tag>
 cd <onsite installation directory>
 git pull
-
-# Optionally
-git checkout tags/<specific release tag>
 ```
 
+Or you can download the newest release from the github repository
 If the installation files have been downloaded from the release page you will need to download the latest version again from there and ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack. The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
@@ -77,10 +114,13 @@ Once the latest installation files have been obtained, to update the software, p
 docker-compose pull
 
 docker-compose down
+#Use one of the following two commands depending on if you have local database configuration
+#Use this command if you have no local database configuration
 docker-compose up -d
-```
 
-Note: if custom databases have been defined using an override file, use the command shown in the [Local Database Configuration](#local-database-configuration) section.
+#Use this command if you have local database configuration
+docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+```
 
 ## Verifying the Installation/Update
 
@@ -100,15 +140,11 @@ onsite-webcsd_ccdc-csd-searchservice_1
 onsite-webcsd_ccdc-csd-resultstore_1
 ```
 
-## Local Database Configuration
-
-On-Site WebCSD can be configured to read from local databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any local databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command:
-
-```
-docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
-```
-
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
+
+## Associated Structure Links Configuration
+
+On-Site WebCSD can be configured to display links associated with a structure, e.g DOI links or File links. To do this you will need a CSV file containing structures with their associated data and any files you may want to download. The CSV file belongs in `webcsdbackend` and is configured in the `environment` section. Any related files belong to `webcsd` where the location is configured in the `volumes` section. It is important to note that any file links set up in the CSV file, must point to the correct location of these files, otherwise the file will not download when the link is clicked.
 
 ## Storing the docker images in your local repository
 
@@ -123,22 +159,22 @@ If you want to store the docker images in your own repository follow the below s
 ```
 
 3. For each docker image run "docker tag <oldrepo/service:version> <newrepo/service:version>"
-e.g. 
+   e.g.
 
 ```
 "Docker tag ccdcrepository.azurecr.io/webcsd:0.1.6  my.internal.registry/webcsd:0.1.6"
 ```
 
 4. Run "docker push <newrepo/service:version>"
-e.g.
+   e.g.
 
 ```
 "docker push my.internal.registry/webcsd:0.1.6"
 ```
 
 5. Create a new docker-compose file to keep your image overrides seperate and avoid them being reverted in updates e.g. "docker-compose.service-config.yml".
-The file will need to contain the new image location for each service copied into a new location.
-e.g. 
+   The file will need to contain the new image location for each service copied into a new location.
+   e.g.
 
 ```
 version: '3.6'
@@ -149,12 +185,12 @@ services:
 
   webcsd:
     image: my.internal.registry/webcsd:0.1.6
-	
+
   database-server:
     image: my.internal.registry/csd-database:2022.1.0.alpha1
-	
+
 ...
-etc	
+etc
 ```
 
 6. Include the new file in the startup command, so if you are also using local database configurations the command will be:
@@ -162,7 +198,6 @@ etc
 ```
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.service-config.yml up -d
 ```
-
 
 Please note that process will need to be repeated to copy further updates to your local repository.
 
