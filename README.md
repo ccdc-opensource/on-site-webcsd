@@ -67,6 +67,28 @@ docker-compose up -d
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
+### Running WebCSD under SSL
+
+To run WebCSD using HTTPS, you will need to do the following:
+
+1. Obtain a certificate and store it in a folder that can be referenced in the volumes section (path/to/certificate).
+
+2. Update sections of `webcsd` to add HTTPS support. An example of what to add and in which section, is shown below:
+
+```
+  webcsd:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<password used to create certificate>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/container/path/certificate.pfx
+
+    ports:
+      - 443:443
+
+    volumes:
+      - /path/to/certificate:/container/path:ro   # with read-only attributes (:ro)
+```
+
 ### Offline Installation
 
 This release will be only available online, if this is a problem please contact us. In the future we plan on supporting offline installs.
