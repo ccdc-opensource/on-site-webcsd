@@ -165,6 +165,10 @@ onsite-webcsd_ccdc-csd-resultstore_1
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
+## Rollback in case of Update failure
+
+If an update fails and you need to revert to the previous working version, follow the instructions in the [Updates](#updates) section with the `<specific release tag>` set to the previous version.
+
 ## Data Updates
 
 To update an existing database, first check the location of the database that you want to update. This will be specified in the `webcsdbackend` volumes section of your docker-compose or local database configuration file. Copy the new version of the database to the required location, then do the following:
