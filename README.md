@@ -67,11 +67,13 @@ docker-compose up -d
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
-### Customization of the User Interface
+### Customisation of the User Interface
+
+This section details a number of customisations you can make to WebCSD. In order to keep these settings from being accidentally over-written, we recommend putting any customisations in a separate docker-compose file, e.g. docker-compose.customisations.yml. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command. Alternatively you could add these settings into the aforementioned db-config file to keep all of your configuration in one place.
 
 #### Adding your own company logo
 
-To replace the standard "CCDC On-Site WebCSD" logo at the top right of the page, with your own company logo, add the following to the `webcsd` volumes section
+Replace the standard "CCDC On-Site WebCSD" logo at the top right of the page, with your own company logo, by adding the following to the `webcsd` volumes section of your own docker-compose file.
 
 ```
 - /path/to/logo/<CompanyLogo.png>:/app/wwwroot/images/OnSite-logo.png
@@ -81,7 +83,7 @@ As there is no height or width specified when displaying this image, please ensu
 
 #### Changing the Identifier text
 
-To change the label used for entry identifiers in the search results list, add the following settings to the `webcsd` enironment section
+Change the label used for entry identifiers in the search results list, by adding the following settings to the `webcsd` enironment section of your own docker-compose file.
 
 ```
 - Customisations__Identifier__Full=<Identifier text>
@@ -90,7 +92,7 @@ To change the label used for entry identifiers in the search results list, add t
 
 #### Changing the non-CSD entry title
 
-To change the text displayed before the identifier in the main title, when viewing a non-CSD entry, add the following setting to the `webcsd` environment section
+Change the text displayed before the identifier in the main title, when viewing a non-CSD entry, by adding the following setting to the `webcsd` environment section of your own docker-compose file.
 
 ```
 - Customisations__NonCsdEntryTitle=<In-house entry text>
@@ -98,19 +100,43 @@ To change the text displayed before the identifier in the main title, when viewi
 
 #### Customised Header and Information pages
 
-To add custom HTML above the search form on the home page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section
+To add custom HTML above the search form on the home page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section of your own docker-compose file.
 
 ```
 - /path/to/<Custom_Header.html>:/app/wwwroot/static/HomeHeader.html
 ```
 
-Clicking on `About This Service` in the footer or accessing `/access-structures-information` brings up the information page. To add custom HTML for this page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section
+Clicking on `About This Service` in the footer or accessing `/access-structures-information` brings up the information page. To add custom HTML for this page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section of your own docker-compose file.
 
 ```
 - /path/to/<Custom_Information.html>:/app/wwwroot/static/Information.html
 ```
 
 **PLEASE NOTE:** The content of these pages is rendered by the site as is, without encoding or validation. Any embedded scripts in HomeHeader.html or Information.html will run. It is the site administrator's responsibility to ensure that these pages are properly secured.
+
+### Running WebCSD under SSL
+
+As this is optional, we recommend following a similar process to that described in the database configuration and user interface customisation sections. Which is to store these settings in a separate docker-compose file. You can then include this file in your startup command.
+
+To run WebCSD using HTTPS, you will need to do the following:
+
+1. Obtain a certificate and store it in a folder that can be referenced in the volumes section (path/to/certificate).
+
+2. Update the following sections of the `webcsd` service in your docker-compose file to add HTTPS support. An example of what to add and in which section, is shown below:
+
+```
+  webcsd:
+    environment:
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=<password used to create certificate>
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/container/path/certificate.pfx
+
+    ports:
+      - 443:443
+
+    volumes:
+      - /path/to/certificate:/container/path:ro   # with read-only attributes (:ro)
+```
 
 ### Offline Installation
 
