@@ -22,6 +22,12 @@ services:
 #      - N is a unique integer for each pair of vairiables
 #      - <database name> is how the name of the database will appear in the UI
 #      - <database path> should match the right side of the volume definition above.
+#
+#   Further configuration can be made to allocate a colour to a database.
+#   This can be done by adding the following setting to a database. Any legal CSS color value can be used.
+#      - ServiceSettings__Databases__N__Colour=#FF0000
+#      - ServiceSettings__Databases__N__Colour=red
+#      - ServiceSettings__Databases__N__Colour=rgba(255, 0, 0, 0.5)
 
 #Example:
 #If you have a database called test-db at the location /usr/local/data/test-db.csdsqlx
@@ -34,3 +40,4 @@ services:
 #    environment:
 #      - ServiceSettings__Databases__1__Name=test-db
 #      - ServiceSettings__Databases__1__ConnectionString=/csd-data/test-db.csdsqlx
+#      - ServiceSettings__Databases__1__Colour=red

@@ -67,13 +67,62 @@ docker-compose up -d
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
+### Customisation of the User Interface
+
+This section details a number of customisations you can make to WebCSD. In order to keep these settings from being accidentally over-written, we recommend putting any customisations in a separate docker-compose file, e.g. docker-compose.customisations.yml. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command. Alternatively you could add these settings into the aforementioned db-config file to keep all of your configuration in one place.
+
+#### Adding your own company logo
+
+Replace the standard "CCDC On-Site WebCSD" logo at the top right of the page, with your own company logo, by adding the following to the `webcsd` volumes section of your own docker-compose file.
+
+```
+- /path/to/logo/<CompanyLogo.png>:/app/wwwroot/images/OnSite-logo.png
+```
+
+As there is no height or width specified when displaying this image, please ensure the replacement is of a reasonable size, to integrate with the layout of the page. For example, the CCDC logo, at the top left of the page, is 142 x 50 pixels.
+
+#### Changing the Identifier text
+
+Change the label used for entry identifiers in the search results list, by adding the following settings to the `webcsd` enironment section of your own docker-compose file.
+
+```
+- Customisations__Identifier__Full=<Identifier text>
+- Customisations__Identifier__Short=<Identifier text short version>
+```
+
+#### Changing the non-CSD entry title
+
+Change the text displayed before the identifier in the main title, when viewing a non-CSD entry, by adding the following setting to the `webcsd` environment section of your own docker-compose file.
+
+```
+- Customisations__NonCsdEntryTitle=<In-house entry text>
+```
+
+#### Customised Header and Information pages
+
+To add custom HTML above the search form on the home page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section of your own docker-compose file.
+
+```
+- /path/to/<Custom_Header.html>:/app/wwwroot/static/HomeHeader.html
+```
+
+Clicking on `About This Service` in the footer or accessing `/access-structures-information` brings up the information page. To add custom HTML for this page, create a file containing a HTML snippet and add the following setting to the `webcsd` volumes section of your own docker-compose file.
+
+```
+- /path/to/<Custom_Information.html>:/app/wwwroot/static/Information.html
+```
+
+**PLEASE NOTE:** The content of these pages is rendered by the site as is, without encoding or validation. Any embedded scripts in HomeHeader.html or Information.html will run. It is the site administrator's responsibility to ensure that these pages are properly secured.
+
 ### Running WebCSD under SSL
+
+As this is optional, we recommend following a similar process to that described in the database configuration and user interface customisation sections. Which is to store these settings in a separate docker-compose file. You can then include this file in your startup command.
 
 To run WebCSD using HTTPS, you will need to do the following:
 
 1. Obtain a certificate and store it in a folder that can be referenced in the volumes section (path/to/certificate).
 
-2. Update sections of `webcsd` to add HTTPS support. An example of what to add and in which section, is shown below:
+2. Update the following sections of the `webcsd` service in your docker-compose file to add HTTPS support. An example of what to add and in which section, is shown below:
 
 ```
   webcsd:
@@ -142,6 +191,25 @@ onsite-webcsd_ccdc-csd-resultstore_1
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
+## Rollback in case of Update failure
+
+If an update fails and you need to revert to the previous working version, follow the instructions in the [Updates](#updates) section with the `<specific release tag>` set to the previous version.
+
+## Data Updates
+
+To update an existing database, first check the location of the database that you want to update. This will be specified in the `webcsdbackend` volumes section of your docker-compose or local database configuration file. Copy the new version of the database to the required location, then do the following:
+
+```sh
+docker-compose down
+
+#Use one of the following two commands depending on if you have local database configuration
+#Use this command if you have no local database configuration
+docker-compose up -d
+
+#Use this command if you have local database configuration
+docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+```
+
 ## Associated Structure Links Configuration
 
 On-Site WebCSD can be configured to display links associated with a structure, e.g DOI links or File links. To do this you will need a CSV file containing structures with their associated data and any files you may want to download. The CSV file belongs in `webcsdbackend` and is configured in the `environment` section. Any related files belong to `webcsd` where the location is configured in the `volumes` section. It is important to note that any file links set up in the CSV file, must point to the correct location of these files, otherwise the file will not download when the link is clicked.
@@ -204,6 +272,22 @@ Please note that process will need to be repeated to copy further updates to you
 ## Usage
 
 To access the WebCSD service locally go to http://localhost in a browser.
+
+## Troubleshooting
+
+To view the container logs, use the following command:
+
+```sh
+docker logs [OPTIONS] <CONTAINER>
+```
+
+For a list of containers, use the following command:
+
+```sh
+docker-compose ps
+```
+
+For more information see the Docker documentation: https://docs.docker.com/engine/reference/commandline/logs/
 
 ## Contact support
 
