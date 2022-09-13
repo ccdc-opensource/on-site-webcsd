@@ -21,7 +21,7 @@ services:
     image: ccdcrepository.azurecr.io/webcsdbackend:0.1.6
     environment:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
-      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENCING_CONFIGURATION};
+      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION};
 
   redis:
     image: redis
