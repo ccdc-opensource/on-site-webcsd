@@ -208,3 +208,9 @@ To access the WebCSD service locally go to http://localhost in a browser.
 ## Contact support
 
 If you experience any difficulties with installing or using OnSite WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
+
+## Check what images are running 
+
+```sh
+docker-compose images
+```
