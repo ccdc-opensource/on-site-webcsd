@@ -292,3 +292,9 @@ For more information see the Docker documentation: https://docs.docker.com/engin
 ## Contact support
 
 If you experience any difficulties with installing or using OnSite WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
+
+## How can I check which version of the images I am currently running?
+
+```sh
+docker-compose images
+```
