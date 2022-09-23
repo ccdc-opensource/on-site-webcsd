@@ -115,7 +115,7 @@ services:
   webcsd-theory:
     image: ccdcrepository.azurecr.io/csd-theory:latest
     environment:
-      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENCING_CONFIGURATION};
+      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION};
 
 volumes:
   csd_data: {}
