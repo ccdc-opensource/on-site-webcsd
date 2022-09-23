@@ -298,3 +298,11 @@ If you experience any difficulties with installing or using OnSite WebCSD, pleas
 ```sh
 docker-compose images
 ```
+
+## Kubernetes support
+
+If you wish to run WebCSD in a Kubernetes environment you can use the `Kompose` tool. Kompose takes a Docker Compose file and translates it into Kubernetes resources. More information can be found here:
+
+Github: https://github.com/kubernetes/kompose
+
+Website: https://kompose.io/
