@@ -69,6 +69,7 @@ services:
       - ccdc-csd-textnumericsearch
       - ccdc-csd-substructuresearch
       - ccdc-csd-resultstore
+      - ccdc-csd-structure-similarity-search
     image: ccdcrepository.azurecr.io/ccdc-csd-searchservice:0.1.6
 
   csd-request-entry:
@@ -99,6 +100,14 @@ services:
     image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:0.1.6
     environment:
       - OrderedCachePassword=${CSD_CACHE_PASSWORD}
+      
+  ccdc-csd-structure-similarity-search:
+    depends_on:
+      - database-server
+      - ccdc-csd-fingerprint
+    image: ccdcrepository.azurecr.io/ccdc-csd-structure-similarity-search:0.1.6
+    environment:
+      - StructureSimilaritySearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=similarity
 
   ccdc-csd-fingerprint:
     image: ccdcrepository.azurecr.io/ccdc-csd-fingerprint-service:0.1.6
