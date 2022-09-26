@@ -1,9 +1,10 @@
-version: '3.6'
+version: "3.6"
 
 services:
   webcsd:
     environment:
       - CsdRepository__ServiceLocation=webcsdbackend
+      - CspRepository__ServiceLocation=webcsd-theory
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
@@ -110,6 +111,11 @@ services:
 
   ccdc-csd-reducedcell-calculation-service:
     image: ccdcrepository.azurecr.io/ccdc-csd-reducedcell-calculation-service:0.1.6
+
+  webcsd-theory:
+    image: ccdcrepository.azurecr.io/csd-theory:latest
+    environment:
+      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION};
 
 volumes:
   csd_data: {}
