@@ -30,7 +30,7 @@ services:
     command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
 
   database-server:
-    image: ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha2
+    image:  ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha3
     restart: always
     environment:
       - POSTGRES_PASSWORD=${CSD_DB_PASSWORD}
