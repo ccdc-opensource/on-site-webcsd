@@ -140,22 +140,10 @@ To run WebCSD using HTTPS, you will need to do the following:
 
 ### Turning off the user access control 
 
-User access control is enabled by default, which requires users to register and to be assigned roles so they can search more than the CSD-Database. If you would like to disable this then please create a new overide file called `docker-compose.disableuseraccess.yml` with the following copied into it:
+If you want to turn off the User Access Control and don't want users to register and sign in then include the `docker-compose.disable-user-access.yml` file in the startup command:
 
 ```
-version: '3.6'
-
-services:
-  webcsd:
-    environment:
-      - ApplicationOnSiteSettings__DisableUserAccessControl=true
-
-```
-
-And include this file when you by including the new file `docker-compose.disableuseraccess.yml` in the startup command:
-
-```
-docker-compose -f docker-compose.yml -f docker-compose.disableuseraccess.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.disable-user-access.yml up -d
 ```
 
 ### Offline Installation
