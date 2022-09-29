@@ -1,6 +1,6 @@
-# OnSite WebCSD
+# On-Site WebCSD
 
-OnSite WebCSD is currently only available to CCDC Research Partners and other invited groups.
+On-Site WebCSD is currently only available to CCDC Research Partners and other invited groups.
 
 This release is an Alpha release aimed at getting feedback on the installation and update process.
 
@@ -150,7 +150,7 @@ Checkout the tag for the release.
 
 ```
 git checkout tags/<specific release tag>
-cd <onsite installation directory>
+cd <on-site installation directory>
 git pull
 ```
 
@@ -291,7 +291,7 @@ For more information see the Docker documentation: https://docs.docker.com/engin
 
 ## Contact support
 
-If you experience any difficulties with installing or using OnSite WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
+If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
 
 ## How can I check which version of the images I am currently running?
 
