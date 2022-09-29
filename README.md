@@ -1,6 +1,6 @@
-# OnSite WebCSD
+# On-Site WebCSD
 
-OnSite WebCSD is currently only available to CCDC Research Partners and other invited groups.
+On-Site WebCSD is currently only available to CCDC Research Partners and other invited groups.
 
 This release is an Alpha release aimed at getting feedback on the installation and update process.
 
@@ -16,13 +16,13 @@ A valid license key will be required to use the software.
 
 You will need either:
 
-A download of the desired [release](https://github.com/ccdc-opensource/onsite-webcsd/releases).
+A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
 Click on the release you want to use, and download the source code zip and unpack.
 
 or
 
 A clone of this repository (this will require a git installation).
-git clone https://github.com/ccdc-opensource/onsite-webcsd.git
+git clone https://github.com/ccdc-opensource/on-site-webcsd.git
 
 ## Initial recommended specification
 
@@ -35,10 +35,10 @@ On-Site WebCSD can be configured to read from local databases. To enable these d
 
 ## Installation
 
-After either unpacking the release source code onto the server on which the software will be installed or cloning the git repo and pulling it you will need to go into the onsite-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
+After either unpacking the release source code onto the server on which the software will be installed or cloning the git repo and pulling it you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
 
 ```
-cd onsite-webcsd
+cd on-site-webcsd
 cp sample.env .env
 ```
 
@@ -76,7 +76,7 @@ This section details a number of customisations you can make to WebCSD. In order
 Replace the standard "CCDC On-Site WebCSD" logo at the top right of the page, with your own company logo, by adding the following to the `webcsd` volumes section of your own docker-compose file.
 
 ```
-- /path/to/logo/<CompanyLogo.png>:/app/wwwroot/images/OnSite-logo.png
+- /path/to/logo/<CompanyLogo.png>:/app/wwwroot/images/On-Site-logo.png
 ```
 
 As there is no height or width specified when displaying this image, please ensure the replacement is of a reasonable size, to integrate with the layout of the page. For example, the CCDC logo, at the top left of the page, is 142 x 50 pixels.
@@ -158,7 +158,7 @@ Checkout the tag for the release.
 
 ```
 git checkout tags/<specific release tag>
-cd <onsite installation directory>
+cd <on-site installation directory>
 git pull
 ```
 
@@ -193,8 +193,8 @@ During the Alpha release some of these services will be unhealthy - this is expe
 The services which will be unhealthy are:
 
 ```
-onsite-webcsd_ccdc-csd-searchservice_1
-onsite-webcsd_ccdc-csd-resultstore_1
+on-site-webcsd_ccdc-csd-searchservice_1
+on-site-webcsd_ccdc-csd-resultstore_1
 ```
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
@@ -299,7 +299,7 @@ For more information see the Docker documentation: https://docs.docker.com/engin
 
 ## Contact support
 
-If you experience any difficulties with installing or using OnSite WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
+If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
 
 ## How can I check which version of the images I am currently running?
 
