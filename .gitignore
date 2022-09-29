@@ -4,6 +4,7 @@
 
 # Check-in only 
 docker-compose.*.yml
+!docker-compose.disable-user-access.yml
 !docker-compose.sample-db-config.yml
 
 # Other

@@ -1,0 +1,7 @@
+# To disable User Access Control include this file in the startup command with -f docker-compose.disable-user-access.yml will 
+version: '3.6'
+
+services:
+  webcsd:
+    environment:
+      - ApplicationOnSiteSettings__DisableUserAccessControl=true
