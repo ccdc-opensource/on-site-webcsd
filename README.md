@@ -138,6 +138,14 @@ To run WebCSD using HTTPS, you will need to do the following:
       - /path/to/certificate:/container/path:ro   # with read-only attributes (:ro)
 ```
 
+### Turning off the user access control 
+
+If you want to turn off the User Access Control and don't want users to register and sign in then include the `docker-compose.disable-user-access.yml` file in the startup command:
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.disable-user-access.yml up -d
+```
+
 ### Offline Installation
 
 This release will be only available online, if this is a problem please contact us. In the future we plan on supporting offline installs.
