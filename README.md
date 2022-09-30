@@ -29,9 +29,9 @@ git clone https://github.com/ccdc-opensource/on-site-webcsd.git
 This is our initial estimate of what will be required to run WebCSD well.
 170GB free hd space, 32GB ram, 8 core cpu, Linux OS
 
-## Local Database Configuration
+## In-house Database Configuration
 
-On-Site WebCSD can be configured to read from local databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any local databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+On-Site WebCSD can be configured to read from in-house databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
 
 ## Installation
 
@@ -59,11 +59,11 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
-#Use one of the following two commands depending on if you have local database configuration
-#Use this command if you have no local database configuration
+#Use one of the following two commands depending on if you have in-house database configuration
+#Use this command if you have no in-house database configuration
 docker-compose up -d
 
-#Use this command if you have local database configuration
+#Use this command if you have in-house database configuration
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
@@ -88,11 +88,11 @@ Once the latest installation files have been obtained, to update the software, p
 docker-compose pull
 
 docker-compose down
-#Use one of the following two commands depending on if you have local database configuration
-#Use this command if you have no local database configuration
+#Use one of the following two commands depending on if you have in-house database configuration
+#Use this command if you have no in-house database configuration
 docker-compose up -d
 
-#Use this command if you have local database configuration
+#Use this command if you have in-house database configuration
 docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
@@ -116,21 +116,6 @@ on-site-webcsd_ccdc-csd-resultstore_1
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
-## Data Updates
-
-To update an existing database, first check the location of the database that you want to update. This will be specified in the `webcsdbackend` volumes section of your docker-compose or local database configuration file. Copy the new version of the database to the required location, then do the following:
-
-```sh
-docker-compose down
-
-#Use one of the following two commands depending on if you have local database configuration
-#Use this command if you have no local database configuration
-docker-compose up -d
-
-#Use this command if you have local database configuration
-docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
-```
-
 ## Usage
 
 To access the WebCSD service locally go to http://localhost in a browser.
@@ -138,9 +123,3 @@ To access the WebCSD service locally go to http://localhost in a browser.
 ## Contact support
 
 If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
-
-## How can I check which version of the images I am currently running?
-
-```sh
-docker-compose images
-```
