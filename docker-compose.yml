@@ -8,26 +8,47 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsd:0.1.6
+    image: ccdcrepository.azurecr.io/webcsd:latest
     ports:
       - 80:80
     volumes:
       - ./userdata:/app/OnSite
       - ./structure-files:/structure-files
+    labels:
+      kompose.image-pull-secret: regcred
+      kompose.service.type: LoadBalancer
+      kompose.service.expose: "true"
+      # kompose.volume.size: 1Gi
 
   webcsdbackend:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsdbackend:0.1.6
+    image: ccdcrepository.azurecr.io/webcsdbackend:latest
     environment:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
-      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION};
+      - CCDC_LICENSING_CONFIGURATION=la-code;5ABDA4-F20240-48D6A3-1273C3-0A321F-71F963;service=ccdc-test-on-premise
+      - ServiceSettings__Databases__1__Name=RP1
+      - ServiceSettings__Databases__1__Colour=#FF0000
+      - ServiceSettings__Databases__1__ConnectionString=/csd-data/Main_RP_DB.csdsql
+      - ServiceSettings__Databases__2__Name=solubility
+      - ServiceSettings__Databases__2__Colour=RGBA(255,0,0,.5)
+      - ServiceSettings__Databases__2__ConnectionString=/csd-data/solubility.csdsql
+      - ServiceSettings__Databases__2__Speciality__0=Solubility
+      - ServiceSettings__Databases__3__Name=CSP Database
+      - ServiceSettings__Databases__3__Colour=aqua
+      - ServiceSettings__Databases__3__ConnectionString=/csd-data/CSPLandscape.csdsqlx
+    volumes:
+      - ./csd-data:/csd-data
+    labels:
+      kompose.image-pull-secret: regcred
+    expose:
+      - 80
 
   redis:
     image: redis
     restart: always
-    command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
+    command: redis-server --requirepass 'Password123'
 
   database-server:
     image: ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha2
