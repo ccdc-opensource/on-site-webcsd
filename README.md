@@ -2,6 +2,10 @@
 
 On-Site WebCSD is currently only available to CCDC Research Partners and other invited groups.
 
+This readme contains information required for installation and updates of On-Site WebCSD.
+
+Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
+
 This release is an Alpha release aimed at getting feedback on the installation and update process.
 
 This alpha release does not contain all the functionality currently provided in On-Site WebCSD. All functionality will be provided in the full release.
