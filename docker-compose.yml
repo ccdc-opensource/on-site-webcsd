@@ -13,12 +13,10 @@ services:
       - 80:80
     volumes:
       - ./userdata:/app/OnSite
-      - ./structure-files:/structure-files
     labels:
-      kompose.image-pull-secret: regcred
+      kompose.image-pull-secret: pullsecret
       kompose.service.type: LoadBalancer
       kompose.service.expose: "true"
-      # kompose.volume.size: 1Gi
 
   webcsdbackend:
     depends_on:
@@ -27,30 +25,24 @@ services:
     image: ccdcrepository.azurecr.io/webcsdbackend:latest
     environment:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
-      - CCDC_LICENSING_CONFIGURATION=la-code;5ABDA4-F20240-48D6A3-1273C3-0A321F-71F963;service=ccdc-test-on-premise
-      - ServiceSettings__Databases__1__Name=RP1
-      - ServiceSettings__Databases__1__Colour=#FF0000
-      - ServiceSettings__Databases__1__ConnectionString=/csd-data/Main_RP_DB.csdsql
-      - ServiceSettings__Databases__2__Name=solubility
-      - ServiceSettings__Databases__2__Colour=RGBA(255,0,0,.5)
-      - ServiceSettings__Databases__2__ConnectionString=/csd-data/solubility.csdsql
-      - ServiceSettings__Databases__2__Speciality__0=Solubility
-      - ServiceSettings__Databases__3__Name=CSP Database
-      - ServiceSettings__Databases__3__Colour=aqua
-      - ServiceSettings__Databases__3__ConnectionString=/csd-data/CSPLandscape.csdsqlx
-    volumes:
-      - ./csd-data:/csd-data
+      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     labels:
-      kompose.image-pull-secret: regcred
+      kompose.image-pull-secret: pullsecret
     expose:
       - 80
 
   redis:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: redis
     restart: always
-    command: redis-server --requirepass 'Password123'
+    command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
+    expose:
+      - 6379
 
   database-server:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha2
     restart: always
     environment:
@@ -59,8 +51,12 @@ services:
       - "postgres"
       - "-c"
       - "max_connections=1000"
+    expose:
+      - 5432
 
   ccdc-csd-substructuresearch:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-substructuresearch:0.1.6
     depends_on:
       - database-server
@@ -70,29 +66,45 @@ services:
       - ccdc-csd-deposition
     environment:
       - StructureSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=substructure
+    expose:
+      - 80
 
   ccdc-csd-deposition:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-deposition:0.1.6
     depends_on:
       - database-server
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+    expose:
+      - 80
 
   ccdc-csd-textnumericsearch:
+    labels:
+      kompose.image-pull-secret: pullsecret
     depends_on:
       - database-server
     image: ccdcrepository.azurecr.io/ccdc-csd-textnumericsearch:0.1.6
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+    expose:
+      - 80
 
   ccdc-csd-searchservice:
+    labels:
+      kompose.image-pull-secret: pullsecret
     depends_on:
       - ccdc-csd-textnumericsearch
       - ccdc-csd-substructuresearch
       - ccdc-csd-resultstore
     image: ccdcrepository.azurecr.io/ccdc-csd-searchservice:0.1.6
+    expose:
+      - 80
 
   csd-request-entry:
+    labels:
+      kompose.image-pull-secret: pullsecret
     depends_on:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
@@ -100,43 +112,77 @@ services:
     image: ccdcrepository.azurecr.io/csd-request-entry:0.1.6
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+    expose:
+      - 80
 
   ccdc-csd-formulasearch:
+    labels:
+      kompose.image-pull-secret: pullsecret
     depends_on:
       - database-server
     image: ccdcrepository.azurecr.io/ccdc-csd-formulasearch:0.1.6
     environment:
       - FormulaSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=formula
+    expose:
+      - 80
 
   ccdc-csd-unitcellsearch:
+    labels:
+      kompose.image-pull-secret: pullsecret
     depends_on:
       - database-server
       - ccdc-csd-reducedcell-calculation-service
     image: ccdcrepository.azurecr.io/ccdc-csd-unitcellsearch:0.1.6
     environment:
       - UnitCellSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=unitcell
+    expose:
+      - 80
 
   ccdc-csd-resultstore:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:0.1.6
     environment:
       - OrderedCachePassword=${CSD_CACHE_PASSWORD}
+    expose:
+      - 80
 
   ccdc-csd-fingerprint:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-fingerprint-service:0.1.6
+    expose:
+      - 80
 
   ccdc-csd-substructure-filter:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-substructure-filter-service:0.1.6
+    expose:
+      - 80
 
   ccdc-csd-crystal-structure-export:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-crystal-structure-export-service:0.1.6
+    expose:
+      - 80
 
   ccdc-csd-reducedcell-calculation-service:
+    labels:
+      kompose.image-pull-secret: pullsecret
     image: ccdcrepository.azurecr.io/ccdc-csd-reducedcell-calculation-service:0.1.6
+    expose:
+      - 80
 
   webcsd-theory:
-    image: ccdcrepository.azurecr.io/csd-theory:latest
+    labels:
+      kompose.image-pull-secret: pullsecret
+    image: ccdcrepository.azurecr.io/csd-theory:1.0.160
     environment:
-      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION};
+      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
+    expose:
+      - 80
 
 volumes:
   csd_data: {}
