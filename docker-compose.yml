@@ -1,5 +1,8 @@
 version: "3.6"
 
+x-labels: &k8s-labels
+  kompose.image-pull-secret: pullsecret
+
 services:
   webcsd:
     environment:
@@ -14,7 +17,7 @@ services:
     volumes:
       - ./userdata:/app/OnSite
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
       kompose.service.type: LoadBalancer
       kompose.service.expose: "true"
 
@@ -27,13 +30,13 @@ services:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     expose:
       - 80
 
   redis:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: redis
     restart: always
     command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
@@ -42,7 +45,7 @@ services:
 
   database-server:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/csd-database:2022.1.0.alpha2
     restart: always
     environment:
@@ -56,7 +59,7 @@ services:
 
   ccdc-csd-substructuresearch:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-substructuresearch:0.1.6
     depends_on:
       - database-server
@@ -71,7 +74,7 @@ services:
 
   ccdc-csd-deposition:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-deposition:0.1.6
     depends_on:
       - database-server
@@ -82,7 +85,7 @@ services:
 
   ccdc-csd-textnumericsearch:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     depends_on:
       - database-server
     image: ccdcrepository.azurecr.io/ccdc-csd-textnumericsearch:0.1.6
@@ -93,7 +96,7 @@ services:
 
   ccdc-csd-searchservice:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     depends_on:
       - ccdc-csd-textnumericsearch
       - ccdc-csd-substructuresearch
@@ -104,7 +107,7 @@ services:
 
   csd-request-entry:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     depends_on:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
@@ -117,7 +120,7 @@ services:
 
   ccdc-csd-formulasearch:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     depends_on:
       - database-server
     image: ccdcrepository.azurecr.io/ccdc-csd-formulasearch:0.1.6
@@ -128,7 +131,7 @@ services:
 
   ccdc-csd-unitcellsearch:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     depends_on:
       - database-server
       - ccdc-csd-reducedcell-calculation-service
@@ -140,7 +143,7 @@ services:
 
   ccdc-csd-resultstore:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-resultstore:0.1.6
     environment:
       - OrderedCachePassword=${CSD_CACHE_PASSWORD}
@@ -149,35 +152,35 @@ services:
 
   ccdc-csd-fingerprint:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-fingerprint-service:0.1.6
     expose:
       - 80
 
   ccdc-csd-substructure-filter:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-substructure-filter-service:0.1.6
     expose:
       - 80
 
   ccdc-csd-crystal-structure-export:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-crystal-structure-export-service:0.1.6
     expose:
       - 80
 
   ccdc-csd-reducedcell-calculation-service:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/ccdc-csd-reducedcell-calculation-service:0.1.6
     expose:
       - 80
 
   webcsd-theory:
     labels:
-      kompose.image-pull-secret: pullsecret
+      <<: *k8s-labels
     image: ccdcrepository.azurecr.io/csd-theory:1.0.160
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}

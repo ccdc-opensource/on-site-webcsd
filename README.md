@@ -144,7 +144,7 @@ There are a few steps that you will need to follow, to complete your implementat
 kubectl create secret docker-registry pullsecret --docker-server=ccdcrepository.azurecr.io --docker-username=<your-token-name> --docker-password=<token-password> --docker-email=<your-email>
 ```
 
-Where `pullsecret` is the name given to the pull secret referenced in the docker-compose file. If you choose a different name, you will need to update the `kompose.image-pull-secret` labels in the docker-compose file to match.
+Where `pullsecret` is the name given to the pull secret referenced in the docker-compose file. If you choose a different name, you will need to update the `kompose.image-pull-secret` label in the `x-labels` section at the top of the docker-compose file.
 
 #### 2. Replace all ${XXX_YYY} variables in the docker-compose file with their actual values
 
