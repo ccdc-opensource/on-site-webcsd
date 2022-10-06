@@ -11,7 +11,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsd:latest
+    image: ccdcrepository.azurecr.io/webcsd:0.1.6
     ports:
       - 80:80
     volumes:
@@ -25,7 +25,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsdbackend:latest
+    image: ccdcrepository.azurecr.io/webcsdbackend:0.1.6
     environment:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
