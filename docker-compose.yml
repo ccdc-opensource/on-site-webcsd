@@ -192,7 +192,7 @@ services:
       <<: *k8s-labels
     image: ccdcrepository.azurecr.io/csd-theory:1.0.160
     environment:
-      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION};
+      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     expose:
       - 80
 
