@@ -28,7 +28,7 @@ services:
   #      - ServiceSettings__Databases__N__Colour=#FF0000
   #      - ServiceSettings__Databases__N__Colour=red
   #      - ServiceSettings__Databases__N__Colour=rgba(255, 0, 0, 0.5)
-
+  #
   # Example:
   # If you have a database called test-db at the location /usr/local/data/test-db.csdsqlx
   # To use the test-db.csdsqlx database the file will look like this
@@ -41,6 +41,34 @@ services:
   #       - ServiceSettings__Databases__1__Name=test-db
   #       - ServiceSettings__Databases__1__ConnectionString=/csd-data/test-db.csdsqlx
   #       - ServiceSettings__Databases__1__Colour=red
+  #
+  # Structure File Links:
+  #   If you are using structure file links, include your .CSV file containg the mappings of links to structures
+  #   within the csd-data folder. See also section below for webcsd.
+  #
+  #########################################################################################################
+  # Kubernetes Users
+  # Please refer to the README regarding additional steps required for adding your in-house databases.
+  #########################################################################################################
+
+  webcsd:
+    volumes:
+      - ./path/to/structure/files:/structure-files
+  # Notes:
+  # If you are not using structure file links, then ignore this section and do not include the above snippet in your
+  # docker-compose file.
+  #
+  # If you are using structure file links, you need a .CSV file containing mappings of links to structures.
+  # Place the .CSV file in your csd-data folder along with your in-house database files for webcsdbackend (see above).
+  # When performing a docker-compose up, this will upload the file to the correct location.
+  #
+  # The associated files, that are linked to from the .CSV file, should be mapped to a folder in webcsd. Simply replace
+  # the /path/to/structure/files in the example above with your local path where the structure files are stored.
+
+  #########################################################################################################
+  # Kubernetes Users
+  # Please refer to the README regarding additional steps required for implementing Structure File links.
+  #########################################################################################################
 
   webcsd-theory:
     volumes:
@@ -51,6 +79,16 @@ services:
   # 1. A CSD Search database for initial searching of landscape structures.
   # 2. A CSD-Theory metadata database containing additional theoretical data. This must be name CSPDatabase.db.
   # These 2 database are used in conjunction to create the CSD-Theory charts and reports.
+
+  #########################################################################################################
+  # Kubernetes Users
+  # When converting to Kubernetes, only specify the second setting, for example:
+  #   webcsd-theory:
+  #     volumes:
+  #       - /path/to/CSD-Theory Landscape Database:/app/databases
+  # This will create a persistent volume and claim for the location of the landscape database.
+  # Please refer to the README regarding additional steps required for implementing CSD Theory.
+  #########################################################################################################
 
   # IMPORTANT: The CSD Search database must also be included in the webcsdbackend volumes.
   #   The path in which the databases must be mounted is `/csd-data`.
