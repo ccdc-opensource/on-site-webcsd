@@ -34,11 +34,12 @@ This is our initial estimate of what will be required to run WebCSD well.
 170GB free hd space, 32GB ram, 8 core cpu.
 
 On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
-Linux - Intel compatible, 64-bit:
-*RedHat Enterprise 7.6 or higher, and 8
-*CentOS 7.6 or higher
-*CentOS Stream 8
-*Ubuntu LTS 20 and 22
+
+- Linux - Intel compatible, 64-bit:
+  - RedHat Enterprise 7.6 or higher, and 8
+  - CentOS 7.6 or higher
+  - CentOS Stream 8
+  - Ubuntu LTS 20 and 22
 
 ## In-house Database Configuration
 
