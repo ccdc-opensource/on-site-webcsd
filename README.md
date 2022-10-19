@@ -58,9 +58,9 @@ You will need to update the .env file with your licence key and the two password
 Here is an example of the .env file:
 
 ```
-CCDC_LICENSING_CONFIGURATION='la-code;123456-123456-123456-123456-123456-123456;'
-CSD_DB_PASSWORD='A password of your choosing'
-CSD_CACHE_PASSWORD='A password of your choosing'
+CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
+CSD_DB_PASSWORD=A password of your choosing
+CSD_CACHE_PASSWORD=A password of your choosing
 ```
 
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set. Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
