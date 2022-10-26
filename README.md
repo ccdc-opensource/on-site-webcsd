@@ -4,6 +4,8 @@ On-Site WebCSD is currently only available to CCDC Research Partners and other i
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
+Terms and conditions can be found in the license.md file.
+
 Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
 
 This release is an Alpha release aimed at getting feedback on the installation and update process.
@@ -31,7 +33,15 @@ git clone https://github.com/ccdc-opensource/on-site-webcsd.git
 ## Initial recommended specification
 
 This is our initial estimate of what will be required to run WebCSD well.
-170GB free hd space, 32GB ram, 8 core cpu, Linux OS
+170GB free hd space, 32GB ram, 8 core cpu.
+
+On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
+
+- Linux - Intel compatible, 64-bit:
+  - RedHat Enterprise 7.6 or higher, and 8
+  - CentOS 7.6 or higher
+  - CentOS Stream 8
+  - Ubuntu LTS 20 and 22
 
 ## In-house Database Configuration
 
@@ -50,9 +60,9 @@ You will need to update the .env file with your licence key and the two password
 Here is an example of the .env file:
 
 ```
-CCDC_LICENSING_CONFIGURATION='la-code;123456-123456-123456-123456-123456-123456;'
-CSD_DB_PASSWORD='A password of your choosing'
-CSD_CACHE_PASSWORD='A password of your choosing'
+CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
+CSD_DB_PASSWORD=A password of your choosing
+CSD_CACHE_PASSWORD=A password of your choosing
 ```
 
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set. Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
