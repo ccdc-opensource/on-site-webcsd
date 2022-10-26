@@ -4,6 +4,8 @@ On-Site WebCSD is currently only available to CCDC Research Partners and other i
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
+Terms and conditions can be found in the license.md file.
+
 Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
 
 This release is an Alpha release aimed at getting feedback on the installation and update process.
