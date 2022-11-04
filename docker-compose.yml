@@ -11,7 +11,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/webcsd:0.1.9
+    image: ccdcrepository.azurecr.io/webcsd:0.1.16
     ports:
       - 80:80
     volumes:
@@ -79,7 +79,7 @@ services:
     depends_on:
       - database-server
     environment:
-      - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+      - CsdDepositionReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
     expose:
       - 80
 
@@ -115,7 +115,7 @@ services:
       - database-server
     image: ccdcrepository.azurecr.io/csd-request-entry-api:0.1.16
     environment:
-      - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+      - RequestEntryCsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
     expose:
       - 80
 
