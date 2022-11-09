@@ -8,31 +8,22 @@ Terms and conditions can be found in the license.md file.
 
 Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
 
-This release is an Alpha release aimed at getting feedback on the installation and update process.
-
-This alpha release does not contain all the functionality currently provided in On-Site WebCSD. All functionality will be provided in the full release.
+Release prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
 
 ## Prerequisites
 
 A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [docker-compose](https://docs.docker.com/compose/install/) installation is required for installation. This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
 
-Access to the CCDC container registry will require a username and password that will be provided by CCDC Support.
+Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
 A valid license key will be required to use the software.
-
-You will need either:
 
 A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
 Click on the release you want to use, and download the source code zip and unpack.
 
-or
-
-A clone of this repository (this will require a git installation).
-git clone https://github.com/ccdc-opensource/on-site-webcsd.git
-
 ## Initial recommended specification
 
-This is our initial estimate of what will be required to run WebCSD well.
+Recommended requirements:
 170GB free hd space, 32GB ram, 8 core cpu.
 
 On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
@@ -49,7 +40,7 @@ On-Site WebCSD can be configured to read from in-house databases. To enable thes
 
 ## Installation
 
-After either unpacking the release source code onto the server on which the software will be installed or cloning the git repo and pulling it you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
+After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
 
 ```
 cd on-site-webcsd
@@ -83,18 +74,8 @@ docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 ## Updates
 
-When you have been notified when there is an update available you can either
-
-Checkout the tag for the release.
-
-```
-git checkout tags/<specific release tag>
-cd <on-site installation directory>
-git pull
-```
-
-Or you can download the newest release from the github repository
-If the installation files have been downloaded from the release page you will need to download the latest version again from there and ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
+When you have been notified when there is an update available you can download the newest release from the github repository.
+Oce you have downloaded the new release, ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack. The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
 
@@ -119,14 +100,6 @@ docker-compose ps
 ```
 
 which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack. If the issues persist then please contact CCDC Support.
-
-During the Alpha release some of these services will be unhealthy - this is expected and will be fixed before the final release.
-The services which will be unhealthy are:
-
-```
-on-site-webcsd_ccdc-csd-searchservice_1
-on-site-webcsd_ccdc-csd-resultstore_1
-```
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
