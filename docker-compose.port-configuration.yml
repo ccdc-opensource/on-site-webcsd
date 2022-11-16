@@ -1,0 +1,132 @@
+version: "3.6"
+
+services:
+  webcsd:
+    environment:
+      - CsdRepository__SearchServiceLocation=http://ccdc-csd-searchservice:8080/
+      - CsdRepository__PagedResultLocation=http://ccdc-csd-searchservice:8080/
+      - CsdRepository__RequestEntriesServiceLocation=http://csd-request-entry:8080/
+      - CsdRepository__ChemicalDiagramImageLocation=http://csd-request-entry:8080/
+      - CsdRepository__ChemicalStructureMol2Location=http://csd-request-entry:8080/
+      - CsdRepository__AtomEquivalencesLocation=http://csd-request-entry:8080/
+      - CsdRepository__FormulaSearchServiceLocation=http://ccdc-csd-searchservice:8080/
+      - CsdRepository__StructureSimilaritySearchServiceLocation=http://ccdc-csd-searchservice:8080/
+      - CsdRepository__UnitCellSearchLocation=http://ccdc-csd-searchservice:8080/
+      - CsdRepository__ServiceLocation=webcsdbackend:8080
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+
+  webcsdbackend:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+
+  redis:
+    expose:
+      - 6379
+  
+  database-server:
+    expose:
+      - 5432
+      
+  ccdc-csd-substructuresearch:
+    environment:
+      - FingerprintCalculationService=http://ccdc-csd-fingerprint:8080
+      - ResultsStoreService=http://ccdc-csd-resultstore:8080
+      - DepositionService=http://ccdc-csd-deposition:8080
+      - SubstructureFilterService=http://ccdc-csd-substructure-filter:8080
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  ccdc-csd-deposition:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+
+  ccdc-csd-textnumericsearch:
+    environment:      
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  ccdc-csd-searchservice:
+    environment:
+      - TextNumericSearchService=http://ccdc-csd-textnumericsearch:8080/
+      - SubstructureSearchService=http://ccdc-csd-substructuresearch:8080/
+      - QueryIdGeneratorService=http://ccdc-csd-resultstore:8080/
+      - PagedResultsService=http://ccdc-csd-resultstore:8080/
+      - FormulaSearchService=http://ccdc-csd-formulasearch:8080/
+      - StructureSimilaritySearchService=http://ccdc-csd-similaritysearch:8080/
+      - UnitCellSearchService=http://ccdc-csd-unitcellsearch:8080/
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  csd-request-entry:
+    environment:
+      - CrystalStructureExportService=http://ccdc-csd-crystal-structure-export:8080
+      - DepositionService=http://ccdc-csd-deposition:8080
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+ 
+  ccdc-csd-formulasearch:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+
+  ccdc-csd-unitcellsearch:
+    environment:
+      - UnitCellNiggliReducedCellCalculationService=http://ccdc-csd-reducedcell-calculation-service:8080
+      - UnitCellReducedCellCalculationService=http://ccdc-csd-reducedcell-calculation-service:8080
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  ccdc-csd-resultstore:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  ccdc-csd-similaritysearch:
+    environment:
+      - FingerprintChemicalDiagramCalculationService=http://ccdc-csd-fingerprint:8080
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  ccdc-csd-substructure-filter:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    expose:
+      - 8080
+      
+  ccdc-csd-crystal-structure-export:
+    environment:
+      - CCDC_SERVICE_PORT=8080
+    expose:
+      - 8080     
+      
+  ccdc-csd-reducedcell-calculation-service:
+    environment:
+      - CCDC_SERVICE_PORT=8080
+    expose:
+      - 8080          
+
+  ccdc-csd-fingerprint:
+    environment:
+      - CCDC_SERVICE_PORT=8080
+    expose:
+      - 8080
+
+  
+  
+  #Healthchecks - all
