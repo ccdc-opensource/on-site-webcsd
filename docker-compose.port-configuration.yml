@@ -18,12 +18,16 @@ services:
       - 8080:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
 
   webcsdbackend:
     environment:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
 
   redis:
     expose:
@@ -42,18 +46,25 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
       
   ccdc-csd-deposition:
     environment:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
+      
 
   ccdc-csd-textnumericsearch:
     environment:      
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
       
   ccdc-csd-searchservice:
     environment:
@@ -67,7 +78,9 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
-      
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
+
   csd-request-entry:
     environment:
       - CrystalStructureExportService=http://ccdc-csd-crystal-structure-export:8080
@@ -75,12 +88,16 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
  
   ccdc-csd-formulasearch:
     environment:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
 
   ccdc-csd-unitcellsearch:
     environment:
@@ -89,12 +106,16 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
       
   ccdc-csd-resultstore:
     environment:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
       
   ccdc-csd-similaritysearch:
     environment:
@@ -102,30 +123,40 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
       
   ccdc-csd-substructure-filter:
     environment:
-      - ASPNETCORE_URLS=http://+:8080
+      - CCDC_SERVICE_PORT=8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
       
   ccdc-csd-crystal-structure-export:
     environment:
       - CCDC_SERVICE_PORT=8080
     expose:
-      - 8080     
+      - 8080   
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"  
       
   ccdc-csd-reducedcell-calculation-service:
     environment:
       - CCDC_SERVICE_PORT=8080
     expose:
       - 8080          
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
 
   ccdc-csd-fingerprint:
     environment:
       - CCDC_SERVICE_PORT=8080
     expose:
       - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
 
   
   
