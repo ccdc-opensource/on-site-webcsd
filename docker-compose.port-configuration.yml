@@ -14,6 +14,8 @@ services:
       - CsdRepository__UnitCellSearchLocation=http://ccdc-csd-searchservice:8080/
       - CsdRepository__ServiceLocation=webcsdbackend:8080
       - ASPNETCORE_URLS=http://+:8080
+      - CspRepository__ServiceLocation=webcsd-theory:8080
+
     ports:
       - 8080:8080
     expose:
@@ -153,6 +155,14 @@ services:
   ccdc-csd-fingerprint:
     environment:
       - CCDC_SERVICE_PORT=8080
+    expose:
+      - 8080
+    healthcheck: 
+      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
+
+  webcsd-theory:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
     healthcheck: 
