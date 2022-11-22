@@ -165,5 +165,3 @@ services:
       - ASPNETCORE_URLS=http://+:8080
     expose:
       - 8080
-    healthcheck: 
-      test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:8080/health/ready"
