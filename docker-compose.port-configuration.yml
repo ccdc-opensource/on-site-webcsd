@@ -163,5 +163,6 @@ services:
   webcsd-theory:
     environment:
       - ASPNETCORE_URLS=http://+:8080
+      - ReportSettings__CspServerUrl=localhost:8080
     expose:
       - 8080
