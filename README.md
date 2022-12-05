@@ -8,8 +8,8 @@ Terms and conditions can be found in the license.md file.
 
 Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
 
-Release prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
-
+Release prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD. **Please use the latest version from the release tab https://github.com/ccdc-opensource/on-site-webcsd/releases, using main may not work as it is not an official release.
+**
 ## Prerequisites
 
 A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [docker-compose](https://docs.docker.com/compose/install/) installation is required for installation. This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
