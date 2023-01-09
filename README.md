@@ -12,7 +12,7 @@ Additional information including user configuration and troubleshooting can be f
 
 ## Prerequisites
 
-A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [docker-compose](https://docs.docker.com/compose/install/) installation is required for installation. This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
+A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/) installation is required for installation. This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
 
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
@@ -66,10 +66,10 @@ docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 #Use one of the following two commands depending on if you have in-house database configuration
 #Use this command if you have no in-house database configuration
-docker-compose up -d
+docker compose up -d
 
 #Use this command if you have in-house database configuration
-docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
 ## Updates
@@ -80,15 +80,15 @@ Oce you have downloaded the new release, ensure the default old files have been 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack. The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
 
 ```sh
-docker-compose pull
+docker compose pull
 
-docker-compose down
+docker compose down
 #Use one of the following two commands depending on if you have in-house database configuration
 #Use this command if you have no in-house database configuration
-docker-compose up -d
+docker compose up -d
 
 #Use this command if you have in-house database configuration
-docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 ```
 
 ## Verifying the Installation/Update
@@ -96,7 +96,7 @@ docker-compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 To check that the install or update has completed and that all the services are running, run:
 
 ```sh
-docker-compose ps
+docker compose ps
 ```
 
 which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack. If the issues persist then please contact CCDC Support.
