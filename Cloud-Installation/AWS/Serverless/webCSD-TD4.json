@@ -1,0 +1,77 @@
+{
+    "family": "webCSD-TD4",
+    "containerDefinitions": [
+        {
+            "name": "ccdc-csd-searchservice",
+            "image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/webCSD-final",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        },
+        {
+            "name": "csd-request-entry",
+            "image": "ccdcrepository.azurecr.io/onsite/csd-request-entry-api:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [
+                {
+                    "name": "RequestEntryCsdReadConnection",
+                    "value": "RequestEntryCsdReadConnection=Server=${database-server};Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "CSD_DB_PASSWORD",
+                    "valueFrom": "<ARN_CSD_DB_PASSWORD>"
+                },
+				{
+                    "name": "database-server",
+                    "valueFrom": "<DB_ENDPOINT_LINK> "
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/webCSD-final",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "4096",
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX"
+    }
+}

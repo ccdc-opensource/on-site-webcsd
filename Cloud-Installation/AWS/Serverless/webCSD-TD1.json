@@ -1,0 +1,199 @@
+{
+    "family": "WebCSD-TD1",
+    "containerDefinitions": [
+        {
+            "name": "ccdc-csd-substructure-filter",
+            "image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/<LOG_LOCATION>",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "ccdc-csd-fingerprint",
+            "image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/<LOG_LOCATION>",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "ccdc-csd-resultstore",
+            "image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "OrderedCachePassword",
+                    "valueFrom": "<ARN_CSD_CACHE_PASSWORD>"
+                }
+            ],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/<LOG_LOCATION>",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "ccdc-csd-crystal-structure-export",
+            "image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/<LOG_LOCATION>",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "redis",
+            "image": "redis:latest",
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [
+                "redis-server --requirepass ${CSD_CACHE_PASSWORD}"
+            ],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "CSD_CACHE_PASSWORD",
+                    "valueFrom": "<ARN_CSD_CACHE_PASSWORD>"
+                }
+            ],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/<LOG_LOCATION>",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        },
+        {
+            "name": "ccdc-csd-reducedcell-calculation-service",
+            "image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service:1.0.0",
+            "repositoryCredentials": {
+                "credentialsParameter": "<ARN_PRIVATE_REPO_KEY>"
+            },
+            "cpu": 0,
+            "links": [],
+            "portMappings": [],
+            "essential": true,
+            "entryPoint": [],
+            "command": [],
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "dnsServers": [],
+            "dnsSearchDomains": [],
+            "dockerSecurityOptions": [],
+            "dockerLabels": {},
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/<LOG_LOCATION>",
+                    "awslogs-region": "<AWS_REGION>",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "4096",
+    "runtimePlatform": {
+        "operatingSystemFamily": "LINUX"
+    }
+}
