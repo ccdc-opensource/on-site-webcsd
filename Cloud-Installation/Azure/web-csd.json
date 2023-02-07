@@ -18,8 +18,12 @@
 			"defaultValue": "<CSD_DB_PASSWORD>",
 			"type": "securestring"
 		},
-		"repo_token": {
-			"defaultValue": "<PRIVATE_REPO_KEY>",
+		"repo_user": {
+			"defaultValue": "<PRIVATE_REPO_USER>",
+			"type": "securestring"
+		},
+		"repo_pass": {
+			"defaultValue": "<PRIVATE_REPO_PASS>",
 			"type": "securestring"
 		},
 		"location": {
@@ -443,8 +447,8 @@
 			"initContainers": [],
 			"imageRegistryCredentials": [{
 				"server": "ccdcrepository.azurecr.io",
-				"username": "manish-token",
-				"password": "[parameters('repo_token')]"
+				"username": "[parameters('repo_user']",
+				"password": "[parameters('repo_pass')]"
 			}],
 			"restartPolicy": "Always",
 			"osType": "Linux"
