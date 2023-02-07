@@ -447,7 +447,7 @@
 			"initContainers": [],
 			"imageRegistryCredentials": [{
 				"server": "ccdcrepository.azurecr.io",
-				"username": "[parameters('repo_user']",
+				"username": "[parameters('repo_user')]",
 				"password": "[parameters('repo_pass')]"
 			}],
 			"restartPolicy": "Always",
