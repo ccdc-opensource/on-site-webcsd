@@ -18,6 +18,18 @@
 			"defaultValue": "<CSD_DB_PASSWORD>",
 			"type": "securestring"
 		},
+		"CSD_DB_USER": {
+			"defaultValue": "<CSD_DB_USER>",
+			"type": "string"
+		},
+		"CSD_DB_SERVER": {
+			"defaultValue": "<CSD_DB_SERVER>",
+			"type": "string"
+		},
+		"CSD_DB_PORT": {
+			"defaultValue": "<CSD_DB_PORT>",
+			"type": "string"
+		},
 		"repo_user": {
 			"defaultValue": "<PRIVATE_REPO_USER>",
 			"type": "securestring"
@@ -88,8 +100,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -106,8 +118,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -124,8 +136,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -142,8 +154,8 @@
 								"cpu": 0.7
 							},
 							"limits": {
-								"memoryInGB": 1.5,
-								"cpu": 0.7
+								"memoryInGB": 3,
+								"cpu": 1.5
 							}
 						}
 					}
@@ -163,8 +175,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -184,8 +196,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -197,7 +209,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "StructureSimilaritySearchReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=similarity"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=similarity')]"
 						}],
 						"resources": {
 							"requests": {
@@ -205,8 +217,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -218,7 +230,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "UnitCellSearchReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=unitcell"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=unitcell')]"
 						}],
 						"resources": {
 							"requests": {
@@ -226,8 +238,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -239,16 +251,16 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "CsdDepositionReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=csd_schema"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=csd_schema')]"
 						}],
 						"resources": {
 							"requests": {
 								"memoryInGB": 1.5,
-								"cpu": 1.03
+								"cpu": 1
 							},
 							"limits": {
-								"memoryInGB": 1.5,
-								"cpu": 1.03
+								"memoryInGB": 3,
+								"cpu": 2
 							}
 						}
 					}
@@ -260,7 +272,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "CsdReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=csd_schema"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=csd_schema')]"
 						}],
 						"resources": {
 							"requests": {
@@ -268,8 +280,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -281,7 +293,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "FormulaSearchReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=formula"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=formula')]"
 						}],
 						"resources": {
 							"requests": {
@@ -289,8 +301,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -302,7 +314,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "RequestEntryCsdReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=csd_schema"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=csd_schema')]"
 						}],
 						"resources": {
 							"requests": {
@@ -310,8 +322,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -323,7 +335,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "StructureSearchReadConnection",
-							"value": "Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=[parameters('CSD_DB_PASSWORD')];SearchPath=substructure"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=substructure')]"
 						}],
 						"resources": {
 							"requests": {
@@ -331,8 +343,8 @@
 								"cpu": 0.3
 							},
 							"limits": {
-								"memoryInGB": 1.8,
-								"cpu": 0.3
+								"memoryInGB": 3.5,
+								"cpu": 0.6
 							}
 						}
 					}
@@ -349,8 +361,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -378,8 +390,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
@@ -404,8 +416,8 @@
 								"cpu": 0.14
 							},
 							"limits": {
-								"memoryInGB": 0.8,
-								"cpu": 0.14
+								"memoryInGB": 1.5,
+								"cpu": 0.3
 							}
 						}
 					}
