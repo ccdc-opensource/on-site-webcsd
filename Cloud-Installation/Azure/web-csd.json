@@ -1,0 +1,469 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"containergroup_name": {
+			"defaultValue": "<CONTAINERGROUP_NAME>",
+			"type": "String"
+		},
+		"CCDC_LICENSING_CONFIGURATION": {
+			"defaultValue": "<CCDC_LICENSING_CONFIGURATION>",
+			"type": "securestring"
+		},
+		"OrderedCachePassword": {
+			"defaultValue": "<CSD_CACHE_PASSWORD>",
+			"type": "securestring"
+		},
+		"CSD_DB_PASSWORD": {
+			"defaultValue": "<CSD_DB_PASSWORD>",
+			"type": "securestring"
+		},
+		"CSD_DB_USER": {
+			"defaultValue": "<CSD_DB_USER>",
+			"type": "string"
+		},
+		"CSD_DB_SERVER": {
+			"defaultValue": "<CSD_DB_SERVER>",
+			"type": "string"
+		},
+		"CSD_DB_PORT": {
+			"defaultValue": "<CSD_DB_PORT>",
+			"type": "string"
+		},
+		"repo_user": {
+			"defaultValue": "<PRIVATE_REPO_USER>",
+			"type": "securestring"
+		},
+		"repo_pass": {
+			"defaultValue": "<PRIVATE_REPO_PASS>",
+			"type": "securestring"
+		},
+		"location": {
+			"defaultValue": "<LOCATION>",
+			"type": "string"
+		}
+	},
+	"variables": {
+		"ccdc-csd-fingerprint-service_tag": "1.0.0",
+		"ccdc-csd-crystal-structure-export-service_tag": "1.0.0",
+		"ccdc-csd-reducedcell-calculation-service_tag": "1.0.0",
+		"ccdc-csd-substructure-filter-service_tag": "1.0.0",
+		"csd-theory_tag": "1.0.160",
+		"ccdc-csd-resultstore-api_tag": "1.0.0",
+		"ccdc-csd-structure-similarity-search_tag": "1.0.0",
+		"ccdc-csd-unit-cell-search_tag": "1.0.0",
+		"ccdc-csd-deposition-api_tag": "1.0.0",
+		"ccdc-csd-textnumericsearch-api_tag": "1.0.0",
+		"ccdc-csd-formulasearch-api_tag": "1.0.0",
+		"csd-request-entry-api_tag": "1.0.0",
+		"ccdc-csd-substructuresearch-api_tag": "1.0.0",
+		"ccdc-csd-searchservice-api_tag": "1.0.0",
+		"webcsd_tag": "1.0.0",
+		"webcsdbackend_tag": "1.0.0",
+
+		"ccdc-csd-fingerprint-service_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service",
+		"ccdc-csd-crystal-structure-export-service_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service",
+		"ccdc-csd-reducedcell-calculation-service_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service",
+		"ccdc-csd-substructure-filter-service_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service",
+		"csd-theory_image": "ccdcrepository.azurecr.io/onsite/csd-theory",
+		"ccdc-csd-resultstore-api_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api",
+		"ccdc-csd-structure-similarity-search_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-structure-similarity-search",
+		"ccdc-csd-unit-cell-search_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search",
+		"ccdc-csd-deposition-api_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api",
+		"ccdc-csd-textnumericsearch-api_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api",
+		"ccdc-csd-formulasearch-api_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-formulasearch-api",
+		"csd-request-entry-api_image": "ccdcrepository.azurecr.io/onsite/csd-request-entry-api",
+		"ccdc-csd-substructuresearch-api_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-substructuresearch-api",
+		"ccdc-csd-searchservice-api_image": "ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api",
+		"webcsd_image": "ccdcrepository.azurecr.io/onsite/webcsd",
+		"webcsdbackend_image": "ccdcrepository.azurecr.io/onsite/webcsdbackend"
+	},
+	"resources": [{
+		"type": "Microsoft.ContainerInstance/containerGroups",
+		"apiVersion": "2022-10-01-preview",
+		"name": "[parameters('containergroup_name')]",
+		"location": "[parameters('location')]",
+		"tags": {
+			"docker-compose-application": "docker-compose-application"
+		},
+		"properties": {
+			"sku": "Standard",
+			"containers": [{
+					"name": "ccdc-csd-fingerprint",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-fingerprint-service_image'), ':', variables('ccdc-csd-fingerprint-service_tag'))]",
+						"ports": [],
+						"environmentVariables": [],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-crystal-structure-export",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-crystal-structure-export-service_image'), ':', variables('ccdc-csd-crystal-structure-export-service_tag'))]",
+						"ports": [],
+						"environmentVariables": [],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-reducedcell-calculation-service",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-reducedcell-calculation-service_image'), ':', variables('ccdc-csd-reducedcell-calculation-service_tag'))]",
+						"ports": [],
+						"environmentVariables": [],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-substructure-filter",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-substructure-filter-service_image'), ':', variables('ccdc-csd-substructure-filter-service_tag'))]",
+						"ports": [],
+						"environmentVariables": [],
+						"resources": {
+							"requests": {
+								"memoryInGB": 1.5,
+								"cpu": 0.7
+							},
+							"limits": {
+								"memoryInGB": 3,
+								"cpu": 1.5
+							}
+						}
+					}
+				},
+				{
+					"name": "webcsd-theory",
+					"properties": {
+						"image": "[concat(variables('csd-theory_image'), ':', variables('csd-theory_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "CCDC_LICENSING_CONFIGURATION",
+							"value": "[parameters('CCDC_LICENSING_CONFIGURATION')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-resultstore",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-resultstore-api_image'), ':', variables('ccdc-csd-resultstore-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "OrderedCachePassword",
+							"value": "[parameters('OrderedCachePassword')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-similaritysearch",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-structure-similarity-search_image'), ':', variables('ccdc-csd-structure-similarity-search_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "StructureSimilaritySearchReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=similarity')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-unitcellsearch",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-unit-cell-search_image'), ':', variables('ccdc-csd-unit-cell-search_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "UnitCellSearchReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=unitcell')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-deposition",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-deposition-api_image'), ':', variables('ccdc-csd-deposition-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "CsdDepositionReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=csd_schema')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 1.5,
+								"cpu": 1
+							},
+							"limits": {
+								"memoryInGB": 3,
+								"cpu": 2
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-textnumericsearch",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-textnumericsearch-api_image'), ':', variables('ccdc-csd-textnumericsearch-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "CsdReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=csd_schema')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-formulasearch",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-formulasearch-api_image'), ':', variables('ccdc-csd-formulasearch-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "FormulaSearchReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=formula')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "csd-request-entry",
+					"properties": {
+						"image": "[concat(variables('csd-request-entry-api_image'), ':', variables('csd-request-entry-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "RequestEntryCsdReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=csd_schema')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-substructuresearch",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-substructuresearch-api_image'), ':', variables('ccdc-csd-substructuresearch-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+							"name": "StructureSearchReadConnection",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=substructure')]"
+						}],
+						"resources": {
+							"requests": {
+								"memoryInGB": 1.7,
+								"cpu": 0.3
+							},
+							"limits": {
+								"memoryInGB": 3.5,
+								"cpu": 0.6
+							}
+						}
+					}
+				},
+				{
+					"name": "ccdc-csd-searchservice",
+					"properties": {
+						"image": "[concat(variables('ccdc-csd-searchservice-api_image'), ':', variables('ccdc-csd-searchservice-api_tag'))]",
+						"ports": [],
+						"environmentVariables": [],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "webcsd",
+					"properties": {
+						"image": "[concat(variables('webcsd_image'), ':', variables('webcsd_tag'))]",
+						"ports": [{
+							"protocol": "TCP",
+							"port": 80
+						}],
+						"environmentVariables": [{
+								"name": "CsdRepository__ServiceLocation",
+								"value": "webcsdbackend"
+							},
+							{
+								"name": "CspRepository__ServiceLocation",
+								"value": "webcsd-theory"
+							}
+						],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "webcsdbackend",
+					"properties": {
+						"image": "[concat(variables('webcsdbackend_image'), ':', variables('webcsdbackend_tag'))]",
+						"ports": [],
+						"environmentVariables": [{
+								"name": "ServiceSettings__StructureInfoLocation",
+								"value": "/csd-data/structure-links.csv"
+							},
+							{
+								"name": "CCDC_LICENSING_CONFIGURATION",
+								"value": "[parameters('CCDC_LICENSING_CONFIGURATION')]"
+							}
+						],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.8,
+								"cpu": 0.14
+							},
+							"limits": {
+								"memoryInGB": 1.5,
+								"cpu": 0.3
+							}
+						}
+					}
+				},
+				{
+					"name": "aci--dns--sidecar",
+					"properties": {
+						"image": "docker/aci-hostnames-sidecar:1.0",
+						"command": [
+							"/hosts",
+							"ccdc-csd-fingerprint",
+							"ccdc-csd-crystal-structure-export",
+							"ccdc-csd-reducedcell-calculation-service",
+							"webcsd-theory",
+							"ccdc-csd-substructure-filter",
+							"ccdc-csd-resultstore",
+							"ccdc-csd-similaritysearch",
+							"ccdc-csd-unitcellsearch",
+							"ccdc-csd-formulasearch",
+							"ccdc-csd-textnumericsearch",
+							"ccdc-csd-deposition",
+							"csd-request-entry",
+							"ccdc-csd-searchservice",
+							"ccdc-csd-substructuresearch",
+							"webcsdbackend",
+							"webcsd"
+						],
+						"ports": [],
+						"environmentVariables": [],
+						"resources": {
+							"requests": {
+								"memoryInGB": 0.1,
+								"cpu": 0.01
+							}
+						}
+					}
+				}
+			],
+			"initContainers": [],
+			"imageRegistryCredentials": [{
+				"server": "ccdcrepository.azurecr.io",
+				"username": "[parameters('repo_user')]",
+				"password": "[parameters('repo_pass')]"
+			}],
+			"restartPolicy": "Always",
+			"osType": "Linux"
+		}
+	}]
+}
