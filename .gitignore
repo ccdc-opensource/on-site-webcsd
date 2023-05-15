@@ -7,6 +7,7 @@ docker-compose.*.yml
 !docker-compose.disable-user-access.yml
 !docker-compose.sample-db-config.yml
 !docker-compose.port-configuration.yml
+!docker-compose.macromolecule-hub.yml
 
 # Other
 **.swp
