@@ -46,7 +46,7 @@ services:
   database-server:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/csd-database:2022.1.0.alpha5
+    image: ccdcrepository.azurecr.io/onsite/csd-database:2.0.0
     restart: always
     environment:
       - POSTGRES_PASSWORD=${CSD_DB_PASSWORD}
