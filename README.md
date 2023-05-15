@@ -4,7 +4,7 @@ On-Site WebCSD is currently only available to CCDC Research Partners and other i
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
-Please use the latest version from the release tab https://github.com/ccdc-opensource/on-site-webcsd/releases, using main may not work as it is not an official release. Releases prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
+Please use the latest non alpha version from the release tab https://github.com/ccdc-opensource/on-site-webcsd/releases, using main may not work as it is not an official release. Releases prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
 
 Terms and conditions can be found in the license.md file.
 
@@ -23,8 +23,11 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements:
+Recommended requirements for On-Site WebCSD:
 170GB free hd space, 32GB ram, 8 core cpu.
+
+Recommended requirements for On-Site WebCSD including Macromolecule Hub:
+400GB free hd space, 32GB ram, 8 core cpu.
 
 On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
 
@@ -64,12 +67,15 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
-#Use one of the following two commands depending on if you have in-house database configuration
+#Use one of the following commands depending on what features you want: 
 #Use this command if you have no in-house database configuration
 docker compose up -d
 
-#Use this command if you have in-house database configuration
+#Use this command if you have in-house database configuration 
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have in-house database configuration and want macromolecule hub 
+docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 ```
 
 ## Updates
@@ -83,12 +89,15 @@ Once the latest installation files have been obtained, to update the software, p
 docker compose pull
 
 docker compose down
-#Use one of the following two commands depending on if you have in-house database configuration
+#Use one of the following commands depending on what features you want: 
 #Use this command if you have no in-house database configuration
 docker compose up -d
 
 #Use this command if you have in-house database configuration
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have in-house database configuration and want macromolecule hub 
+docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 ```
 
 ## Verifying the Installation/Update
