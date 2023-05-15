@@ -112,10 +112,7 @@ services:
     depends_on:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
-      - database-server
     image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:2.0.0-alpha
-    environment:
-      - RequestEntryCsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
     expose:
       - 80
 

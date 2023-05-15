@@ -123,7 +123,6 @@ services:
     depends_on:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
-      - database-server
     image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:2.0.0-alpha
     expose:
       - 80
