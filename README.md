@@ -1,6 +1,6 @@
 # On-Site WebCSD
 
-On-Site WebCSD is currently only available to CCDC Research Partners and other invited groups.
+On-Site WebCSD is currently only available to CCDC industrial customers and other invited groups.
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
@@ -67,14 +67,15 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
-#Use one of the following commands depending on what features you want: 
-#Use this command if you have no in-house database configuration
+#Use one of the following commands: 
+
+#Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose up -d
 
-#Use this command if you have in-house database configuration 
+#Use this command if you have in-house databases and don't want to use macromolecule hub 
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
-#Use this command if you have in-house database configuration and want macromolecule hub 
+#Use this command if you have in-house databases and want macromolecule hub 
 docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 ```
 
@@ -89,14 +90,15 @@ Once the latest installation files have been obtained, to update the software, p
 docker compose pull
 
 docker compose down
-#Use one of the following commands depending on what features you want: 
-#Use this command if you have no in-house database configuration
+#Use one of the following commands: 
+
+#Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose up -d
 
-#Use this command if you have in-house database configuration
+#Use this command if you have in-house databases and don't want to use macromolecule hub 
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
-#Use this command if you have in-house database configuration and want macromolecule hub 
+#Use this command if you have in-house databases and want macromolecule hub 
 docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 ```
 
