@@ -88,6 +88,8 @@ services:
     environment:
       - CsdDepositionReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
       - DepositionPdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_schema
+      - DatabaseConfiguration__Databases__1__Name=pdb
+      - DatabaseConfiguration__Databases__1__SettingsKey=DepositionPdbReadConnection
     expose:
       - 80
 
@@ -148,6 +150,8 @@ services:
     environment:
       - UnitCellSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=unitcell
       - UnitCellPdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_cell_optimisation
+      - DatabaseConfiguration__Databases__1__Name=pdb
+      - DatabaseConfiguration__Databases__1__SettingsKey=UnitCellPdbReadConnection
     expose:
       - 80
 
