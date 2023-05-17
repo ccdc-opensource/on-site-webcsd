@@ -8,6 +8,8 @@ docker-compose.*.yml
 !docker-compose.sample-db-config.yml
 !docker-compose.port-configuration.yml
 !docker-compose.macromolecule-hub.yml
+!docker-compose.sample-enable-sso.yml
+
 
 # Other
 **.swp
