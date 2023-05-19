@@ -9,17 +9,17 @@ services:
       - /path/to/database-1:/csd-data/database-1
       - /path/to/database-2:/csd-data/database-2
     environment:
-      - ServiceSettings__Databases__1__Name=database-1
-      - ServiceSettings__Databases__1__ConnectionString=/csd-data/database-1
-      - ServiceSettings__Databases__2__Name=database-2
-      - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-2
+      - ServiceSettings__Databases__2__Name=database-1
+      - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-1
+      - ServiceSettings__Databases__3__Name=database-2
+      - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2
   # Notes:
   #   The path in which the databases must be mounted is `/csd-data`.
   #   For each database there must be 2 corresponding environment variables:
   #      - ServiceSettings__Databases__N__Name=<database name>
   #      - ServiceSettings__Databases__N__ConnectionString=<database path>
   #     where
-  #      - N is a unique integer for each pair of variables
+  #      - N is a unique integer for each database, which should start from 2
   #      - <database name> is how the name of the database will appear in the UI
   #      - <database path> should match the right side of the volume definition above.
   #
