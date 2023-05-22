@@ -77,6 +77,9 @@ docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
 docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have no in-house databases and want macromolecule hub
+docker compose -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Updates
@@ -100,6 +103,9 @@ docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
 docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have no in-house databases and want macromolecule hub
+docker compose -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Verifying the Installation/Update
