@@ -38,6 +38,7 @@ services:
     labels:
       <<: *k8s-labels
     image: redis
+    user: redis
     restart: always
     command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
     expose:
@@ -47,6 +48,7 @@ services:
     labels:
       <<: *k8s-labels
     image: ccdcrepository.azurecr.io/onsite/csd-database:2.0.0
+    user: postgres
     restart: always
     environment:
       - POSTGRES_PASSWORD=${CSD_DB_PASSWORD}
@@ -162,6 +164,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:2.0.0-alpha
     expose:
       - 80
+    restart: unless-stopped
 
   ccdc-csd-substructure-filter:
     labels:
@@ -169,6 +172,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service:2.0.0-alpha
     expose:
       - 80
+    restart: unless-stopped
 
   ccdc-csd-crystal-structure-export:
     labels:
@@ -176,6 +180,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:2.0.0-alpha
     expose:
       - 80
+    restart: unless-stopped
 
   ccdc-csd-reducedcell-calculation-service:
     labels:
@@ -183,6 +188,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service:2.0.0-alpha
     expose:
       - 80
+    restart: unless-stopped
 
   webcsd-theory:
     labels:
