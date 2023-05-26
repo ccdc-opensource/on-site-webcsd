@@ -4,11 +4,11 @@ On-Site WebCSD is currently only available to CCDC industrial customers and othe
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
-Please use the latest non alpha version from the release tab https://github.com/ccdc-opensource/on-site-webcsd/releases, using main may not work as it is not an official release. Releases prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
+Please use the latest non alpha version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>, using main may not work as it is not an official release. Releases prior to version 1.0.0 or with <version>-alpha are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
 
 Terms and conditions can be found in the license.md file.
 
-Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
+Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
 
 ## Prerequisites
 
@@ -67,6 +67,11 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
+# As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
+sudo chown -R ccdc:ccdc userdata/
+
+# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
+
 #Use one of the following commands: 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
@@ -122,8 +127,8 @@ For more information see the [Docker volumes documentation](https://docs.docker.
 
 ## Usage
 
-To access the WebCSD service locally go to http://localhost in a browser.
+To access the WebCSD service locally go to <http://localhost> in a browser.
 
 ## Contact support
 
-If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
+If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
