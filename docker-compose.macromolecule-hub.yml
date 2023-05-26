@@ -8,6 +8,7 @@ services:
     environment:
       - CsdRepository__ServiceLocation=webcsdbackend
       - CspRepository__ServiceLocation=webcsd-theory
+      - CsdRepository__SketcherFeatures__1=Proteins
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
@@ -29,6 +30,9 @@ services:
     environment:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
+      - ServiceSettings__Databases__1__Name=PDB Database
+      - ServiceSettings__Databases__1__DbeName=pdb
+      - ServiceSettings__Databases__1__ConnectionString=dbe
     labels:
       <<: *k8s-labels
     expose:
@@ -47,7 +51,7 @@ services:
   database-server:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/csd-database:2.0.0
+    image: ccdcrepository.azurecr.io/onsite/macromolecule-hub-database:2.0.0
     # This can be removed next time db image is updated
     user: postgres
     restart: always
@@ -72,6 +76,9 @@ services:
       - ccdc-csd-deposition
     environment:
       - StructureSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=substructure
+      - PdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=structure_optimisation
+      - SubstructureSearchDatabaseConfiguration__Databases__1__Name=pdb
+      - SubstructureSearchDatabaseConfiguration__Databases__1__SettingsKey=PdbReadConnection
     expose:
       - 80
 
@@ -83,6 +90,9 @@ services:
       - database-server
     environment:
       - CsdDepositionReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+      - DepositionPdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_schema
+      - DatabaseConfiguration__Databases__1__Name=pdb
+      - DatabaseConfiguration__Databases__1__SettingsKey=DepositionPdbReadConnection
     expose:
       - 80
 
@@ -94,6 +104,9 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:2.0.0
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
+      - PdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_schema
+      - DatabaseConfiguration__Databases__1__Name=pdb
+      - DatabaseConfiguration__Databases__1__SettingsKey=PdbReadConnection
     expose:
       - 80
 
@@ -139,6 +152,9 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:2.0.0
     environment:
       - UnitCellSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=unitcell
+      - UnitCellPdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_cell_optimisation
+      - DatabaseConfiguration__Databases__1__Name=pdb
+      - DatabaseConfiguration__Databases__1__SettingsKey=UnitCellPdbReadConnection
     expose:
       - 80
 

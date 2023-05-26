@@ -1,14 +1,14 @@
 # On-Site WebCSD
 
-On-Site WebCSD is currently only available to CCDC Research Partners and other invited groups.
+On-Site WebCSD is currently only available to CCDC industrial customers and other invited groups.
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
-Please use the latest version from the release tab https://github.com/ccdc-opensource/on-site-webcsd/releases, using main may not work as it is not an official release. Releases prior to version 1.0.0 are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
+Please use the latest non alpha version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>, using main may not work as it is not an official release. Releases prior to version 1.0.0 or with <version>-alpha are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
 
 Terms and conditions can be found in the license.md file.
 
-Additional information including user configuration and troubleshooting can be found in the wiki at https://github.com/ccdc-opensource/on-site-webcsd/wiki.
+Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
 
 ## Prerequisites
 
@@ -23,8 +23,11 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements:
+Recommended requirements for On-Site WebCSD:
 170GB free hd space, 32GB ram, 8 core cpu.
+
+Recommended requirements for On-Site WebCSD including Macromolecule Hub:
+400GB free hd space, 32GB ram, 8 core cpu.
 
 On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
 
@@ -37,6 +40,11 @@ On-Site WebCSD should work with any linux OS that meets the requirements to run 
 ## In-house Database Configuration
 
 On-Site WebCSD can be configured to read from in-house databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+
+## CSD-Theory Database Configuration
+
+If wanting to use WebCSD with CSD-Theory, ensure the steps in [link](#In-house Database Configuration) have been followed.
+There are examples of CSD-Theory configurations in the `docker-compose.sample-db-config.yml` file.
 
 ## Installation
 
@@ -56,7 +64,8 @@ CSD_DB_PASSWORD=A password of your choosing
 CSD_CACHE_PASSWORD=A password of your choosing
 ```
 
-Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set. Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
+Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
+Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
 
 ```
 docker login -u <user> -p <password> ccdcrepository.azurecr.io
@@ -64,12 +73,24 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
-#Use one of the following two commands depending on if you have in-house database configuration
-#Use this command if you have no in-house database configuration
+# As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
+sudo chown -R ccdc:ccdc userdata/
+
+# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
+
+#Use one of the following commands: 
+
+#Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose up -d
 
-#Use this command if you have in-house database configuration
+#Use this command if you have in-house databases and don't want to use macromolecule hub 
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have in-house databases and want macromolecule hub 
+docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have no in-house databases and want macromolecule hub
+docker compose -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Updates
@@ -83,12 +104,19 @@ Once the latest installation files have been obtained, to update the software, p
 docker compose pull
 
 docker compose down
-#Use one of the following two commands depending on if you have in-house database configuration
-#Use this command if you have no in-house database configuration
+#Use one of the following commands: 
+
+#Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose up -d
 
-#Use this command if you have in-house database configuration
+#Use this command if you have in-house databases and don't want to use macromolecule hub 
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have in-house databases and want macromolecule hub 
+docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+
+#Use this command if you have no in-house databases and want macromolecule hub
+docker compose -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Verifying the Installation/Update
@@ -105,8 +133,8 @@ For more information see the [Docker volumes documentation](https://docs.docker.
 
 ## Usage
 
-To access the WebCSD service locally go to http://localhost in a browser.
+To access the WebCSD service locally go to <http://localhost> in a browser.
 
 ## Contact support
 
-If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at support@ccdc.cam.ac.uk who will be happy to assist you.
+If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
