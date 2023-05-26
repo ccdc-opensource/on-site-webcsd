@@ -41,6 +41,11 @@ On-Site WebCSD should work with any linux OS that meets the requirements to run 
 
 On-Site WebCSD can be configured to read from in-house databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
 
+## CSD-Theory Database Configuration
+
+If wanting to use WebCSD with CSD-Theory, ensure the steps in [link](#In-house Database Configuration) have been followed.
+There are examples of CSD-Theory configurations in the `docker-compose.sample-db-config.yml` file.
+
 ## Installation
 
 After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
@@ -59,7 +64,8 @@ CSD_DB_PASSWORD=A password of your choosing
 CSD_CACHE_PASSWORD=A password of your choosing
 ```
 
-Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set. Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
+Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
+Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
 
 ```
 docker login -u <user> -p <password> ccdcrepository.azurecr.io

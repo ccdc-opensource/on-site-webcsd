@@ -87,7 +87,6 @@ services:
   #     volumes:
   #       - /path/to/CSD-Theory Landscape Database:/app/databases
   # This will create a persistent volume and claim for the location of the landscape database.
-  # Please refer to the README regarding additional steps required for implementing CSD Theory.
   #########################################################################################################
 
   # IMPORTANT: The CSD Search database must also be included in the webcsdbackend volumes.
@@ -106,10 +105,12 @@ services:
   # to use these databases the csd-theory section of the file will look like this
   #
   # services:
-  #   csd-theory:
+  #   webcsd-theory:
   #     volumes:
   #       - /usr/local/data/metadata-db.db:/app/CSPDatabase.db
   #       - /usr/local/data/landscape-db.csdsqlx:/app/databases/landscape-db.csdsqlx
+  #     environment:
+  #       - ReportSettings__CspStructureDatabaseConnectionString=/app/databases/landscape-db.csdsqlx
   #
   # Also add an entry to webcsdbackend for the landscape database
   #
