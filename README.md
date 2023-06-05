@@ -74,6 +74,7 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 # As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
+sudo adduser ccdc
 sudo chown -R ccdc:ccdc userdata/
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
