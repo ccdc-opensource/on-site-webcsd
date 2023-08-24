@@ -12,7 +12,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/onsite/webcsd:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/webcsd:3.0.0
     ports:
       - ${WEBCSD_PORT}:${WEBCSD_PORT}
     volumes:
@@ -26,7 +26,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:3.0.0
     environment:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
@@ -65,7 +65,7 @@ services:
   ccdc-csd-substructuresearch:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructuresearch-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructuresearch-api:3.0.0
     depends_on:
       - database-server
       - ccdc-csd-resultstore
@@ -81,7 +81,7 @@ services:
   ccdc-csd-deposition:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api:3.0.0
     depends_on:
       - database-server
     environment:
@@ -95,7 +95,7 @@ services:
       <<: *k8s-labels
     depends_on:
       - database-server
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:3.0.0
     environment:
       - CsdReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=csd_schema
       - PdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_schema
@@ -110,7 +110,7 @@ services:
       - ccdc-csd-substructuresearch
       - ccdc-csd-resultstore
       - ccdc-csd-similaritysearch
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:3.0.0
 
   csd-request-entry:
     labels:
@@ -118,14 +118,14 @@ services:
     depends_on:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
-    image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:3.0.0
 
   ccdc-csd-formulasearch:
     labels:
       <<: *k8s-labels
     depends_on:
       - database-server
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-formulasearch-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-formulasearch-api:3.0.0
     environment:
       - FormulaSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=formula
 
@@ -135,7 +135,7 @@ services:
     depends_on:
       - database-server
       - ccdc-csd-reducedcell-calculation-service
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:3.0.0
     environment:
       - UnitCellSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=unitcell
       - UnitCellPdbReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=pdb_cell_optimisation
@@ -145,7 +145,7 @@ services:
   ccdc-csd-resultstore:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api:3.0.0
     environment:
       - OrderedCachePassword=${CSD_CACHE_PASSWORD}
 
@@ -153,38 +153,38 @@ services:
     depends_on:
       - database-server
       - ccdc-csd-fingerprint
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-structure-similarity-search:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-structure-similarity-search:3.0.0
     environment:
       - StructureSimilaritySearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=similarity
 
   ccdc-csd-fingerprint:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:3.0.0
     restart: unless-stopped
 
   ccdc-csd-substructure-filter:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service:3.0.0
     restart: unless-stopped
 
   ccdc-csd-crystal-structure-export:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:3.0.0
     restart: unless-stopped
 
   ccdc-csd-reducedcell-calculation-service:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service:3.0.0
     restart: unless-stopped
 
   webcsd-theory:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/csd-theory:2.1.0
+    image: ccdcrepository.azurecr.io/onsite/csd-theory:3.0.0
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
 
