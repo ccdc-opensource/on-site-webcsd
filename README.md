@@ -62,6 +62,7 @@ Here is an example of the .env file:
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
 CSD_DB_PASSWORD=A password of your choosing
 CSD_CACHE_PASSWORD=A password of your choosing
+WEBCSD_PORT=80
 ```
 
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
