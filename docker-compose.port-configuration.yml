@@ -27,11 +27,7 @@ services:
       - ${WEBCSD_PORT}
     healthcheck: 
       test: "curl --fail --silent --show-error --connect-timeout 5 --max-time 5 http://localhost:${WEBCSD_PORT}/health/ready"
-
-  redis:
-    expose:
-      - 6379
-  
+ 
   database-server:
     expose:
       - 5432

@@ -71,13 +71,22 @@
             "essential": true,
             "entryPoint": [],
             "command": [],
-            "environment": [],
+            "environment": [
+                {
+                    "name": "ResultStoreConnectionString",
+                    "value": "StructureSimilaritySearchReadConnection=Server=${database-server};Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=search-store"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "secrets": [
                 {
-                    "name": "OrderedCachePassword",
-                    "valueFrom": "<ARN_CSD_CACHE_PASSWORD>"
+                    "name": "CSD_DB_PASSWORD",
+                    "valueFrom": "<ARN_CSD_DB_PASSWORD>"
+                },
+				{
+                    "name": "database-server",
+                    "valueFrom": "<DB_ENDPOINT_LINK> "
                 }
             ],
             "dnsServers": [],
@@ -112,39 +121,6 @@
             "dnsSearchDomains": [],
             "dockerSecurityOptions": [],
             "dockerLabels": {},
-            "logConfiguration": {
-                "logDriver": "awslogs",
-                "options": {
-                    "awslogs-group": "/ecs/<LOG_LOCATION>",
-                    "awslogs-region": "<AWS_REGION>",
-                    "awslogs-stream-prefix": "ecs"
-                }
-            },
-            "systemControls": []
-        },
-        {
-            "name": "redis",
-            "image": "redis:latest",
-            "cpu": 0,
-            "links": [],
-            "portMappings": [],
-            "essential": true,
-            "entryPoint": [],
-            "command": [
-                "redis-server --requirepass ${CSD_CACHE_PASSWORD}"
-            ],
-            "environment": [],
-            "mountPoints": [],
-            "volumesFrom": [],
-            "secrets": [
-                {
-                    "name": "CSD_CACHE_PASSWORD",
-                    "valueFrom": "<ARN_CSD_CACHE_PASSWORD>"
-                }
-            ],
-            "dnsServers": [],
-            "dnsSearchDomains": [],
-            "dockerSecurityOptions": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {

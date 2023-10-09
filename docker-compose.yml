@@ -32,16 +32,6 @@ services:
     labels:
       <<: *k8s-labels
 
-  redis:
-    labels:
-      <<: *k8s-labels
-    image: redis
-    user: redis
-    restart: always
-    command: redis-server --requirepass ${CSD_CACHE_PASSWORD}
-    expose:
-      - 6379
-
   database-server:
     labels:
       <<: *k8s-labels
@@ -127,11 +117,13 @@ services:
       - UnitCellSearchReadConnection=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=unitcell
 
   ccdc-csd-resultstore:
+    depends_on:
+      - database-server
     labels:
       <<: *k8s-labels
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api:3.0.0
     environment:
-      - OrderedCachePassword=${CSD_CACHE_PASSWORD}
+      - ResultStoreConnectionString=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=search-store
 
   ccdc-csd-similaritysearch:
     depends_on:

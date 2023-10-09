@@ -10,10 +10,6 @@
 			"defaultValue": "<CCDC_LICENSING_CONFIGURATION>",
 			"type": "securestring"
 		},
-		"OrderedCachePassword": {
-			"defaultValue": "<CSD_CACHE_PASSWORD>",
-			"type": "securestring"
-		},
 		"CSD_DB_PASSWORD": {
 			"defaultValue": "<CSD_DB_PASSWORD>",
 			"type": "securestring"
@@ -187,8 +183,8 @@
 						"image": "[concat(variables('ccdc-csd-resultstore-api_image'), ':', variables('ccdc-csd-resultstore-api_tag'))]",
 						"ports": [],
 						"environmentVariables": [{
-							"name": "OrderedCachePassword",
-							"value": "[parameters('OrderedCachePassword')]"
+							"name": "ResultStoreConnectionString",
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=search-store')]"
 						}],
 						"resources": {
 							"requests": {
