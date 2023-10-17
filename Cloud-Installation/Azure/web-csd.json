@@ -184,7 +184,7 @@
 						"ports": [],
 						"environmentVariables": [{
 							"name": "ResultStoreConnectionString",
-							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=search-store')]"
+							"value": "[concat('Host=', parameters('CSD_DB_SERVER'), ';Port=', parameters('CSD_DB_PORT'), ';Username=', parameters('CSD_DB_USER'), '@', parameters('CSD_DB_SERVER'), ';Password=', parameters('CSD_DB_PASSWORD'), ';Database=csd-database;SearchPath=searchstore')]"
 						}],
 						"resources": {
 							"requests": {

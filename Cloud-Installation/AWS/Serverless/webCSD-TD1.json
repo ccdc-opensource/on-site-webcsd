@@ -74,7 +74,7 @@
             "environment": [
                 {
                     "name": "ResultStoreConnectionString",
-                    "value": "StructureSimilaritySearchReadConnection=Server=${database-server};Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=search-store"
+                    "value": "Server=${database-server};Port=5432;Database=csd-database;User Id=postgres;Password=${CSD_DB_PASSWORD};SearchPath=searchstore"
                 }
             ],
             "mountPoints": [],
