@@ -12,7 +12,7 @@ services:
       - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-1
       - ServiceSettings__Databases__3__Name=database-2
       - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2
-	  
+
   # Notes:
   #   If using CSD-Theory, the CSD-Theory Landscape database must be listed in the volumes, but the metadata database
   #   (CSPDatabase.db) does not. See below for more information.
@@ -57,7 +57,7 @@ services:
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
-	  
+
   # Structure File Links:
   #   If you are using structure file links, include your .CSV file containg the mappings of links to structures
   #   within the csd-data folder. 
@@ -84,7 +84,7 @@ services:
     environment:
       - ReportSettings__CspStructureDatabaseConnectionString=/app/databases/CSPLandscape.csdsqlx
       - ReverseProxy__Clusters__csdtheory__Destinations__csdtheory/destination1__Address=http://webcsd-theory:${WEBCSD_PORT}
-	  
+
   # See the wiki page for a description of the two CSD-Theory databases.
 
   #########################################################################################################

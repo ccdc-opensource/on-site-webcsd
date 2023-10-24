@@ -12,7 +12,7 @@ services:
       - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-1
       - ServiceSettings__Databases__3__Name=database-2
       - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2
-	  
+
   # Notes:
   #   The path in which the databases must be mounted is `/csd-data`.
   #   For each database there must be 2 corresponding environment variables:
@@ -50,7 +50,7 @@ services:
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
-	  
+
   # Structure File Links:
   #   If you are using structure file links, include your .CSV file containg the mappings of links to structures
   #   within the csd-data folder. 
