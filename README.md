@@ -58,7 +58,7 @@ Instructions on setting up CSD-Theory Web can be found in the [wiki](https://git
 After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env`.
 Then open the `.env` file and populate with suitable values.
 
-```
+```console
 cd on-site-webcsd
 cp sample.env .env
 ```
@@ -76,7 +76,7 @@ WEBCSD_PORT=80
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
 Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
 
-```
+```console
 docker login -u <user> -p <password> ccdcrepository.azurecr.io
 
 # or to be prompted for the password
