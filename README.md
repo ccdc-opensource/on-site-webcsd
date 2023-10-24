@@ -4,7 +4,8 @@ On-Site WebCSD is currently only available to CCDC industrial customers and othe
 
 This readme contains information required for installation and updates of On-Site WebCSD.
 
-Please use the latest non alpha version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>, using main may not work as it is not an official release. Releases prior to version 1.0.0 or with <version>-alpha are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
+Please use the latest non alpha version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>, using main may not work as it is not an official release.
+Releases prior to version 1.0.0 or with <version>-alpha are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
 
 Terms and conditions can be found in the license.md file.
 
@@ -12,7 +13,8 @@ Additional information including user configuration and troubleshooting can be f
 
 ## Prerequisites
 
-A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/) installation is required for installation. This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
+A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/) installation is required for installation.
+This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
 
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
@@ -39,18 +41,24 @@ On-Site WebCSD should work with any linux OS that meets the requirements to run 
 
 ## In-house Database Configuration
 
-On-Site WebCSD can be configured to read from in-house databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+On-Site WebCSD can be configured to read from in-house databases.
+To enable these databases follow:
 
-## CSD-Theory Database Configuration
+1. Copy and rename the file `docker-compose.sample-onsite-only-db-config.yml` to `docker-compose.db-config.yml`
+2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
 
-If wanting to use WebCSD with CSD-Theory, ensure the steps in [link](#In-house Database Configuration) have been followed.
-There are examples of CSD-Theory configurations in the `docker-compose.sample-db-config.yml` file.
+More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+
+## CSD-Theory Web Database Configuration
+
+Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web)
 
 ## Installation
 
-After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env` then populate with suitable values.
+After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env`.
+Then open the `.env` file and populate with suitable values.
 
-```
+```console
 cd on-site-webcsd
 cp sample.env .env
 ```
@@ -68,7 +76,7 @@ WEBCSD_PORT=80
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
 Once the variables file has been populated, login to the CCDC container registry and bring up the stack:
 
-```
+```console
 docker login -u <user> -p <password> ccdcrepository.azurecr.io
 
 # or to be prompted for the password
@@ -100,7 +108,8 @@ docker compose -f docker-compose.macromolecule-hub.yml up -d
 When you have been notified when there is an update available you can download the newest release from the github repository.
 Oce you have downloaded the new release, ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
 
-Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack. The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
+Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
+The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
 
 ```sh
 docker compose pull

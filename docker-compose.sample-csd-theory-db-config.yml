@@ -1,11 +1,10 @@
-# Configure local database volumes here
+# Configure local database volumes here for CSD-Theory installations.
 
 version: "3.6"
 
 services:
   webcsdbackend:
     volumes:
-      - ./csd-data:/csd-data
       - /path/to/database-1:/csd-data/database-1
       - /path/to/database-2:/csd-data/database-2
     environment:
@@ -13,7 +12,10 @@ services:
       - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-1
       - ServiceSettings__Databases__3__Name=database-2
       - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2
+
   # Notes:
+  #   If using CSD-Theory, the CSD-Theory Landscape database must be listed in the volumes, but the metadata database
+  #   (CSPDatabase.db) does not. See below for more information.
   #   The path in which the databases must be mounted is `/csd-data`.
   #   For each database there must be 2 corresponding environment variables:
   #      - ServiceSettings__Databases__N__Name=<database name>
@@ -29,23 +31,24 @@ services:
   #      - ServiceSettings__Databases__N__Colour=red
   #      - ServiceSettings__Databases__N__Colour=rgba(255, 0, 0, 0.5)
   #
+  #
   # Example:
-  # If you have a database called test-db at the location /usr/local/data/test-db.csdsqlx
-  # To use the test-db.csdsqlx database the file will look like this
+  # Given that you have a database called test-db at the location /usr/local/data/test-db.csdsqlx and
+  # given that you have a landscape database called landscape-db at the location /usr/local/data/landscape-db.csdsqlx
+  # To use the test-db.csdsqlx database and landscape-db.csdsqlx, the webcsdbackend node will look like this
+  #
   # services:
   #   webcsdbackend:
   #     volumes:
-  #       - ./csd-data:/csd-data
   #       - /usr/local/data/test-db.csdsqlx:/csd-data/test-db.csdsqlx
+  #       - /usr/local/data/landscape-db.csdsqlx:/csd-data/landscape-db.csdsqlx
   #     environment:
-  #       - ServiceSettings__Databases__1__Name=test-db
-  #       - ServiceSettings__Databases__1__ConnectionString=/csd-data/test-db.csdsqlx
-  #       - ServiceSettings__Databases__1__Colour=red
-  #
-  # Structure File Links:
-  #   If you are using structure file links, include your .CSV file containg the mappings of links to structures
-  #   within the csd-data folder. See also section below for webcsd.
-  #
+  #       - ServiceSettings__Databases__2__Name=test-db
+  #       - ServiceSettings__Databases__2__ConnectionString=/csd-data/test-db.csdsqlx
+  #       - ServiceSettings__Databases__2__Colour=red
+  #       - ServiceSettings__Databases__3__Name=Landscape
+  #       - ServiceSettings__Databases__3__ConnectionString=/csd-data/landscape-db.csdsqlx
+
   #########################################################################################################
   # Kubernetes Users
   # Please refer to the README regarding additional steps required for adding your in-house databases.
@@ -54,16 +57,20 @@ services:
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
-  # Notes:
-  # If you are not using structure file links, then ignore this section and do not include the above snippet in your
-  # docker-compose file.
+
+  # Structure File Links:
+  #   If you are using structure file links, include your .CSV file containg the mappings of links to structures
+  #   within the csd-data folder. 
   #
-  # If you are using structure file links, you need a .CSV file containing mappings of links to structures.
-  # Place the .CSV file in your csd-data folder along with your in-house database files for webcsdbackend (see above).
-  # When performing a docker-compose up, this will upload the file to the correct location.
+  #   If you are not using structure file links, then ignore this section and do not include the above snippet in your
+  #   docker-compose file.
   #
-  # The associated files, that are linked to from the .CSV file, should be mapped to a folder in webcsd. Simply replace
-  # the /path/to/structure/files in the example above with your local path where the structure files are stored.
+  #   If you are using structure file links, you need a .CSV file containing mappings of links to structures.
+  #   Place the .CSV file in your csd-data folder along with your in-house database files for webcsdbackend (see above).
+  #   When performing a docker-compose up, this will upload the file to the correct location.
+  #
+  #   The associated files, that are linked to from the .CSV file, should be mapped to a folder in webcsd. Simply replace
+  #   the /path/to/structure/files in the example above with your local path where the structure files are stored.
 
   #########################################################################################################
   # Kubernetes Users
@@ -74,11 +81,11 @@ services:
     volumes:
       - /path/to/CSD-Theory Metadata Database:/app/CSPDatabase.db
       - /path/to/CSD-Theory Landscape Database:/app/databases/CSPLandscape.csdsqlx
-  # Notes:
-  # CSD-Theory requires 2 databases.
-  # 1. A CSD Search database for initial searching of landscape structures.
-  # 2. A CSD-Theory metadata database containing additional theoretical data. This must be name CSPDatabase.db.
-  # These 2 database are used in conjunction to create the CSD-Theory charts and reports.
+    environment:
+      - ReportSettings__CspStructureDatabaseConnectionString=/app/databases/CSPLandscape.csdsqlx
+      - ReverseProxy__Clusters__csdtheory__Destinations__csdtheory/destination1__Address=http://webcsd-theory:${WEBCSD_PORT}
+
+    # See the wiki page for a description of the two CSD-Theory databases.
 
   #########################################################################################################
   # Kubernetes Users
@@ -89,34 +96,16 @@ services:
   # This will create a persistent volume and claim for the location of the landscape database.
   #########################################################################################################
 
-  # IMPORTANT: The CSD Search database must also be included in the webcsdbackend volumes.
-  #   The path in which the databases must be mounted is `/csd-data`.
-  #   For each database there must be 2 corresponding environment variables:
-  #      - ServiceSettings__Databases__N__Name=<database name>
-  #      - ServiceSettings__Databases__N__ConnectionString=<database path>
-  #     where
-  #      - N is a unique integer for each pair of variables
-  #      - <database name> is how the name of the database will appear in the UI
-  #      - <database path> should match the right side of the volume definition above.
-
   # Example:
   # Given that you have a landscape database called landscape-db at the location /usr/local/data/landscape-db.csdsqlx
   # and a metadata database called metadata-db at the location /usr/local/data/metadata-db.db,
   # to use these databases the csd-theory section of the file will look like this
   #
-  # services:
   #   webcsd-theory:
   #     volumes:
   #       - /usr/local/data/metadata-db.db:/app/CSPDatabase.db
   #       - /usr/local/data/landscape-db.csdsqlx:/app/databases/landscape-db.csdsqlx
   #     environment:
   #       - ReportSettings__CspStructureDatabaseConnectionString=/app/databases/landscape-db.csdsqlx
+  #       - ReverseProxy__Clusters__csdtheory__Destinations__csdtheory/destination1__Address=http://webcsd-theory:8080
   #
-  # Also add an entry to webcsdbackend for the landscape database
-  #
-  #  webcsdbackend
-  #    volumes:
-  #      - /usr/local/data/landscape-db.csdsqlx:/csd-data/landscape-db.csdsqlx
-  #    environment:
-  #      - ServiceSettings__Databases__X__Name=Landscape
-  #      - ServiceSettings__Databases__X__ConnectionString=/csd-data/landscape-db.csdsqlx
