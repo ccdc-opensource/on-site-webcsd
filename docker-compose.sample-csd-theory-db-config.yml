@@ -33,7 +33,7 @@ services:
   #
   #
   # Example:
-  # Given that you have a database called test-db at the location /usr/local/data/test-db.csdsqlx and 
+  # Given that you have a database called test-db at the location /usr/local/data/test-db.csdsqlx and
   # given that you have a landscape database called landscape-db at the location /usr/local/data/landscape-db.csdsqlx
   # To use the test-db.csdsqlx database and landscape-db.csdsqlx, the webcsdbackend node will look like this
   #
@@ -48,12 +48,12 @@ services:
   #       - ServiceSettings__Databases__2__Colour=red
   #       - ServiceSettings__Databases__3__Name=Landscape
   #       - ServiceSettings__Databases__3__ConnectionString=/csd-data/landscape-db.csdsqlx
-  
+
   #########################################################################################################
   # Kubernetes Users
   # Please refer to the README regarding additional steps required for adding your in-house databases.
   #########################################################################################################
-  
+
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
@@ -85,7 +85,7 @@ services:
       - ReportSettings__CspStructureDatabaseConnectionString=/app/databases/CSPLandscape.csdsqlx
       - ReverseProxy__Clusters__csdtheory__Destinations__csdtheory/destination1__Address=http://webcsd-theory:${WEBCSD_PORT}
 
-  # See the wiki page for a description of the two CSD-Theory databases.
+    # See the wiki page for a description of the two CSD-Theory databases.
 
   #########################################################################################################
   # Kubernetes Users

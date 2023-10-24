@@ -41,12 +41,12 @@ services:
   #       - ServiceSettings__Databases__2__Name=test-db
   #       - ServiceSettings__Databases__2__ConnectionString=/csd-data/test-db.csdsqlx
   #       - ServiceSettings__Databases__2__Colour=red
-  
+
   #########################################################################################################
   # Kubernetes Users
   # Please refer to the README regarding additional steps required for adding your in-house databases.
   #########################################################################################################
-  
+
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
@@ -69,5 +69,3 @@ services:
   # Kubernetes Users
   # Please refer to the README regarding additional steps required for implementing Structure File links.
   #########################################################################################################
-
-  
