@@ -39,12 +39,11 @@ On-Site WebCSD should work with any linux OS that meets the requirements to run 
 
 ## In-house Database Configuration
 
-On-Site WebCSD can be configured to read from in-house databases. To enable these databases, copy and rename the file `docker-compose.sample-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+On-Site WebCSD can be configured to read from in-house databases. To enable these databases, copy and rename the file `docker-compose.sample-onsite-only-db-config.yml` to `docker-compose.db-config.yml` and edit the `volumes` section to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases. More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
 
-## CSD-Theory Database Configuration
+## CSD-Theory Web Database Configuration
 
-If wanting to use WebCSD with CSD-Theory, ensure the steps in [link](#In-house Database Configuration) have been followed.
-There are examples of CSD-Theory configurations in the `docker-compose.sample-db-config.yml` file.
+Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web) 
 
 ## Installation
 
