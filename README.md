@@ -68,8 +68,7 @@ Here is an example of the .env file:
 
 ```
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
-CSD_DB_PASSWORD=A password of your choosing
-CSD_CACHE_PASSWORD=A password of your choosing
+CSD_DB_CONNECTIONSTRING=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=passwordhere
 WEBCSD_PORT=80
 ```
 
@@ -97,10 +96,10 @@ docker compose up -d
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Updates
@@ -124,10 +123,10 @@ docker compose up -d
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Verifying the Installation/Update
