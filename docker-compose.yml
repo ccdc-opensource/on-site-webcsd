@@ -51,6 +51,7 @@ services:
       - ccdc-csd-searchservice
       - csd-request-entry
     image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.0.0
+    environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     labels:
       <<: *k8s-labels
