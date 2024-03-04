@@ -1,11 +1,10 @@
-# On-Site WebCSD
+# Onsite Lattice and WebCSD
 
-On-Site WebCSD is currently only available to CCDC industrial customers and other invited groups.
+Onsite Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
 
-This readme contains information required for installation and updates of On-Site WebCSD.
+This readme contains information required for installation and updates of Onsite Lattice and WebCSD.
 
-Please use the latest non alpha version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>, using main may not work as it is not an official release.
-Releases prior to version 1.0.0 or with <version>-alpha are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
+Please use the latest version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>.
 
 Terms and conditions can be found in the license.md file.
 
@@ -18,6 +17,8 @@ This will run on [Docker Desktop](https://docs.docker.com/engine/install/#deskto
 
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
+For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
+
 A valid license key will be required to use the software.
 
 A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
@@ -25,13 +26,13 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements for On-Site WebCSD:
+Recommended requirements for Onsite Lattice and WebCSD:
 170GB free hd space, 32GB ram, 8 core cpu.
 
-Recommended requirements for On-Site WebCSD including Macromolecule Hub:
+Recommended requirements for Onsite Lattice and WebCSD including Macromolecule Hub:
 400GB free hd space, 32GB ram, 8 core cpu.
 
-On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
+Onsite Lattice and WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
 
 - Linux - Intel compatible, 64-bit:
   - RedHat Enterprise 7.6 or higher, and 8
@@ -41,7 +42,7 @@ On-Site WebCSD should work with any linux OS that meets the requirements to run 
 
 ## In-house Database Configuration
 
-On-Site WebCSD can be configured to read from in-house databases.
+Onsite Lattice and WebCSD can be configured to read from in-house databases.
 To enable these databases follow:
 
 1. Copy and rename the file `docker-compose.sample-onsite-only-db-config.yml` to `docker-compose.db-config.yml`
@@ -143,8 +144,8 @@ For more information see the [Docker volumes documentation](https://docs.docker.
 
 ## Usage
 
-To access the WebCSD service locally go to <http://localhost> in a browser.
+To access the On-Site Lattice and WebCSD service locally go to <http://localhost> in a browser.
 
 ## Contact support
 
-If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
+If you experience any difficulties with installing or using On-Site Lattice and WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
