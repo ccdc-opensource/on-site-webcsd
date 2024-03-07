@@ -1,8 +1,8 @@
-# Onsite Lattice and WebCSD
+# On-Site Lattice and WebCSD
 
-Onsite Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
+On-Site Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
 
-This readme contains information required for installation and updates of Onsite Lattice and WebCSD.
+This readme contains information required for installation and updates of On-Site Lattice and WebCSD.
 
 Please use the latest version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>.
 
@@ -26,13 +26,13 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements for Onsite Lattice and WebCSD:
+Recommended requirements for On-Site Lattice and WebCSD:
 170GB free hd space, 32GB ram, 8 core cpu.
 
-Recommended requirements for Onsite Lattice and WebCSD including Macromolecule Hub:
+Recommended requirements for On-Site Lattice and WebCSD including Macromolecule Hub:
 400GB free hd space, 32GB ram, 8 core cpu.
 
-Onsite Lattice and WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
+On-Site Lattice and WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
 
 - Linux - Intel compatible, 64-bit:
   - RedHat Enterprise 7.6 or higher, and 8
@@ -42,10 +42,10 @@ Onsite Lattice and WebCSD should work with any linux OS that meets the requireme
 
 ## In-house Database Configuration
 
-Onsite Lattice and WebCSD can be configured to read from in-house databases.
+On-Site Lattice and WebCSD can be configured to read from in-house databases.
 To enable these databases follow:
 
-1. Copy and rename the file `docker-compose.sample-onsite-only-db-config.yml` to `docker-compose.db-config.yml`
+1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
 2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
 
 More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
