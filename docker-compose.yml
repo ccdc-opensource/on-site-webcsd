@@ -38,6 +38,9 @@ services:
       - webcsdbackend
 
   webcsd:
+    environment:
+      - IdentityGateway__Authority=${PUBLIC_URI}
+      - IdentityGateway__DisableSSLValidation=true
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
