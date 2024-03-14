@@ -5,12 +5,10 @@ x-labels: &k8s-labels
 
 services:
   csd-platform:
-    environment:
-      - PublicUri=${PUBLIC_URI}
     image: ccdcrepository.azurecr.io/onsite/ccdc-web-platform:4.0.0
     restart: unless-stopped
     ports:
-      - ${WEBCSD_PORT}:8443
+      - ${PLATFORM_PORT}:8443
     labels:
       <<: *k8s-labels
       kompose.service.type: LoadBalancer
