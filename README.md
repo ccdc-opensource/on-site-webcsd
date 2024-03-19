@@ -19,6 +19,10 @@ Access to the CCDC container registry will require a username and password, to g
 
 For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
 
+Recommended specs for postgres server:
+ - Postgres version 15.2 or newer
+ - Space: 100GB
+
 A valid license key will be required to use the software.
 
 A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
