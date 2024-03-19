@@ -36,13 +36,14 @@ Recommended requirements for On-Site Lattice and WebCSD:
 Recommended requirements for On-Site Lattice and WebCSD including Macromolecule Hub:
 400GB free hd space, 32GB ram, 8 core cpu.
 
-On-Site Lattice and WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
+On-Site WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
 
-- Linux - Intel compatible, 64-bit:
-  - RedHat Enterprise 7.6 or higher, and 8
-  - CentOS 7.6 or higher
-  - CentOS Stream 8
-  - Ubuntu LTS 20 and 22
+ - RedHat Enterprise 7.6 or higher, 8 and 9
+ - CentOS 7.6 or higher 
+ - Rocky Linux 8 and 9
+ - Ubuntu LTS 20 and 22
+ 
+We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line with their provider.
 
 ## In-house Database Configuration
 
