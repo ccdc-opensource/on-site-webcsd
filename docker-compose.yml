@@ -33,7 +33,7 @@ services:
       - "PlatformClientSettings__RedirectUri=${PUBLIC_URI}/authentication/login-callback"
       - "PlatformClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/authentication/logout-callback"
       - "WebCsdClientSettings__RedirectUri=${PUBLIC_URI}/structures/signin-oidc"
-      - "WebCsdClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/structures/signin-oidc"
+      - "WebCsdClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/structures/signout-oidc"
     depends_on:
       - webcsdbackend
 
@@ -95,6 +95,8 @@ services:
       - ccdc-csd-resultstore
       - ccdc-csd-similaritysearch
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:4.0.0
+    environment:
+      - SearchProgressEndpoint=api/{0}/internal-progress
 
   csd-request-entry:
     labels:
