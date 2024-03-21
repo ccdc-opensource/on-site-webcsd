@@ -1,3 +1,4 @@
+# On-Site Version 4.0
 # Configure local database volumes here for CSD-Theory installations.
 
 version: "3.6"
