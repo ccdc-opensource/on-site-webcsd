@@ -75,7 +75,8 @@ Here is an example of the .env file:
 ```
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
 CSD_DB_CONNECTIONSTRING=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=passwordhere
-WEBCSD_PORT=80
+PLATFORM_PORT=443
+PUBLIC_URI=https://csd-software.local
 ```
 
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
