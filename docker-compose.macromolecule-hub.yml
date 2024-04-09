@@ -4,8 +4,6 @@ version: "3.6"
 services:
   webcsd:
     environment:
-      - CsdRepository__ServiceLocation=webcsdbackend
-      - CspRepository__ServiceLocation=webcsd-theory
       - CsdRepository__SketcherFeatures__1=Proteins
    
   webcsdbackend:
