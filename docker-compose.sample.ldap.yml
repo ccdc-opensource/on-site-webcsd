@@ -49,7 +49,7 @@ services:
       
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/ssl/cert.pfx
-    image: ccdcrepository.azurecr.io/onsite/ccdc-ldap-bridge:latest
+    image: ccdcrepository.azurecr.io/onsite/ccdc-ldap-bridge:f88fd97ec9f668bff23b4e2d7a2c88c5ef26ee2f
     volumes:
       - ./ssl/cert.pfx:/ssl/cert.pfx:ro 
     ports:
