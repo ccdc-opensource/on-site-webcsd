@@ -12,5 +12,5 @@ services:
       - ThirdPartyCredentials__Authority=<Authority>
       - ThirdPartyCredentials__ClientId=<Client Id>
       - ThirdPartyCredentials__ClientSecret=<Client Secret>
-      - ThirdPartyCredentials__CallbackPath=<CallbackPath>
+      - ThirdPartyCredentials__CallbackPath=/Identity/signin-oidc
       - ThirdPartyCredentials__DisplayName=<Name of SSO provider. Eg. Microsoft>
