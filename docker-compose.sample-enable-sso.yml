@@ -8,9 +8,16 @@ services:
     environment:
       - OnSiteLoginSetup__EnableSingleSignOn=true
       - OnSiteLoginSetup__EnableFormBasedLogin=true
-      
-      - ThirdPartyCredentials__Authority=<Authority>
-      - ThirdPartyCredentials__ClientId=<Client Id>
-      - ThirdPartyCredentials__ClientSecret=<Client Secret>
       - ThirdPartyCredentials__CallbackPath=/Identity/signin-oidc
+      
+      # Single Sign On Configuration
+      # The following configuration is required to enable single sign on
+
+      # The authority URL of the identity provider
+      - ThirdPartyCredentials__Authority=<Authority>
+      # The client id of the application registered with the identity provider
+      - ThirdPartyCredentials__ClientId=<Client Id>
+      # The client secret of the application registered with the identity provider
+      - ThirdPartyCredentials__ClientSecret=<Client Secret>
+      # The display name of the identity provider
       - ThirdPartyCredentials__DisplayName=<Name of SSO provider. Eg. Microsoft>
