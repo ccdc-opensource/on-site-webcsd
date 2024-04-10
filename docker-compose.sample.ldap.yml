@@ -16,7 +16,7 @@ services:
       - OpenIdServer__ClientId=ccdcidentity
       - OpenIdServer__ClientSecret=${CCDC_LICENSING_CONFIGURATION}
       - OpenIdServer__RedirectUri=${PUBLIC_URI}/Identity/signin-oidc
-      - ASPNETCORE_URLS=https://+:443;
+      - ASPNETCORE_URLS=https://+:8443;
 
       # Custom LDAP Settings
   
@@ -53,4 +53,4 @@ services:
     volumes:
       - ./ssl/cert.pfx:/ssl/cert.pfx:ro 
     ports:
-      - 8443:443
+      - 8443:8443
