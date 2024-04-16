@@ -4,6 +4,12 @@
 version: "3.6"
 
 services:
+  csd-platform:
+    ports:
+      - ${PLATFORM_PORT}:8443
+      # This is required for csd theory ingestion python scripts to work
+      #- 80:8080
+
   webcsdbackend:
     volumes:
       - /path/to/database-1:/csd-data/database-1
@@ -24,4 +30,3 @@ services:
       - /path/to/CSD-Theory Landscape Database:/app/databases/CSPLandscape.csdsqlx
     environment:
       - ReportSettings__CspStructureDatabaseConnectionString=/app/databases/CSPLandscape.csdsqlx
-      - ReverseProxy__Clusters__csdtheory__Destinations__csdtheory/destination1__Address=http://webcsd-theory:${WEBCSD_PORT}
