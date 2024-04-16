@@ -7,7 +7,7 @@ services:
   csd-platform:
     ports:
       - ${PLATFORM_PORT}:8443
-      # This is required for csd theory ingestion python scripts to work
+      # This is required for csd theory ingestion python script to work
       #- 80:8080
 
   webcsdbackend:
