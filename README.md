@@ -48,6 +48,9 @@ We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line wi
 ## In-house Database Configuration
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
+
+Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation. 
+
 To enable these databases follow:
 
 1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
