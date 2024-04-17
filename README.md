@@ -78,6 +78,7 @@ Here is an example of the .env file:
 ```
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
 CSD_DB_CONNECTIONSTRING=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=passwordhere
+IDENTITY_DB_CONNECTIONSTRING=Server=database-server;Port=5432;Database=csd-identity;User Id=postgres;Password=passwordhere
 PLATFORM_PORT=443
 PUBLIC_URI=https://csd-software.local
 ```
@@ -92,8 +93,11 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 # As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
-sudo adduser ccdc
+sudo adduser ccdc --uid=1397
 sudo chown -R ccdc:ccdc userdata/
+
+# If you are upgrading from an older version to v4.0.0, ensure the user id is set to 1397
+sudo usermod -u 1397 ccdc
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
 
