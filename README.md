@@ -19,10 +19,6 @@ Access to the CCDC container registry will require a username and password, to g
 
 For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
 
-Recommended specs for postgres server:
- - Postgres version 15.2 or newer
- - Space: 100GB
-
 A valid license key will be required to use the software.
 
 A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
@@ -30,13 +26,18 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements for On-Site Lattice and WebCSD:
-170GB free hd space, 32GB ram, 8 core cpu.
+Recommended requirements for postgres server:
+ - Postgres version 14 or newer
+ - 170GB free hd space
 
-Recommended requirements for On-Site Lattice and WebCSD including Macromolecule Hub:
-400GB free hd space, 32GB ram, 8 core cpu.
+Recommended requirements for postgres server including Macromolecule Hub:
+ - Postgres version 14 or newer
+ - 400GB free hd space
+ 
+Recommended requirements for On-Site Lattice and WebCSD containers:
+ - 30GB free hd space, 32GB ram, 8 core cpu.
 
-On-Site WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
+On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
 
  - RedHat Enterprise 7.6 or higher, 8 and 9
  - CentOS 7.6 or higher 
