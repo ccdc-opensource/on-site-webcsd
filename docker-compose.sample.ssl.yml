@@ -1,0 +1,7 @@
+version: "3.6"
+
+services:
+  csd-platform:
+    volumes:
+      - ./ssl/cert.crt:/etc/nginx/ssl/server_cert.crt:ro
+      - ./ssl/cert.key:/etc/nginx/ssl/server_key.key:ro
