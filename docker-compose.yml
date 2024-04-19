@@ -37,6 +37,7 @@ services:
       - "WebCsdClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/structures/signout-oidc"
     depends_on:
       - webcsdbackend
+    restart: unless-stopped
 
   webcsd:
     environment:
@@ -50,6 +51,7 @@ services:
       - ./userdata:/app/OnSite
     labels:
       <<: *k8s-labels
+    restart: unless-stopped
 
   webcsdbackend:
     depends_on:
@@ -60,6 +62,7 @@ services:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     labels:
       <<: *k8s-labels
+    restart: unless-stopped
 
   ccdc-csd-substructuresearch:
     labels:
@@ -72,6 +75,7 @@ services:
       - ccdc-csd-deposition
     environment:
       - StructureSearchReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=substructure
+    restart: unless-stopped
 
   ccdc-csd-deposition:
     labels:
@@ -79,6 +83,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api:4.0.0
     environment:
       - CsdDepositionReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=csd_schema
+    restart: unless-stopped
 
   ccdc-csd-textnumericsearch:
     labels:
@@ -86,6 +91,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:4.0.0
     environment:
       - CsdReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=csd_schema
+    restart: unless-stopped
 
   ccdc-csd-searchservice:
     labels:
@@ -98,6 +104,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:4.0.0
     environment:
       - SearchProgressEndpoint=api/{0}/internal-progress
+    restart: unless-stopped
 
   csd-request-entry:
     labels:
@@ -106,6 +113,7 @@ services:
       - ccdc-csd-deposition
       - ccdc-csd-crystal-structure-export
     image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:4.0.0
+    restart: unless-stopped
 
   ccdc-csd-formulasearch:
     labels:
@@ -113,6 +121,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-formulasearch-api:4.0.0
     environment:
       - FormulaSearchReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=formula
+    restart: unless-stopped
 
   ccdc-csd-unitcellsearch:
     labels:
@@ -122,6 +131,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:4.0.0
     environment:
       - UnitCellSearchReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=unitcell
+    restart: unless-stopped
 
   ccdc-csd-resultstore:
     labels:
@@ -129,6 +139,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api:4.0.0
     environment:
     - ResultStoreConnectionString=${CSD_DB_CONNECTIONSTRING};SearchPath=searchstore
+    restart: unless-stopped
 
   ccdc-csd-similaritysearch:
     labels:
@@ -138,6 +149,7 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-structure-similarity-search:4.0.0
     environment:
       - StructureSimilaritySearchReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=similarity
+    restart: unless-stopped
 
   ccdc-csd-fingerprint:
     labels:
@@ -169,3 +181,4 @@ services:
     image: ccdcrepository.azurecr.io/onsite/csd-theory:4.0.0
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
+    restart: unless-stopped
