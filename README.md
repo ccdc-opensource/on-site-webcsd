@@ -26,16 +26,16 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements for postgres server:
+Recommended requirements for postgres server without Macromolecule Hub:
  - Postgres version 14 or newer
- - 170GB free hd space
+ - 100GB free hd space
 
 Recommended requirements for postgres server including Macromolecule Hub:
  - Postgres version 14 or newer
- - 400GB free hd space
+ - 200GB free hd space
  
 Recommended requirements for On-Site Lattice and WebCSD containers:
- - 30GB free hd space, 32GB ram, 8 core cpu.
+ - 30GB free hd space, 16GB RAM, 8 core CPU.
 
 On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
 
