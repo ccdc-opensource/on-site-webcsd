@@ -10,7 +10,7 @@ docker-compose.*.yml
 !docker-compose.macromolecule-hub.yml
 !docker-compose.sample-enable-sso.yml
 !docker-compose.sample-csd-theory-db-config.yml
-
+!docker-compose.sample.ldap.yml
 
 # Other
 **.swp

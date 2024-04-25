@@ -1,0 +1,56 @@
+# On-Site Version 4.0
+version: "3.6"
+
+services:
+  ccdc-identity:
+    environment:
+      - OnSiteLoginSetup__EnableSingleSignOn=true
+      - ThirdPartyCredentials__Authority=${PUBLIC_URI}:8443/
+      - ThirdPartyCredentials__ClientId=ccdcidentity
+      - ThirdPartyCredentials__ClientSecret=${CCDC_LICENSING_CONFIGURATION}
+      - ThirdPartyCredentials__CallbackPath=/Identity/signin-oidc
+      - ThirdPartyCredentials__DisplayName=LDAP
+
+  webcsd-ldap:
+    environment:
+      - OpenIdServer__ClientId=ccdcidentity
+      - OpenIdServer__ClientSecret=${CCDC_LICENSING_CONFIGURATION}
+      - OpenIdServer__RedirectUri=${PUBLIC_URI}/Identity/signin-oidc
+      - ASPNETCORE_URLS=https://+:8443;
+
+      # Custom LDAP Settings
+  
+      # LDAP Server Address
+      - Ldap__Server=dc.example.com
+      # LDAP Default Domain
+      - Ldap__DefaultDomain=exampledomain
+      # LDAP Base DN for the user search
+      - Ldap__UserBaseDN=dc=example,dc=com
+
+      # Default Settings for the LDAP Bridge 
+      # These settings should not need to change if your using Active Directory for LDAP
+
+      # LDAP Port
+      #- Ldap__Port=389
+      # User Filter to search for user in the LDAP directory to get the user details
+      #- Ldap__UserFilter=(&(objectClass=person)(sAMAccountName={0}))
+      # User Unique Account Name Attribute
+      #- Ldap__UniqueAccountNameAttribute=sAMAccountName
+      # User Display Name Attribute
+      #- Ldap__UserDisplayNameAttribute=displayName
+      # User Principal Name Attribute
+      #- Ldap__UserPrincipalNameAttribute=userPrincipalName
+      # User Email Attribute
+      #- Ldap__UserEmailAttribute=mail
+
+      # Change the user format to use the email address
+      #- Ldap__LdapUserDNFormat=username@LDAPDOMAIN
+
+      
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/ssl/cert.pfx
+    image: ccdcrepository.azurecr.io/onsite/ccdc-ldap-bridge:f88fd97ec9f668bff23b4e2d7a2c88c5ef26ee2f
+    volumes:
+      - ./ssl/cert.pfx:/ssl/cert.pfx:ro 
+    ports:
+      - 8443:8443

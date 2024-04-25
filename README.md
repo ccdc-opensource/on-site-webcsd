@@ -1,11 +1,10 @@
-# On-Site WebCSD
+# On-Site Lattice and WebCSD
 
-On-Site WebCSD is currently only available to CCDC industrial customers and other invited groups.
+On-Site Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
 
-This readme contains information required for installation and updates of On-Site WebCSD.
+This readme contains information required for installation and updates of On-Site Lattice and WebCSD.
 
-Please use the latest non alpha version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>, using main may not work as it is not an official release.
-Releases prior to version 1.0.0 or with <version>-alpha are alpha releases which will not contain all the functionality currently provided in On-Site WebCSD.
+Please use the latest version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>.
 
 Terms and conditions can be found in the license.md file.
 
@@ -18,6 +17,8 @@ This will run on [Docker Desktop](https://docs.docker.com/engine/install/#deskto
 
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
+For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
+
 A valid license key will be required to use the software.
 
 A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
@@ -25,26 +26,35 @@ Click on the release you want to use, and download the source code zip and unpac
 
 ## Initial recommended specification
 
-Recommended requirements for On-Site WebCSD:
-170GB free hd space, 32GB ram, 8 core cpu.
+Recommended requirements for postgres server without Macromolecule Hub:
+ - Postgres version 14 or newer
+ - 100GB free hd space
 
-Recommended requirements for On-Site WebCSD including Macromolecule Hub:
-400GB free hd space, 32GB ram, 8 core cpu.
+Recommended requirements for postgres server including Macromolecule Hub:
+ - Postgres version 14 or newer
+ - 200GB free hd space
+ 
+Recommended requirements for On-Site Lattice and WebCSD containers:
+ - 30GB free hd space, 16GB RAM, 8 core CPU.
 
-On-Site WebCSD should work with any linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms:
+On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
 
-- Linux - Intel compatible, 64-bit:
-  - RedHat Enterprise 7.6 or higher, and 8
-  - CentOS 7.6 or higher
-  - CentOS Stream 8
-  - Ubuntu LTS 20 and 22
+ - RedHat Enterprise 7.6 or higher, 8 and 9
+ - CentOS 7.6 or higher 
+ - Rocky Linux 8 and 9
+ - Ubuntu LTS 20 and 22
+ 
+We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line with their provider.
 
 ## In-house Database Configuration
 
-On-Site WebCSD can be configured to read from in-house databases.
+On-Site Lattice and WebCSD can be configured to read from in-house databases.
+
+Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation. 
+
 To enable these databases follow:
 
-1. Copy and rename the file `docker-compose.sample-onsite-only-db-config.yml` to `docker-compose.db-config.yml`
+1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
 2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
 
 More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
@@ -68,9 +78,10 @@ Here is an example of the .env file:
 
 ```
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
-CSD_DB_PASSWORD=A password of your choosing
-CSD_CACHE_PASSWORD=A password of your choosing
-WEBCSD_PORT=80
+CSD_DB_CONNECTIONSTRING=Server=database-server;Port=5432;Database=csd-database;User Id=postgres;Password=passwordhere
+IDENTITY_DB_CONNECTIONSTRING=Server=database-server;Port=5432;Database=csd-identity;User Id=postgres;Password=passwordhere
+PLATFORM_PORT=443
+PUBLIC_URI=https://csd-software.local
 ```
 
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
@@ -83,8 +94,11 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 # As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
-sudo adduser ccdc
+sudo adduser ccdc --uid=1397
 sudo chown -R ccdc:ccdc userdata/
+
+# If you are upgrading from an older version to v4.0.0, ensure the user id is set to 1397
+sudo usermod -u 1397 ccdc
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
 
@@ -97,10 +111,10 @@ docker compose up -d
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Updates
@@ -124,10 +138,10 @@ docker compose up -d
 docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
 ```
 
 ## Verifying the Installation/Update
@@ -144,8 +158,8 @@ For more information see the [Docker volumes documentation](https://docs.docker.
 
 ## Usage
 
-To access the WebCSD service locally go to <http://localhost> in a browser.
+To access the On-Site Lattice and WebCSD service locally go to <http://localhost> in a browser.
 
 ## Contact support
 
-If you experience any difficulties with installing or using On-Site WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
+If you experience any difficulties with installing or using On-Site Lattice and WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
