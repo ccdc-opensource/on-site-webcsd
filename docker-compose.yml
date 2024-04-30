@@ -31,10 +31,15 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-identitygateway:4.0.0
     environment:
       - "ConnectionStrings__DefaultConnection=${IDENTITY_DB_CONNECTIONSTRING}"
+      - "PlatformClientSettings__RedirectUris__0=${PUBLIC_URI}/authentication/login-callback"
+      - "PlatformClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/authentication/logout-callback"
+      - "WebCsdClientSettings__RedirectUris__0=${PUBLIC_URI}/structures/signin-oidc"
+      - "WebCsdClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/structures/signout-oidc"
+      # Will be removed in 4.0.1+
       - "PlatformClientSettings__RedirectUri=${PUBLIC_URI}/authentication/login-callback"
       - "PlatformClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/authentication/logout-callback"
       - "WebCsdClientSettings__RedirectUri=${PUBLIC_URI}/structures/signin-oidc"
-      - "WebCsdClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/structures/signout-oidc"
+      - "WebCsdClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/structures/signout-oidc"      
     depends_on:
       - webcsdbackend
     restart: unless-stopped
