@@ -104,7 +104,7 @@ sudo usermod -u 1397 ccdc
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
 
-#Use one of the following commands: 
+# Use one of the following commands: 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose up -d
