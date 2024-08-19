@@ -28,25 +28,25 @@ services:
     restart: unless-stopped
 
   ccdc-identity:
-    image: ccdcrepository.azurecr.io/onsite/ccdc-identitygateway:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-identitygateway:4.1.0
     environment:
       - ConnectionStrings__DefaultConnection=${DB_CONNECTIONSTRING};Database=${IDENTITY_DATABASE}
-      - "PlatformClientSettings__RedirectUri=${PUBLIC_URI}/authentication/login-callback"
-      - "PlatformClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/authentication/logout-callback"
-      - "WebCsdClientSettings__RedirectUri=${PUBLIC_URI}/structures/signin-oidc"
-      - "WebCsdClientSettings__PostLogoutRedirectUri=${PUBLIC_URI}/structures/signout-oidc"
+      - "PlatformClientSettings__RedirectUris__0=${PUBLIC_URI}/authentication/login-callback"
+      - "PlatformClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/authentication/logout-callback"
+      - "WebCsdClientSettings__RedirectUris__0=${PUBLIC_URI}/structures/signin-oidc"
+      - "WebCsdClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/structures/signout-oidc"
     depends_on:
       - webcsdbackend
     restart: unless-stopped
 
   webcsd:
     environment:
-      - IdentityGateway__Authority=${PUBLIC_URI}
+      - IdentityGateway__Issuer=${PUBLIC_URI}
       - IdentityGateway__DisableSSLValidation=true
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/onsite/webcsd:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/webcsd:4.1.0
     volumes:
       - ./userdata:/app/OnSite
     labels:
@@ -57,7 +57,7 @@ services:
     depends_on:
       - ccdc-csd-searchservice
       - csd-request-entry
-    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.1.0
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     labels:
@@ -166,7 +166,7 @@ services:
   ccdc-csd-crystal-structure-export:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:4.1.0
     restart: unless-stopped
 
   ccdc-csd-reducedcell-calculation-service:
@@ -182,3 +182,22 @@ services:
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
     restart: unless-stopped
+
+  message-broker:
+      image: rabbitmq:3
+      environment:
+        RABBITMQ_DEFAULT_USER: queueuser
+        RABBITMQ_DEFAULT_PASS: ${CCDC_LICENSING_CONFIGURATION}
+      restart: unless-stopped 
+
+  ccdc-file-generation:
+    restart: unless-stopped
+    image: ccdcrepository.azurecr.io/onsite/ccdc-structure-file-generation:4.1.0
+    environment:
+      - CacheSettings__ConnectionString=${DB_CONNECTIONSTRING};Database=structure_file_cache
+      - MessagingProvider=RabbitMq
+      - MessagingOnSitePassword=${CCDC_LICENSING_CONFIGURATION}
+      - PlatformSecurity__Issuer=${PUBLIC_URI}
+      - PlatformSecurity__DisableSSLValidation=true
+    depends_on:
+      - message-broker
