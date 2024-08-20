@@ -12,13 +12,11 @@ services:
 
   webcsdbackend:
     volumes:
-      - /path/to/database-1:/csd-data/database-1
-      - /path/to/database-2:/csd-data/database-2
+      - /path/to/CSD-Theory Landscape Database:/csd-data/CSPLandscape.csdsqlx
     environment:
-      - ServiceSettings__Databases__2__Name=database-1
-      - ServiceSettings__Databases__2__ConnectionString=/csd-data/database-1
-      - ServiceSettings__Databases__3__Name=database-2
-      - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2
+      - ServiceSettings__Databases__2__Name=CSP Database
+      - ServiceSettings__Databases__2__ConnectionString=/csd-data/CSPLandscape.csdsqlx
+      - ServiceSettings__Databases__2__Speciality__0=CSP
 
   webcsd:
     volumes:
