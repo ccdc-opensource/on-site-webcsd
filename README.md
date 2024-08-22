@@ -18,6 +18,8 @@ This will run on [Docker Desktop](https://docs.docker.com/engine/install/#deskto
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
 For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
+Once you have the download link please follow the instructions at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore the
+database into your environment.
 
 A valid license key will be required to use the software.
 
@@ -103,7 +105,7 @@ sudo usermod -u 1397 ccdc
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
 
-#Use one of the following commands: 
+# Use one of the following commands: 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose up -d
