@@ -15,25 +15,25 @@ services:
 
   ccdc-csd-substructuresearch:
     environment:
-      - PdbReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=structure_optimisation
+      - PdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=structure_optimisation;Database=${CSD_DATABASE}
       - SubstructureSearchDatabaseConfiguration__Databases__1__Name=pdb
       - SubstructureSearchDatabaseConfiguration__Databases__1__SettingsKey=PdbReadConnection
 
   ccdc-csd-deposition:
     environment:
-      - DepositionPdbReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=pdb_schema
+      - DepositionPdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=pdb_schema;Database=${CSD_DATABASE}
       - DatabaseConfiguration__Databases__1__Name=pdb
       - DatabaseConfiguration__Databases__1__SettingsKey=DepositionPdbReadConnection
 
   ccdc-csd-textnumericsearch:
     environment:
-      - PdbReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=pdb_schema
+      - PdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=pdb_schema;Database=${CSD_DATABASE}
       - DatabaseConfiguration__Databases__1__Name=pdb
       - DatabaseConfiguration__Databases__1__SettingsKey=PdbReadConnection
 
 
   ccdc-csd-unitcellsearch:
     environment:
-      - UnitCellPdbReadConnection=${CSD_DB_CONNECTIONSTRING};SearchPath=pdb_cell_optimisation
+      - UnitCellPdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=pdb_cell_optimisation;Database=${CSD_DATABASE}
       - DatabaseConfiguration__Databases__1__Name=pdb
       - DatabaseConfiguration__Databases__1__SettingsKey=UnitCellPdbReadConnection
