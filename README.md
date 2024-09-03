@@ -61,6 +61,24 @@ To enable these databases follow:
 
 More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
 
+### In-house Protein Database Creation and Configuration
+
+If you have a Macromolecule Hub licence, you can also create and register in-house protein databases for use within OnSite WebCSD.
+
+We provide a database creation script which can be found here alongside usage instructions: [In-House Protein creation](https://github.com/ccdc-opensource/on-site-webcsd/ProteinInHouseDatabaseCreation)
+
+Once you have created your protein database, you can register it by adding to your `docker-compose.db-config.yml` file following the instructions above.
+You must then mark the database as a protein database. Your database config should look something like this:
+
+```yml
+volumes:
+    - /path/to/ExampleProteinDb.csdsqlx:/csd-data/ExampleProteinDb.csdsqlx
+environment:
+    - ServiceSettings__Databases__2__Name=Example Protein DB
+    - ServiceSettings__Databases__2__ConnectionString=/csd-data/ExampleProteinDb.csdsqlx
+    - ServiceSettings__Databases__2__Speciality__0=Protein
+```
+
 ## CSD-Theory Web Database Configuration
 
 Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web)
