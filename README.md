@@ -65,7 +65,7 @@ More information is given in the notes & example sections of the sample file. Th
 
 If you have a Macromolecule Hub licence, you can also create and register in-house protein databases for use within OnSite WebCSD.
 
-We provide a database creation script which can be found here alongside usage instructions: [In-House Protein creation](https://github.com/ccdc-opensource/on-site-webcsd/ProteinInHouseDatabaseCreation)
+We provide a database creation script which can be found in the [In-House Protein Database Creation folder](https://github.com/ccdc-opensource/on-site-webcsd/ProteinInHouseDatabaseCreation)
 
 Once you have created your protein database, you can register it by adding to your `docker-compose.db-config.yml` file following the instructions above.
 You must then mark the database as a protein database. Your database config should look something like this:
