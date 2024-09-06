@@ -16,7 +16,7 @@ services:
       - ServiceSettings__Databases__3__Name=database-2
       - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2
 
-# Replace /path/to/structure/files by the directory with your structure files
+  # Replace /path/to/structure/files by the directory with your structure files
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
