@@ -49,6 +49,8 @@ On-Site Lattice and WebCSD should work with any Linux OS that meets the requirem
 We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line with their provider.
 
 ## In-house Database Configuration
+:warning: **OnSite WebCSD makes the assumption structure identifiers are unique across all registered in-house databases.
+You will likely encounter unexpected behaviour if this is not the case.**
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
