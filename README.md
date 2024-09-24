@@ -39,14 +39,14 @@ Recommended requirements for postgres server including Macromolecule Hub:
 Recommended requirements for On-Site Lattice and WebCSD containers:
  - 30GB free hd space, 16GB RAM, 8 core CPU.
 
-On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
+On-Site Lattice and WebCSD should work with any Linux operating systems that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
 
- - RedHat Enterprise 7.6 or higher, 8 and 9
- - CentOS 7.6 or higher 
+ - RedHat Enterprise 8 and 9
  - Rocky Linux 8 and 9
- - Ubuntu LTS 20 and 22
+ - Ubuntu LTS 22 and 24
+
+Please note support was removed for Redhat 7 and all CentOS operating systems as of the 30th June 2024 due to them reaching the end of their support cycles.
  
-We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line with their provider.
 
 ## In-house Database Configuration
 
