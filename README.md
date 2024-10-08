@@ -18,8 +18,8 @@ This will run on [Docker Desktop](https://docs.docker.com/engine/install/#deskto
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
 For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
-Once you have the download link please follow the instructions at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore the
-database into your environment.
+Once you have the download link please follow the instructions at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore
+the database into your environment.
 
 A valid license key will be required to use the software.
 
@@ -29,30 +29,31 @@ Click on the release you want to use, and download the source code zip and unpac
 ## Initial recommended specification
 
 Recommended requirements for postgres server without Macromolecule Hub:
- - Postgres version 14 or newer
- - 100GB free hd space
+
+- Postgres version 14 or newer
+- 100GB free hd space
 
 Recommended requirements for postgres server including Macromolecule Hub:
- - Postgres version 14 or newer
- - 200GB free hd space
- 
+
+- Postgres version 14 or newer
+- 200GB free hd space
+
 Recommended requirements for On-Site Lattice and WebCSD containers:
- - 30GB free hd space, 16GB RAM, 8 core CPU.
 
-On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
+- 30GB free hd space, 16GB RAM, 8 core CPU.
 
- - RedHat Enterprise 7.6 or higher, 8 and 9
- - CentOS 7.6 or higher 
- - Rocky Linux 8 and 9
- - Ubuntu LTS 20 and 22
- 
-We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line with their provider.
+On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
+Note that these match the 2023.3 Desktop release.
+
+- RedHat Enterprise Linux 8 and 9
+- Rocky Linux 8 and 9
+- Ubuntu LTS 20 and 22
 
 ## In-house Database Configuration
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
-Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation. 
+Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation.
 
 To enable these databases follow:
 
@@ -65,6 +66,14 @@ More information is given in the notes & example sections of the sample file. Th
 
 Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web)
 
+## SSL Configuration
+
+If you will be connecting to your WebCSD server via https which is the default behaviour
+and required for SSO authentication, you will need an SSL certificate and private key.
+Ask your local IT staff to set these up for you.
+
+Please follow the instructions at [Configuring SSL](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Configuring-SSL) to configure SSL.
+
 ## Installation
 
 After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env`.
@@ -75,10 +84,11 @@ cd on-site-webcsd
 cp sample.env .env
 ```
 
-You will need to update the .env file with your licence key and the two passwords you would like to use.
+You will need to update the .env file with your licence key, your database server details and
+the URL you will use for your WebCSD server.
 Here is an example of the .env file:
 
-```
+```console
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
 DB_CONNECTIONSTRING=Server=database-server;Port=5432;User Id=postgres;Password=passwordhere
 CSD_DATABASE=csd-database
@@ -96,28 +106,31 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
-# As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
+# As of v2.0.0, containers run as non root users.
+# Because of this you will need to create the CCDC user if it does not already exist.
 sudo adduser ccdc --uid=1397
-sudo chown -R ccdc:ccdc userdata/
 
 # If you are upgrading from an older version to v4.0.0, ensure the user id is set to 1397
 sudo usermod -u 1397 ccdc
 
-# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
+# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases.
+# E.g. if these are in the userdata directory:
+sudo chown -R ccdc:ccdc userdata/ 
 
-# Use one of the following commands: 
+# Use one of the following commands
+# If you are not connecting via SSL you can leave out "-f docker-compose.ssl.yml" 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
 ```
 
 ## Updates
@@ -135,16 +148,16 @@ docker compose down
 #Use one of the following commands: 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
 ```
 
 ## Verifying the Installation/Update
