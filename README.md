@@ -18,8 +18,8 @@ This will run on [Docker Desktop](https://docs.docker.com/engine/install/#deskto
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
 
 For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
-Once you have the download link please follow the instructions at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore the
-database into your environment.
+Once you have the download link please follow the instructions at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore
+the database into your environment.
 
 A valid license key will be required to use the software.
 
@@ -30,32 +30,30 @@ Click on the release you want to use, and download the source code zip and unpac
 
 Recommended requirements for postgres server without Macromolecule Hub:
 
- - Postgres version 14 or newer
- - 100GB free hd space
+- Postgres version 14 or newer
+- 100GB free hd space
 
 Recommended requirements for postgres server including Macromolecule Hub:
 
- - Postgres version 14 or newer
- - 200GB free hd space
- 
+- Postgres version 14 or newer
+- 200GB free hd space
+
 Recommended requirements for On-Site Lattice and WebCSD containers:
 
- - 30GB free hd space, 16GB RAM, 8 core CPU.
+- 30GB free hd space, 16GB RAM, 8 core CPU.
 
-On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
+On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
+Note that these match the 2023.3 Desktop release.
 
- - RedHat Enterprise 7.6 or higher, 8 and 9
- - CentOS 7.6 or higher
- - Rocky Linux 8 and 9
- - Ubuntu LTS 20 and 22
- 
-We will stop support of RedHat and CentOS 7 at the end of June, 2024, in line with their provider.
+- RedHat Enterprise Linux 8 and 9
+- Rocky Linux 8 and 9
+- Ubuntu LTS 20 and 22
 
 ## In-house Database Configuration
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
-Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation. 
+Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation.
 
 To enable these databases follow:
 
@@ -90,7 +88,7 @@ You will need to update the .env file with your licence key, your database serve
 the URL you will use for your WebCSD server.
 Here is an example of the .env file:
 
-```
+```console
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
 DB_CONNECTIONSTRING=Server=database-server;Port=5432;User Id=postgres;Password=passwordhere
 CSD_DATABASE=csd-database
