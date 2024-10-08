@@ -106,14 +106,16 @@ docker login -u <user> -p <password> ccdcrepository.azurecr.io
 # or to be prompted for the password
 docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
-# As of v2.0.0, containers run as non root users. Because of this you will need to run the following in the on-site-webcsd directory:
+# As of v2.0.0, containers run as non root users.
+# Because of this you will need to create the CCDC user if it does not already exist.
 sudo adduser ccdc --uid=1397
-sudo chown -R ccdc:ccdc userdata/
 
 # If you are upgrading from an older version to v4.0.0, ensure the user id is set to 1397
 sudo usermod -u 1397 ccdc
 
-# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
+# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases.
+# E.g. if these are in the userdata directory:
+sudo chown -R ccdc:ccdc userdata/ 
 
 # Use one of the following commands
 # If you are not connecting via SSL you can leave out "-f docker-compose.ssl.yml" 
