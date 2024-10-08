@@ -74,8 +74,7 @@ If you will be connecting to your WebCSD server via https which is the default b
 and required for SSO authentication, you will need an SSL certificate and private key.
 Ask your local IT staff to set these up for you.
 
-Copy the file `docker-compose.sample.ssl.yml` to `docker-compose.ssl.yml` and edit it to
-point to your SSL certificates.
+Please follow the instructions at [Configuring SSL](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Configuring-SSL) to configure SSL.
 
 ## Installation
 
