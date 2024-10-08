@@ -29,20 +29,23 @@ Click on the release you want to use, and download the source code zip and unpac
 ## Initial recommended specification
 
 Recommended requirements for postgres server without Macromolecule Hub:
+
  - Postgres version 14 or newer
  - 100GB free hd space
 
 Recommended requirements for postgres server including Macromolecule Hub:
+
  - Postgres version 14 or newer
  - 200GB free hd space
  
 Recommended requirements for On-Site Lattice and WebCSD containers:
+
  - 30GB free hd space, 16GB RAM, 8 core CPU.
 
 On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms. Note that these match the 2023.3 Desktop release.
 
  - RedHat Enterprise 7.6 or higher, 8 and 9
- - CentOS 7.6 or higher 
+ - CentOS 7.6 or higher
  - Rocky Linux 8 and 9
  - Ubuntu LTS 20 and 22
  
@@ -65,6 +68,15 @@ More information is given in the notes & example sections of the sample file. Th
 
 Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web)
 
+## SSL Configuration
+
+If you will be connecting to your WebCSD server via https which is the default behaviour
+and required for SSO authentication, you will need an SSL certificate and private key.
+Ask your local IT staff to set these up for you.
+
+Copy the file `docker-compose.sample.ssl.yml` to `docker-compose.ssl.yml` and edit it to
+point to your SSL certificates.
+
 ## Installation
 
 After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env`.
@@ -75,7 +87,8 @@ cd on-site-webcsd
 cp sample.env .env
 ```
 
-You will need to update the .env file with your licence key and the two passwords you would like to use.
+You will need to update the .env file with your licence key, your database server details and
+the URL you will use for your WebCSD server.
 Here is an example of the .env file:
 
 ```
@@ -105,19 +118,20 @@ sudo usermod -u 1397 ccdc
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases by using the command above on relevant directories. 
 
-# Use one of the following commands: 
+# Use one of the following commands
+# If you are not connecting via SSL you can leave out "-f docker-compose.ssl.yml" 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
 ```
 
 ## Updates
@@ -135,16 +149,16 @@ docker compose down
 #Use one of the following commands: 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
 
 #Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
 ```
 
 ## Verifying the Installation/Update
