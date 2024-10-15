@@ -13,6 +13,7 @@ Additional information including user configuration and troubleshooting can be f
 ## Prerequisites
 
 A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/) installation is required for installation.
+We recommend installing the latest version of Docker from these links.
 This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
 
 Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
@@ -43,11 +44,11 @@ Recommended requirements for On-Site Lattice and WebCSD containers:
 - 30GB free hd space, 16GB RAM, 8 core CPU.
 
 On-Site Lattice and WebCSD should work with any Linux OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
-Note that these match the 2023.3 Desktop release.
+Note that these match the 2024.2 Desktop release.
 
 - RedHat Enterprise Linux 8 and 9
 - Rocky Linux 8 and 9
-- Ubuntu LTS 20 and 22
+- Ubuntu LTS 22 and 24
 
 ## In-house Database Configuration
 
@@ -68,11 +69,14 @@ Instructions on setting up CSD-Theory Web can be found in the [wiki](https://git
 
 ## SSL Configuration
 
-If you will be connecting to your WebCSD server via https which is the default behaviour
-and required for SSO authentication, you will need an SSL certificate and private key.
+Connecting to your WebCSD server via https is now required.
+To configure this you will need an SSL certificate and private key.
 Ask your local IT staff to set these up for you.
 
 Please follow the instructions at [Configuring SSL](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Configuring-SSL) to configure SSL.
+
+If the WebCSD server is run without configuring SSL a built-in self-signed certificate will be used.
+This is not recommended as it is insecure.
 
 ## Installation
 
@@ -84,9 +88,9 @@ cd on-site-webcsd
 cp sample.env .env
 ```
 
-You will need to update the .env file with your licence key, your database server details and
+You will need to update the `.env` file with your licence key, your database server details and
 the URL you will use for your WebCSD server.
-Here is an example of the .env file:
+Here is an example of the `.env` file:
 
 ```console
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
@@ -118,7 +122,6 @@ sudo usermod -u 1397 ccdc
 sudo chown -R ccdc:ccdc userdata/ 
 
 # Use one of the following commands
-# If you are not connecting via SSL you can leave out "-f docker-compose.ssl.yml" 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
@@ -136,7 +139,7 @@ docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f 
 ## Updates
 
 When you have been notified when there is an update available you can download the newest release from the github repository.
-Oce you have downloaded the new release, ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
+Once you have downloaded the new release, ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
 The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
@@ -174,7 +177,9 @@ For more information see the [Docker volumes documentation](https://docs.docker.
 
 ## Usage
 
-To access the On-Site Lattice and WebCSD service locally go to <http://localhost> in a browser.
+To access the On-Site Lattice and WebCSD service locally go to <https://full.server.hostname> in a browser,
+replacing `full.server.hostname` by the full hostname of your Docker host. `PUBLIC_URI` should also be set to this
+URL in `.env` for authentication to work correctly.
 
 ## Contact support
 
