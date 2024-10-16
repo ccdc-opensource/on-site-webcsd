@@ -1,35 +1,24 @@
 # On-Site Lattice and WebCSD
 
+## Introduction
+
 On-Site Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
 
 This readme contains information required for installation and updates of On-Site Lattice and WebCSD.
 
-Please use the latest version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>.
-
-Terms and conditions can be found in the license.md file.
+Terms and conditions can be found in the `license.md` file.
 
 Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
 
-## Prerequisites
+## Prerequisites and Setup
 
-A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/) installation is required for installation.
-We recommend installing the latest version of Docker from these links.
-This will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
+### System Requirements
 
-Access to the CCDC container registry will require a username and password, to get them please contact CCDC Support.
+For version 4.0 onwards, a postgres server is required for CSD and Identity databases.
+This will typically be installed on a separate machine from the one hosting the WebCSD
+Docker containers.
 
-For version 4.0 onwards, a postgres server is required for CSD and Identity databases. The postgres CSD database will be provided via a download link, to get it, please contact CCDC Support.
-Once you have the download link please follow the instructions at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore
-the database into your environment.
-
-A valid license key will be required to use the software.
-
-A download of the desired [release](https://github.com/ccdc-opensource/on-site-webcsd/releases).
-Click on the release you want to use, and download the source code zip and unpack.
-
-## Initial recommended specification
-
-Recommended requirements for postgres server without Macromolecule Hub:
+Recommended requirements for postgres server without Macromolecule Hub (PDB protein data):
 
 - Postgres version 14 or newer
 - 100GB free hd space
@@ -39,7 +28,7 @@ Recommended requirements for postgres server including Macromolecule Hub:
 - Postgres version 14 or newer
 - 200GB free hd space
 
-Recommended requirements for On-Site Lattice and WebCSD containers:
+Recommended requirements for Docker server hosting On-Site Lattice and WebCSD containers:
 
 - 30GB free hd space, 16GB RAM, 8 core CPU.
 
@@ -50,37 +39,65 @@ Note that these match the 2024.2 Desktop release.
 - Rocky Linux 8 and 9
 - Ubuntu LTS 22 and 24
 
-## In-house Database Configuration
+### Authentication
 
-On-Site Lattice and WebCSD can be configured to read from in-house databases.
+- A valid CCDC activation key will be required to use the software.
+- Access to the CCDC docker container registry will require a username and password, to get them please contact CCDC Support.
+- The postgres CSD database will be provided via a download link. To obtain this, please contact CCDC Support
+  and specify whether you want the database with or without Macromolecule Hub.
 
-Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation.
+### Docker Installation
 
-To enable these databases follow:
+A standard [Docker Server](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/) installation is required for installation of WebCSD.
+We recommend installing the latest version of Docker from these links.
+WebCSD will run on [Docker Desktop](https://docs.docker.com/engine/install/#desktop), however this is not recommended and may [require a license](https://www.docker.com/legal/docker-subscription-service-agreement/).
 
-1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
-2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
+CHECK: Test your Docker installation as described at the above links. Also verify that you can log into the CCDC
+container registry.
 
-More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+```sh
+docker login -u <user> -p <password> ccdcrepository.azurecr.io
 
-## CSD-Theory Web Database Configuration
+# or to be prompted for the password
+docker login -u <user> --password-stdin ccdcrepository.azurecr.io
+```
 
-Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web)
+### PostgreSQL Server Installation
 
-## SSL Configuration
+Once you have downloaded the postgres CSD database, please follow the instructions at
+[Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server) to restore
+the database into your environment.
+
+CHECK: Can you connect to the database from Docker containers? These commands should run without errors.
+
+```sh
+# Pull postgres image
+docker pull postgres:14.13 
+# Run container
+docker run --name debug-postgres -e POSTGRES_PASSWORD=passwordhere -d postgres:14.13 
+# Shell into container
+docker exec -it debug-postgres sh 
+# Attempt to establish a connection to the database server
+psql -h database.server.name -p 5432 -U postgres -d csd_database
+```
+
+## Basic Configuration And Installation
+
+### SSL Configuration
 
 Connecting to your WebCSD server via https is now required.
 To configure this you will need an SSL certificate and private key.
 Ask your local IT staff to set these up for you.
 
-Please follow the instructions at [Configuring SSL](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Configuring-SSL) to configure SSL.
-
+Please follow the instructions at [Configuring SSL](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Configuring-SSL).
 If the WebCSD server is run without configuring SSL a built-in self-signed certificate will be used.
 This is not recommended as it is insecure.
 
-## Installation
+### WebCSD Test Installation
 
-After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` as `.env`.
+Please download and unpack the latest version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>.
+
+After unpacking the release source code onto the server on which the software will be installed you will need to go into the on-site-webcsd directory and copy the environment file `sample.env` to `.env`.
 Then open the `.env` file and populate with suitable values.
 
 ```console
@@ -90,15 +107,15 @@ cp sample.env .env
 
 You will need to update the `.env` file with your licence key, your database server details and
 the URL you will use for your WebCSD server.
-Here is an example of the `.env` file:
+Here is an example of the `.env` file with comments removed:
 
 ```console
 CCDC_LICENSING_CONFIGURATION=la-code;123456-123456-123456-123456-123456-123456;
 DB_CONNECTIONSTRING=Server=database-server;Port=5432;User Id=postgres;Password=passwordhere
-CSD_DATABASE=csd-database
-IDENTITY_DATABASE=csd-identity
 PUBLIC_URI=https://csd-software.local
 PLATFORM_PORT=443
+CSD_DATABASE=csd-database
+IDENTITY_DATABASE=csd-identity
 ```
 
 Where stated, some of these variables will be provided by CCDC; all other variables are for the user to generate and set.
@@ -121,66 +138,79 @@ sudo usermod -u 1397 ccdc
 # E.g. if these are in the userdata directory:
 sudo chown -R ccdc:ccdc userdata/ 
 
-# Use one of the following commands
+# For testing use one of the following commands.
+# These do not load in-house databases and the user access control is disabled.
+# These features will be configured later.
 
-#Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+# If you are not using Macromolecule Hub
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.disable-user-access.yml up -d
 
-#Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
+# If you are using Macromolecule Hub
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.disable-user-access.yml -f docker-compose.macromolecule-hub.yml up -d
 ```
 
-## Updates
-
-When you have been notified when there is an update available you can download the newest release from the github repository.
-Once you have downloaded the new release, ensure the default old files have been removed and any custom configuration files have been moved to the new release directory.
-
-Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
-The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
-
-```sh
-docker compose pull
-
-docker compose down
-#Use one of the following commands: 
-
-#Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
-```
-
-## Verifying the Installation/Update
-
-To check that the install or update has completed and that all the services are running, run:
+CHECK: To check that the install has completed and that all the services are running, run:
 
 ```sh
 docker compose ps
 ```
 
-which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack. If the issues persist then please contact CCDC Support.
+which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack (`docker compose down` then repeat
+the `docker compose ... up -d` command run earlier). If the issues persist then please contact CCDC Support.
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
-## Usage
-
 To access the On-Site Lattice and WebCSD service locally go to <https://full.server.hostname> in a browser,
-replacing `full.server.hostname` by the full hostname of your Docker host. `PUBLIC_URI` should also be set to this
-URL in `.env` for authentication to work correctly.
+replacing `full.server.hostname` by the full hostname of your Docker host. Check that you can search the CSD.
+If you have problems check that `PUBLIC_URI` has been set to <https://full.server.hostname> in `.env`.
 
-## Contact support
+## Further Configuration
+
+In-house databases are discussed below. For user access control and more please see
+[the wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki).
+
+After making any changes to docker compose files, restart the stack using the following config files.
+
+- docker-compose.yml
+- docker-compose.ssl.yml
+- Any other docker compose files which you have customised
+
+The commands to restart the stack are
+
+```sh
+docker compose down
+docker compose -f docker-compose.yml -f file1.yml -f file2.yml ... up -d
+```
+
+N.B. If user access control is not explicitly disabled via `docker-compose.disable-user-access.yml`, you must configure roles to allow
+access to in-house databases. For details please see [Access Control To In-House Databases](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Access-control-to-in-house-databases).
+
+### In-house Database Configuration
+
+On-Site Lattice and WebCSD can be configured to read from in-house databases.
+
+Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation.
+
+To enable these databases follow:
+
+1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
+2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
+
+More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
+
+### CSD-Theory Web Database Configuration
+
+Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web).
+
+## Updates
+
+When you have been notified that there is an update available you can [download the newest release](https://github.com/ccdc-opensource/on-site-webcsd/releases) from the github repository.
+Once you have downloaded the new release, ensure any customisations have been copied to the new release directory.
+You may need to customise the new versions of the config files (particularly `.env`) rather than copying the old versions - check the website above for breaking changes.
+
+Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
+The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
+
+## Contacting support
 
 If you experience any difficulties with installing or using On-Site Lattice and WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
