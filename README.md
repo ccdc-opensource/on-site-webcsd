@@ -54,7 +54,7 @@ You will likely encounter unexpected behaviour if this is not the case.**
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
-Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation. 
+Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation.
 
 To enable these databases follow:
 
@@ -68,9 +68,9 @@ More information is given in the notes & example sections of the sample file. Th
 If you have a Macromolecule Hub licence, you can also create and register in-house protein databases for use within OnSite WebCSD.
 
 To create an In-house Protein Database, you will need the Python Utilities. These can be downloaded from the [CCDC Downloads page](https://www.ccdc.cam.ac.uk/support-and-resources/csdsdownloads/)
-under CSD Python API > Python CSD Python API Utilities. If you do not see the CSD Python API listed in the available downloads, you may need to sign in.
-Relevant script can be found under ccdc > utitities > create_protein_database.
-You can run the script using the latest version of the CSD Python API.
+under `CSD Python API > Python CSD Python API Utilities`. If you do not see the CSD Python API listed in the available downloads, you may need to sign in.
+Relevant script can be found under `ccdc > utitities > create_protein_database`.
+You can run the script using the CSD Python API version 3.3.0 or later.
 
 Once you have created your protein database, you can register it by adding to your `docker-compose.db-config.yml` file following the instructions above.
 You must then mark the database as a protein database. Your database config should look something like this:
