@@ -6,7 +6,10 @@ x-labels: &k8s-labels
 
 services:
   csd-platform:
-    image: ccdcrepository.azurecr.io/onsite/ccdc-web-platform:4.0.0
+    environment:
+      - DisableUserAccessControl=false
+      - PublicUri=${PUBLIC_URI}
+    image: ccdcrepository.azurecr.io/onsite/ccdc-web-platform:4.2.0
     restart: unless-stopped
     ports:
       - ${PLATFORM_PORT}:8443
@@ -15,105 +18,170 @@ services:
       kompose.service.type: LoadBalancer
       kompose.service.expose: "true"
     depends_on:
-      - ccdc-identity
-      - webcsd
-      - csd-python-gateway
+      ccdc-identity:
+        condition: service_started
+      webcsd:
+        condition: service_healthy
+      csd-python-gateway:
+        condition: service_started
+    logging:
+      driver: local
 
   csd-python-gateway:
     environment:
-      - PlatformSecurity__DisableSSLValidation=true
       - PlatformSecurity__Issuer=${PUBLIC_URI}
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
-    image: ccdcrepository.azurecr.io/onsite/ccdc-python-gateway:4.0.0
+      - PlatformSecurity__DisableSSLValidation=true
+      - Logging__LogLevel__Default=Warning
+    image: ccdcrepository.azurecr.io/onsite/ccdc-python-gateway:4.2.0
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-identity:
     image: ccdcrepository.azurecr.io/onsite/ccdc-identitygateway:4.1.0
     environment:
       - ConnectionStrings__DefaultConnection=${DB_CONNECTIONSTRING};Database=${IDENTITY_DATABASE}
-      - "PlatformClientSettings__RedirectUris__0=${PUBLIC_URI}/authentication/login-callback"
-      - "PlatformClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/authentication/logout-callback"
-      - "WebCsdClientSettings__RedirectUris__0=${PUBLIC_URI}/structures/signin-oidc"
-      - "WebCsdClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/structures/signout-oidc"
-    depends_on:
-      - webcsdbackend
+      - PlatformClientSettings__RedirectUris__0=${PUBLIC_URI}/authentication/login-callback
+      - PlatformClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/authentication/logout-callback
+      - WebCsdClientSettings__RedirectUris__0=${PUBLIC_URI}/structures/signin-oidc
+      - WebCsdClientSettings__PostLogoutRedirectUris__0=${PUBLIC_URI}/structures/signout-oidc
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    depends_on:
+      webcsdbackend:
+        condition: service_healthy
+    logging:
+      driver: local
 
   webcsd:
     environment:
       - IdentityGateway__Issuer=${PUBLIC_URI}
       - IdentityGateway__DisableSSLValidation=true
+      - Logging__LogLevel__Default=Warning
     depends_on:
-      - ccdc-csd-searchservice
-      - csd-request-entry
-    image: ccdcrepository.azurecr.io/onsite/webcsd:4.1.0
+      ccdc-csd-searchservice:
+        condition: service_healthy
+      csd-request-entry:
+        condition: service_healthy
+    image: ccdcrepository.azurecr.io/onsite/webcsd:4.2.0
     volumes:
       - ./userdata:/app/OnSite
     labels:
       <<: *k8s-labels
     restart: unless-stopped
+    logging:
+      driver: local
 
   webcsdbackend:
     depends_on:
-      - ccdc-csd-searchservice
-      - csd-request-entry
-    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.1.0
+      ccdc-csd-searchservice:
+        condition: service_healthy
+      csd-request-entry:
+        condition: service_healthy
+    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.2.0
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
+      - Logging__LogLevel__Default=Warning
+    restart: unless-stopped
     labels:
       <<: *k8s-labels
-    restart: unless-stopped
-
-  ccdc-csd-substructuresearch:
-    labels:
-      <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructuresearch-api:4.0.0
-    depends_on:
-      - ccdc-csd-resultstore
-      - ccdc-csd-substructure-filter
-      - ccdc-csd-fingerprint
-      - ccdc-csd-deposition
-    environment:
-      - StructureSearchReadConnection=${DB_CONNECTIONSTRING};SearchPath=substructure;Database=${CSD_DATABASE}
-    restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-deposition:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api:4.2.0
     environment:
       - CsdDepositionReadConnection=${DB_CONNECTIONSTRING};SearchPath=csd_schema;Database=${CSD_DATABASE}
+      - DepositionDatabaseConfiguration__DefaultDatabase=csd
+      - DepositionDatabaseConfiguration__Databases__0__Name=csd
+      - DepositionDatabaseConfiguration__Databases__0__ReadConnectionString=${DB_CONNECTIONSTRING};SearchPath=csd_schema;Database=${CSD_DATABASE}
+      - DepositionDatabaseConfiguration__Databases__0__WriteConnectionString=${DB_CONNECTIONSTRING};SearchPath=csd_schema;Database=${CSD_DATABASE}
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-textnumericsearch:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:4.2.0
     environment:
       - CsdReadConnection=${DB_CONNECTIONSTRING};SearchPath=csd_schema;Database=${CSD_DATABASE}
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-searchservice:
     labels:
       <<: *k8s-labels
-    depends_on:
-      - ccdc-csd-textnumericsearch
-      - ccdc-csd-substructuresearch
-      - ccdc-csd-resultstore
-      - ccdc-csd-similaritysearch
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:4.0.0
-    environment:
-      - SearchProgressEndpoint=api/{0}/internal-progress
     restart: unless-stopped
+    depends_on:
+      message-broker:
+        condition: service_healthy
+      ccdc-csd-textnumericsearch:
+        condition: service_healthy
+      ccdc-csd-substructuresearch:
+        condition: service_healthy
+      ccdc-csd-similaritysearch:
+        condition: service_healthy
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:4.2.0
+    environment:
+      - SearchServiceConnectionString=${DB_CONNECTIONSTRING};SearchPath=searchstore;Database=${CSD_DATABASE}
+      - MessagingProvider=RabbitMq
+      - MessagingOnSiteUsername=queueuser
+      - MessagingOnSitePassword=${CCDC_LICENSING_CONFIGURATION}
+      - MessagingHost=message-broker
+      - Logging__LogLevel__Default=Warning
+    logging:
+      driver: local
+
+  ccdc-csd-substructuresearch:
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructuresearch-api:4.2.0
+    labels:
+      <<: *k8s-labels
+    restart: unless-stopped
+    depends_on:
+      ccdc-csd-substructure-filter:
+        condition: service_healthy
+      ccdc-csd-fingerprint:
+        condition: service_healthy
+      ccdc-csd-deposition:
+        condition: service_healthy
+      message-broker:
+        condition: service_healthy
+    environment:
+      - SubstructureSearchDatabaseConfiguration__DefaultDatabase=csd
+      - SubstructureSearchDatabaseConfiguration__Databases__0__Name=csd
+      - SubstructureSearchDatabaseConfiguration__Databases__0__ReadConnectionString=${DB_CONNECTIONSTRING};SearchPath=substructure;Database=${CSD_DATABASE}
+      - SubstructureSearchDatabaseConfiguration__Databases__0__WriteConnectionString=${DB_CONNECTIONSTRING};SearchPath=substructure;Database=${CSD_DATABASE}
+      - StructureSearchTestUser=test
+      - StructureSearchTestPassword=password
+      - MessagingProvider=RabbitMq
+      - MessagingOnSiteUsername=queueuser
+      - MessagingOnSitePassword=${CCDC_LICENSING_CONFIGURATION}
+      - MessagingHost=message-broker
+      - Logging__LogLevel__Default=Warning
+    logging:
+      driver: local
 
   csd-request-entry:
     labels:
       <<: *k8s-labels
     depends_on:
-      - ccdc-csd-deposition
-      - ccdc-csd-crystal-structure-export
-    image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:4.0.0
+      ccdc-csd-deposition:
+        condition: service_healthy
+      ccdc-csd-crystal-structure-export:
+        condition: service_healthy
+    image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:4.2.0
+    environment:
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-formulasearch:
     labels:
@@ -121,59 +189,73 @@ services:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-formulasearch-api:4.0.0
     environment:
       - FormulaSearchReadConnection=${DB_CONNECTIONSTRING};SearchPath=formula;Database=${CSD_DATABASE}
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-unitcellsearch:
     labels:
       <<: *k8s-labels
     depends_on:
-      - ccdc-csd-reducedcell-calculation-service
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:4.0.0
-    environment:
-      - UnitCellSearchReadConnection=${DB_CONNECTIONSTRING};SearchPath=unitcell;Database=${CSD_DATABASE}
+      ccdc-csd-reducedcell-calculation-service:
+        condition: service_healthy
     restart: unless-stopped
-
-  ccdc-csd-resultstore:
-    labels:
-      <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-resultstore-api:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:4.2.0
     environment:
-    - ResultStoreConnectionString=${DB_CONNECTIONSTRING};SearchPath=searchstore;Database=${CSD_DATABASE}
-    restart: unless-stopped
+      - UnitCellDatabaseConfiguration__DefaultDatabase=csd
+      - UnitCellDatabaseConfiguration__Databases__0__Name=csd
+      - UnitCellDatabaseConfiguration__Databases__0__ReadConnectionString=${DB_CONNECTIONSTRING};SearchPath=unitcell;Database=${CSD_DATABASE}
+      - UnitCellDatabaseConfiguration__Databases__0__WriteConnectionString=${DB_CONNECTIONSTRING};SearchPath=unitcell;Database=${CSD_DATABASE}
+      - Logging__LogLevel__Default=Warning
+    logging:
+      driver: local
 
   ccdc-csd-similaritysearch:
     labels:
       <<: *k8s-labels
     depends_on:
-      - ccdc-csd-fingerprint
+      ccdc-csd-fingerprint:
+        condition: service_healthy
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-structure-similarity-search:4.0.0
     environment:
       - StructureSimilaritySearchReadConnection=${DB_CONNECTIONSTRING};SearchPath=similarity;Database=${CSD_DATABASE}
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-fingerprint:
     labels:
       <<: *k8s-labels
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:4.0.0
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:4.2.0
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-substructure-filter:
     labels:
       <<: *k8s-labels
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service:4.0.0
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-crystal-structure-export:
     labels:
       <<: *k8s-labels
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:4.1.0
     restart: unless-stopped
+    logging:
+      driver: local
 
   ccdc-csd-reducedcell-calculation-service:
     labels:
       <<: *k8s-labels
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service:4.0.0
     restart: unless-stopped
+    logging:
+      driver: local
 
   webcsd-theory:
     labels:
@@ -181,23 +263,42 @@ services:
     image: ccdcrepository.azurecr.io/onsite/csd-theory:4.0.0
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
+      - Logging__LogLevel__Default=Warning
     restart: unless-stopped
+    logging:
+      driver: local
 
   message-broker:
-      image: rabbitmq:3
-      environment:
-        RABBITMQ_DEFAULT_USER: queueuser
-        RABBITMQ_DEFAULT_PASS: ${CCDC_LICENSING_CONFIGURATION}
-      restart: unless-stopped 
+    image: rabbitmq:3
+    environment:
+      RABBITMQ_DEFAULT_USER: queueuser
+      RABBITMQ_DEFAULT_PASS: ${CCDC_LICENSING_CONFIGURATION}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "await_startup"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: local
 
   ccdc-file-generation:
     restart: unless-stopped
     image: ccdcrepository.azurecr.io/onsite/ccdc-structure-file-generation:4.1.0
     environment:
-      - CacheSettings__ConnectionString=${DB_CONNECTIONSTRING};Database=structure_file_cache
+      - CacheSettings__ConnectionString=${DB_CONNECTIONSTRING};Database=testsuite_structure_file_cache
       - MessagingProvider=RabbitMq
+      - MessagingOnSiteUsername=queueuser
       - MessagingOnSitePassword=${CCDC_LICENSING_CONFIGURATION}
+      - MessagingHost=message-broker
       - PlatformSecurity__Issuer=${PUBLIC_URI}
       - PlatformSecurity__DisableSSLValidation=true
+      - Logging__LogLevel__Default=Warning
     depends_on:
-      - message-broker
+      message-broker:
+        condition: service_healthy
+      ccdc-csd-crystal-structure-export:
+        condition: service_healthy
+    logging:
+      driver: local
