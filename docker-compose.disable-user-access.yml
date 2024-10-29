@@ -1,8 +1,12 @@
 # On-Site Version 4.0
-# To disable User Access Control include this file in the startup command with -f docker-compose.disable-user-access.yml 
-version: '3.6'
+# To disable User Access Control include this file in the startup command with -f docker-compose.disable-user-access.yml
+version: "3.6"
 
 services:
+  csd-platform:
+    environment:
+      - DisableUserAccessControl=true
+
   webcsd:
     environment:
       - ApplicationOnSiteSettings__DisableUserAccessControl=true
