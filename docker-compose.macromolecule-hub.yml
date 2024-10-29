@@ -5,25 +5,24 @@ services:
   webcsd:
     environment:
       - CsdRepository__SketcherFeatures__1=Proteins
-   
+
   webcsdbackend:
     environment:
-      - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
       - ServiceSettings__Databases__1__Name=PDB Database
       - ServiceSettings__Databases__1__DbeName=pdb
       - ServiceSettings__Databases__1__ConnectionString=dbe
 
   ccdc-csd-substructuresearch:
     environment:
-      - PdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=structure_optimisation;Database=${CSD_DATABASE}
       - SubstructureSearchDatabaseConfiguration__Databases__1__Name=pdb
-      - SubstructureSearchDatabaseConfiguration__Databases__1__SettingsKey=PdbReadConnection
+      - SubstructureSearchDatabaseConfiguration__Databases__1__ReadConnectionString=${DB_CONNECTIONSTRING};SearchPath=structure_optimisation;Database=${CSD_DATABASE}
+      - SubstructureSearchDatabaseConfiguration__Databases__1__WriteConnectionString=${DB_CONNECTIONSTRING};SearchPath=structure_optimisation;Database=${CSD_DATABASE}
 
   ccdc-csd-deposition:
     environment:
-      - DepositionPdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=pdb_schema;Database=${CSD_DATABASE}
-      - DatabaseConfiguration__Databases__1__Name=pdb
-      - DatabaseConfiguration__Databases__1__SettingsKey=DepositionPdbReadConnection
+      - DepositionDatabaseConfiguration__Databases__1__Name=pdb
+      - DepositionDatabaseConfiguration__Databases__1__ReadConnectionString=${DB_CONNECTIONSTRING};SearchPath=pdb_schema;Database=${CSD_DATABASE}
+      - DepositionDatabaseConfiguration__Databases__1__WriteConnectionString=${DB_CONNECTIONSTRING};SearchPath=pdb_schema;Database=${CSD_DATABASE}
 
   ccdc-csd-textnumericsearch:
     environment:
@@ -31,9 +30,8 @@ services:
       - DatabaseConfiguration__Databases__1__Name=pdb
       - DatabaseConfiguration__Databases__1__SettingsKey=PdbReadConnection
 
-
   ccdc-csd-unitcellsearch:
     environment:
-      - UnitCellPdbReadConnection=${DB_CONNECTIONSTRING};SearchPath=pdb_cell_optimisation;Database=${CSD_DATABASE}
-      - DatabaseConfiguration__Databases__1__Name=pdb
-      - DatabaseConfiguration__Databases__1__SettingsKey=UnitCellPdbReadConnection
+      - UnitCellDatabaseConfiguration__Databases__1__Name=pdb
+      - UnitCellDatabaseConfiguration__Databases__1__ReadConnectionString=${DB_CONNECTIONSTRING};SearchPath=pdb_cell_optimisation;Database=${CSD_DATABASE}
+      - UnitCellDatabaseConfiguration__Databases__1__WriteConnectionString=${DB_CONNECTIONSTRING};SearchPath=pdb_cell_optimisation;Database=${CSD_DATABASE}
