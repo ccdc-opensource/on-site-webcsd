@@ -135,8 +135,8 @@ sudo adduser ccdc --uid=1397
 sudo usermod -u 1397 ccdc
 
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases.
-# E.g. if these are in the userdata directory:
-sudo chown -R ccdc:ccdc userdata/ 
+# E.g. if these are in the csd-data directory:
+sudo chown -R ccdc:ccdc csd-data/ 
 
 # For testing use one of the following commands.
 # These do not load in-house databases and the user access control is disabled.
@@ -210,6 +210,25 @@ You may need to customise the new versions of the config files (particularly `.e
 
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
 The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
+
+```sh
+docker compose pull
+
+docker compose down
+#Use one of the following commands: 
+
+#Use this command if you have no in-house databases and don't want to use macromolecule hub
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+
+#Use this command if you have in-house databases and don't want to use macromolecule hub 
+docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
+
+#Use this command if you have in-house databases and want macromolecule hub 
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
+
+#Use this command if you have no in-house databases and want macromolecule hub
+docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
+```
 
 ## Contacting support
 
