@@ -166,10 +166,10 @@ If you have problems check that `PUBLIC_URI` has been set to <https://full.serve
 
 ## Further Configuration
 
-In-house databases are discussed below. For user access control and more please see
-[the wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki).
-
-After making any changes to docker compose files, restart the stack using the following config files.
+Your On-Site WebCSD server is now up and running but you will probably need to configure user access control
+and in-house databases. This is done via docker compose files
+(see [WebCSD Configuration Files](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-configuration-files) in the wiki).
+After making any changes to these files, restart the stack using the following config files.
 
 - docker-compose.yml
 - docker-compose.ssl.yml
@@ -182,16 +182,21 @@ docker compose down
 docker compose -f docker-compose.yml -f file1.yml -f file2.yml ... up -d
 ```
 
-N.B. If user access control is not explicitly disabled via `docker-compose.disable-user-access.yml`, you must configure roles to allow
-access to in-house databases. For details please see [Access Control To In-House Databases](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Access-control-to-in-house-databases).
+### User Access Control
+
+User access control can be managed via local accounts or Single Sign-On (SSO).
+Unless it is explicitly disabled via `docker-compose.disable-user-access.yml`, you must configure roles to allow
+access to in-house databases.
+
+For details please see [Access Control To In-House Databases](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Access-control-to-in-house-databases).
 
 ### In-house Database Configuration
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
-Provided within the installation are sample databases which can be found in the sample-data folder in the root of the installation.
+Provided within the installation is a sample database `teaching-subset.csdsql` which can be found in the `sample-data` folder in the root of the installation.
 
-To enable these databases follow:
+To enable in-house databases:
 
 1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
 2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
@@ -201,6 +206,13 @@ More information is given in the notes & example sections of the sample file. Th
 ### CSD-Theory Web Database Configuration
 
 Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web).
+
+Provided within the installation is a sample CSD-Theory landscape database `CSPLandscape.csdsqlx` which can be found in the `sample-data` folder in the root of the installation,
+along with a blank `CSPDatabase.db` CSD-Theory metadata database.
+
+### Other customisations
+
+For other optional customisations to your WebCSD server please see [WebCSD Configuration and Customisation](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-Configuration-&-Customisation).
 
 ## Updates
 
