@@ -93,7 +93,7 @@ Please follow the instructions at [Configuring SSL](https://github.com/ccdc-open
 If the WebCSD server is run without configuring SSL a built-in self-signed certificate will be used.
 This is not recommended as it is insecure.
 
-### WebCSD Test Installation
+### WebCSD Basic Installation
 
 Please download and unpack the latest version from the release tab <https://github.com/ccdc-opensource/on-site-webcsd/releases>.
 
@@ -169,18 +169,8 @@ If you have problems check that `PUBLIC_URI` has been set to <https://full.serve
 Your On-Site WebCSD server is now up and running but you will probably need to configure user access control
 and in-house databases. This is done via docker compose files
 (see [WebCSD Configuration Files](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-configuration-files) in the wiki).
-After making any changes to these files, restart the stack using the following config files.
-
-- docker-compose.yml
-- docker-compose.ssl.yml
-- Any other docker compose files which you have customised
-
-The commands to restart the stack are
-
-```sh
-docker compose down
-docker compose -f docker-compose.yml -f file1.yml -f file2.yml ... up -d
-```
+After making any changes to these files, restart the stack as described above, adding any docker compose files
+which you have customised into the `docker compose ... up -d` command.
 
 ### User Access Control
 
