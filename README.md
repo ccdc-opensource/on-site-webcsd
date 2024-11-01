@@ -52,7 +52,7 @@ Note that these match the 2024.2 Desktop release.
 
 ## In-house Database Configuration
 
-:warning: **OnSite WebCSD makes the assumption structure identifiers are unique across all registered in-house databases.
+:warning: **OnSite WebCSD assumes structure identifiers are unique across all registered in-house databases.
 You will likely encounter unexpected behaviour if this is not the case.**
 
 On-Site Lattice and WebCSD can be configured to read from in-house databases.
