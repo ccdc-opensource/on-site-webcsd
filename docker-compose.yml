@@ -287,7 +287,7 @@ services:
     restart: unless-stopped
     image: ccdcrepository.azurecr.io/onsite/ccdc-structure-file-generation:4.1.0
     environment:
-      - CacheSettings__ConnectionString=${DB_CONNECTIONSTRING};Database=testsuite_structure_file_cache
+      - CacheSettings__ConnectionString=${DB_CONNECTIONSTRING};Database=structure_file_cache
       - MessagingProvider=RabbitMq
       - MessagingOnSiteUsername=queueuser
       - MessagingOnSitePassword=${CCDC_LICENSING_CONFIGURATION}
