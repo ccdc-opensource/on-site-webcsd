@@ -193,6 +193,17 @@ To enable in-house databases:
 
 1. Copy and rename the file `docker-compose.sample-On-Site-only-db-config.yml` to `docker-compose.db-config.yml`
 2. Edit the `volumes` section of that file to point to any in-house databases and edit the `environment` section to configure the application to recognise these databases.
+Ensure that all instances of 'database-1' or 'database-2' are replaced with the actual database name.
+
+For example, to use the 'teaching_subset.csdsql' database and have it appear as a database named 'Example', your docker-compose.db-config.yml should look like:
+
+```yml
+volumes:
+    - /path/to/webcsd/sample-data/teaching_subset.csdsql:/csd-data/teaching_subset.csdsql
+environment:
+    - ServiceSettings__Databases__2__Name=Example
+    - ServiceSettings__Databases__2__ConnectionString=/csd-data/teaching_subset.csdsql
+```
 
 More information is given in the notes & example sections of the sample file. This acts as an [override file](https://docs.docker.com/compose/extends/) which you will have to include in the startup command.
 
