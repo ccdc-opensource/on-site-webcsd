@@ -155,8 +155,16 @@ CHECK: To check that the install has completed and that all the services are run
 docker compose ps
 ```
 
-which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack (`docker compose down` then repeat
-the `docker compose ... up -d` command run earlier). If the issues persist then please contact CCDC Support.
+which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack.
+
+```sh
+# Include all config files from the "docker compose ... up -d" run earlier
+docker compose -f docker-compose.yml -f ... down
+# Same command to bring up the stack as before
+docker compose -f docker-compose.yml -f ... up -d
+```
+
+If the issues persist then please contact CCDC Support.
 
 For more information see the [Docker volumes documentation](https://docs.docker.com/compose/compose-file/#volumes).
 
@@ -251,7 +259,8 @@ The latest images can be pulled whilst the stack is running and changes will onl
 ```sh
 docker compose pull
 
-docker compose down
+#Include all files you included when bringing up the stack
+docker compose -f docker-compose.yml -f ... down
 #Use one of the following commands: 
 
 #Use this command if you have no in-house databases and don't want to use macromolecule hub
