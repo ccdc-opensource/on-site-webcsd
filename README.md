@@ -276,6 +276,8 @@ docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f 
 docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
 ```
 
+Also contact support for a new postgresql database download as the software and data must be kept in sync.
+
 ## Contacting support
 
 If you experience any difficulties with installing or using On-Site Lattice and WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
