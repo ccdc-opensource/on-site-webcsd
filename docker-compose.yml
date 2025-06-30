@@ -1,4 +1,4 @@
-# On-Site Version 4.0
+# On-Site Version 4.2.1
 version: "3.6"
 
 x-labels: &k8s-labels
@@ -79,7 +79,7 @@ services:
         condition: service_healthy
       csd-request-entry:
         condition: service_healthy
-    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.2.0
+    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.2.1
     environment:
       - CCDC_LICENSING_CONFIGURATION=${CCDC_LICENSING_CONFIGURATION}
       - Logging__LogLevel__Default=Warning
