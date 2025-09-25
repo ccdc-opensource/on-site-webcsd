@@ -9,6 +9,8 @@ before publication will be clearly marked with FIXME.
 The Cloud Installation folder has two readme files in its subfolders, both with broken links
 to the wiki.
 
+Can we notify On-Site WebCSD users when a new version is available?
+
 ## Introduction
 
 On-Site Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
@@ -261,34 +263,10 @@ For other optional customisations to your WebCSD server please see [WebCSD Confi
 
 ## Updates
 
-FIXME: How will updates work now? Will there be a maintenance tool to handle them?
+FIXME: Is this correct?
 
-When you have been notified that there is an update available you can [download the newest release](https://github.com/ccdc-opensource/on-site-webcsd/releases) from the github repository.
-Once you have downloaded the new release, ensure any customisations have been copied to the new release directory.
-You may need to customise the new versions of the config files (particularly `.env`) rather than copying the old versions - check the website above for breaking changes.
-
-Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
-The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
-
-```sh
-docker compose pull
-
-#Include all files you included when bringing up the stack
-docker compose -f docker-compose.yml -f ... down
-#Use one of the following commands: 
-
-#Use this command if you have no in-house databases and don't want to use macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have in-house databases and don't want to use macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have in-house databases and want macromolecule hub 
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.db-config.yml -f docker-compose.ssl.yml up -d
-
-#Use this command if you have no in-house databases and want macromolecule hub
-docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
-```
+To update your installation, run the maintenance tool and select "Update Components" on the first page.
+This will automatically pull the latest versions of all containers and restart the stack.
 
 ## Contacting support
 
