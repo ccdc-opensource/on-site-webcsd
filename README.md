@@ -227,9 +227,13 @@ More information is given in the notes & example sections of the sample file. Th
 
 If you have a Macromolecule Hub licence, you can also create and register in-house protein databases for use within OnSite WebCSD.
 
-To create an In-house Protein Database, you will need the Python Utilities. These can be downloaded from the [CCDC Downloads page](https://www.ccdc.cam.ac.uk/support-and-resources/csdsdownloads/)
-under `CSD Python API > Python CSD Python API Utilities`. If you do not see the CSD Python API listed in the available downloads, you may need to sign in.
-The relevant script can be found under `ccdc > utitities > create_protein_database`.
+To create an In-house Protein Database, you will need the CSD Python API Utilities. These can be downloaded from the [CCDC Downloads page](https://www.ccdc.cam.ac.uk/support-and-resources/csdsdownloads/).
+If you are a CCDC Research Partner and you are logged into the CCDC website, the above link will take you to
+a list of downloads. You'll find the CSD Python API utilities under `CSD Portfolio > CSD Python API`.
+Otherwise, the link will take you to a download form requesting your customer number and activation key.
+On completion of this form you will be sent a list of download links including the CSD Python API Utilities.
+
+After unpacking the Python utilities, the relevant script can be found under `ccdc > utilities > create_protein_database`.
 You can run the script using the CSD Python API version 3.3.0 or later.
 
 Once you have created your protein database, you can register it by adding to your `docker-compose.db-config.yml` file following the instructions above.
