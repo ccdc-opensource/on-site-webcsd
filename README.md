@@ -10,8 +10,6 @@ verified that the documentation describes current behaviour but it is clearly a 
 BUG: The Cloud Installation folder has two readme files in its subfolders, both with broken links
 to the wiki.
 
-Can we notify On-Site WebCSD users when a new version is available?
-
 ## Introduction
 
 On-Site Lattice and WebCSD is currently only available to CCDC industrial customers and other invited groups.
@@ -188,6 +186,14 @@ at install time.
 To check that you can search the CSD you must either create an account (BUG: this does not work) or
 restart the stack with the user access control disabled. For more information please see
 [Access Control To In-House Databases](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Access-control-to-in-house-databases).
+
+If you have problems check your `.env` file.
+
+- The correct format for the `CCDC_LICENSING_CONFIGURATION` line is
+  `CCDC_LICENSING_CONFIGURATION=la-code;ACTIVATION_KEY;`.
+- `PUBLIC_URI` should be set to the full URL of your WebCSD server including the port number.
+  This must resolve to your docker host.
+- `PLATFORM_PORT` must match the port number in `PUBLIC_URI` (default is 443).
 
 If you have problems check that `PUBLIC_URI` has been set to the correct URL in `.env` and that this
 URL points to your Docker host.
