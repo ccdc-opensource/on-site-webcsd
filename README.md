@@ -53,9 +53,9 @@ FIXME: Eva to confirm supported platforms for 2025.3 release
 On-Site Lattice and WebCSD should work with any OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
 Note that these match the 2025.3 CSD Portfolio Desktop release.
 
-- Windows 11
-- RedHat Enterprise Linux 8 and 9
-- Rocky Linux 8 and 9
+- Windows 10 and 11
+- RedHat Enterprise Linux 8, 9 and 10
+- Rocky Linux 8, 9 and 10
 - Ubuntu LTS 22 and 24
 - macOS 14, 15 and 26
 
@@ -133,8 +133,6 @@ If self-hosting the postgres server please follow the instructions at [Setting u
 
 Ensure that your Docker installation is up and running, then run the WebCSD installer and follow its instructions.
 
-FIXME: Eva to document running the installer from the command line.
-
 ![Onsite configuration dialog](onsite-webcsd-media/onsite%20configuration.png)
 
 - SSL certificates: The directory containing your SSL certificate and private key
@@ -148,6 +146,9 @@ Browse to the database dump file which CCDC Support sent you.
 
 During the installation a `.env` file and some `.yml` files will be created in the installation directory.
 These are docker compose config files and can be edited to customise your installation.
+
+It is also possible to run the WebCSD installer from the command line. This process is documented on the
+wiki under [Alternative ways to setup On-Site WebCSD](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Alternative-ways-to-setup-On-Site-WebCSD)
 
 CHECK: To check that the install has completed and that all the services are running,
 either view the containers in the Docker Desktop GUI or run:
