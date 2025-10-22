@@ -222,7 +222,12 @@ FIXME: can we take out this warning now?
 :warning: **OnSite WebCSD assumes structure identifiers are unique across all registered in-house databases.
 You will likely encounter unexpected behaviour if this is not the case.**
 
-On-Site Lattice and WebCSD can be configured to read from in-house databases.
+On-Site Lattice and WebCSD can be configured to read from in-house databases. These must have the latest schema to work correctly. To convert an
+in-house database to the correct format, use babel which is installed as part of CSD-Editor. For example, on Windows:
+
+```sh
+CCDC\ccdc-software\csd-editor\ccdc_babel.exe -auto path\to\old_db.csdsqlx -csdsql path\to\new_db.csdsql
+```
 
 FIXME: the `sample-data` folder is no longer provided with the installation, is this intentional?
 
