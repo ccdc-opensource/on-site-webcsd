@@ -253,6 +253,8 @@ When you have been notified that there is an update available you can [download 
 Once you have downloaded the new release, ensure any customisations have been copied to the new release directory.
 You may need to customise the new versions of the config files (particularly `.env`) rather than copying the old versions - check the website above for breaking changes.
 
+You may also need to contact support for a new postgresql database download link - see the release notes.
+
 Once the latest installation files have been obtained, to update the software, pull the latest images, and restart the stack.
 The latest images can be pulled whilst the stack is running and changes will only come into effect upon restarting the stack.
 
@@ -275,6 +277,8 @@ docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f 
 #Use this command if you have no in-house databases and want macromolecule hub
 docker compose -f docker-compose.yml -f docker-compose.macromolecule-hub.yml -f docker-compose.ssl.yml up -d
 ```
+
+To update the data if needed, repeat the process described at [Setting Up Your PostgreSQL Server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server#restore-database).
 
 ## Contacting support
 
