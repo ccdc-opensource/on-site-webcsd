@@ -78,7 +78,7 @@ docker run --name debug-postgres -e POSTGRES_PASSWORD=passwordhere -d postgres:1
 # Shell into container
 docker exec -it debug-postgres sh 
 # Attempt to establish a connection to the database server
-psql -h database.server.name -p 5432 -U postgres -d csd_database
+psql -h database.server.name -p 5432 -U postgres -d csd-database
 ```
 
 ## Basic Configuration And Installation
