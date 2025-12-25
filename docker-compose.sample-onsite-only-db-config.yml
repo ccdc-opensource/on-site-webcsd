@@ -1,6 +1,10 @@
 # On-Site Version 4.0
 version: "3.6"
 
+# Replace /path/to/database-1 by the path to your first in-house database on the docker host
+# If you have more in-house databases, replace /path/to/database-2 as well
+# Add extra lines to the "volumes" and "environment" sections if needed
+# Database names can also be changed
 services:
   webcsdbackend:
     # In these sections ensure that all instances of "database-1.csdsql" or "database-2.csdsql"
@@ -14,6 +18,7 @@ services:
       - ServiceSettings__Databases__3__Name=Example2
       - ServiceSettings__Databases__3__ConnectionString=/csd-data/database-2.csdsql
 
+  # Replace /path/to/structure/files by the directory with your structure files
   webcsd:
     volumes:
       - ./path/to/structure/files:/structure-files
