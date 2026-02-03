@@ -8,7 +8,7 @@ MD033:
   # Allowed elements
   allowed_elements: [
     # Image elements
-    img, 
+    img,
     # Table elements
     table,
     thead,
@@ -34,3 +34,4 @@ MD033:
     em,
     strong
   ]
+  
