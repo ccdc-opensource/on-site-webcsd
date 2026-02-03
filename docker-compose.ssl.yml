@@ -1,0 +1,7 @@
+services:
+  csd-platform:
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${CERTIFICATE_PASSWORD}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/ssl_cert.pfx
+    volumes:
+      - ${SSL_CERT_LOC}:/https/ssl_cert.pfx:ro

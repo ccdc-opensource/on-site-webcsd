@@ -1,0 +1,38 @@
+# On-Site Version 4.3.0
+
+# ⚠️ INSECURE CONFIGURATION
+#
+# This docker-compose file enables:
+#   DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE=true
+# This allows services to accept any SSL/TLS certificate, including self-signed or invalid ones.
+
+
+services:
+  csd-platform:
+    environment:
+      DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+
+  ccdc-identity:
+    environment:
+      DANGEROUS_DISABLE_HTTPS: "true"
+      DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+
+  entitlements:
+    environment:
+      DANGEROUS_DISABLE_VALIDATE_ISSUER: "true"
+
+  webcsd:
+    environment:
+      DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+
+  ccdc-file-generation:
+    environment:
+      DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+
+  ccdc-csd-database-management:
+    environment:
+      DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+
+  ccdc-csd-entry-ingestion:
+    environment:
+      DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"

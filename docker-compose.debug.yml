@@ -1,0 +1,94 @@
+# This docker-compose file is used to change log level to debug of all services.
+
+x-loglevel: &loglevel "Debug"
+
+services:
+  csd-platform:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-platformgateway:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-identity:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  entitlements:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  webcsd:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+      ApplicationSettings__debug: true
+      Serilog__WriteTo__Name: Console
+
+  webcsdbackend:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-substructuresearch:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-deposition:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-textnumericsearch:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-searchservice:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  csd-request-entry:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-formulasearch:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-unitcellsearch:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-similaritysearch:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-fingerprint:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-substructure-filter:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-crystal-structure-export:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-reducedcell-calculation-service:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  webcsd-theory:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-database-management:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-csd-entry-ingestion:
+    environment:
+      Logging__LogLevel__Default: *loglevel
+
+  ccdc-file-generation:
+    environment:
+      Logging__LogLevel__Default: *loglevel
