@@ -2,3 +2,36 @@
 MD013:
   # Number of characters
   line_length: 200
+
+# MD033/no-inline-html - Inline HTML
+MD033:
+  # Allowed elements
+  allowed_elements: [
+    # Image elements
+    img,
+    # Table elements
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr,
+    col,
+    colgroup,
+    hr,
+    # Definition list elements
+    dl,
+    dt,
+    dd,
+    # Text body elements
+    p,
+    br,
+    span,
+    data,
+    sup,
+    sub,
+    code,
+    em,
+    strong
+  ]
+  

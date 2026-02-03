@@ -1,16 +1,1 @@
-# Check-in only sample.env, all other env files used for testing should be ignored
-**.env
-!sample.env
 
-# Check-in only 
-docker-compose.*.yml
-!docker-compose.disable-user-access.yml
-!docker-compose.sample-onsite-only-db-config.yml
-!docker-compose.port-configuration.yml
-!docker-compose.macromolecule-hub.yml
-!docker-compose.sample-enable-sso.yml
-!docker-compose.sample-csd-theory-db-config.yml
-!docker-compose.sample.ldap.yml
-
-# Other
-**.swp
