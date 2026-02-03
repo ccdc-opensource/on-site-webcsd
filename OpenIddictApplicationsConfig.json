@@ -1,0 +1,63 @@
+{
+    "OpenIddict": {
+        "Applications": [
+            {
+                "ClientId": "ccdc-platform-web",
+                "ClientType": "public",
+                "ConsentType": "implicit",
+                "DisplayName": "ccdclattice",
+                "Permissions": [
+                    "ept:authorization",
+                    "ept:end_session",
+                    "ept:token",
+                    "gt:authorization_code",
+                    "gt:refresh_token",
+                    "rst:code",
+                    "scp:email",
+                    "scp:profile",
+                    "scp:roles",
+                    "scp:coreservices"
+                ],
+                "RedirectUris": [],
+                "PostLogoutRedirectUris": [],
+                "Requirements": [
+                    "ft:pkce"
+                ]
+            },
+            {
+                "ClientId": "webcsd",
+                "ClientType": "public",
+                "ConsentType": "implicit",
+                "DisplayName": "webcsd",
+                "Permissions": [
+                    "ept:authorization",
+                    "ept:end_session",
+                    "ept:token",
+                    "gt:authorization_code",
+                    "gt:refresh_token",
+                    "rst:code",
+                    "scp:email",
+                    "scp:profile",
+                    "scp:roles",
+                    "scp:coreservices"
+                ],
+                "RedirectUris": [],
+                "PostLogoutRedirectUris": [],
+                "Requirements": [
+                    "ft:pkce"
+                ]
+            }
+        ],
+        "Scopes": [
+            {
+                "Name": "coreservices",
+                "Resources": [
+                    "api.entitlements",
+                    "api.databasemanagement",
+                    "api.entryingestion",
+                    "api.structurefilegeneration"
+                ]
+            }
+        ]
+    }
+}
