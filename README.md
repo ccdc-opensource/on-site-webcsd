@@ -85,6 +85,8 @@ sudo apt-get install libnss3 libxss1 libopengl0 libgfortran5 libxkbcommon-x11-0 
   will be required to use the software.
 - Connecting to your WebCSD server via https is now required. To configure this you will need a password-protected .pfx
   certificate. Ask your local IT staff to set this up for you.
+- On-Site WebCSD is installed via Docker, which requires access to the CCDC docker container registry.
+  To obtain a username and password please contact CCDC Support.
 
 ### Docker Installation
 
@@ -97,10 +99,7 @@ Linux users also have the option to install [Docker Engine](https://docs.docker.
 [Docker Compose plugin](https://docs.docker.com/compose/install/).
 
 CHECK: Test your Docker installation as described at the above links.
-
-The recommended offline installer includes all docker images. An online installer is provided as an alternative -
-this requires access to the CCDC docker container registry. To obtain a username and password please contact CCDC
-Support then verify that you can log in.
+Also verify that you can log into the CCDC docker container registry:
 
 ```sh
 docker login -u <user> -p <password> ccdcrepository.azurecr.io
@@ -141,9 +140,8 @@ sudo chown -R ccdc:ccdc csd-data/
 
 ## Basic Configuration And Installation
 
-Offline and online installers are available from [the release tab](https://github.com/ccdc-opensource/on-site-webcsd/releases)
-to run either via a GUI or command-line interface. We recommend the offline installer to reduce issues caused by restrictive
-firewalls.
+The installer is available from [the release tab](https://github.com/ccdc-opensource/on-site-webcsd/releases)
+to run either via a GUI or command-line interface.
 
 ### GUI installation
 
