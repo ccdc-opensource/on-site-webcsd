@@ -38,8 +38,8 @@ update to this version if you are currently using those components.**
 
 ### System Requirements
 
-A docker server is required to run On-Site WebCSD. In the standard configuration the
-postgres server for CSD and Identity databases will also run in a docker container but there is an option to host this separately.
+A docker server is required to run On-Site WebCSD. In the standard configuration the postgres server for CSD and Identity databases will also run in a docker
+container but there is an option to host this separately.
 
 Recommended requirements for docker server hosting postgres container without Macromolecule Hub:
 
