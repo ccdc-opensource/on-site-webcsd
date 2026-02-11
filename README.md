@@ -38,8 +38,8 @@ update to this version if you are currently using those components.**
 
 ### System Requirements
 
-A docker server is required to run On-Site WebCSD. In the standard configuration the
-postgres server for CSD and Identity databases will also run in a docker container but there is an option to host this separately.
+A docker server is required to run On-Site WebCSD. In the standard configuration the postgres server for CSD and Identity databases will also run in a docker
+container but there is an option to host this separately.
 
 Recommended requirements for docker server hosting postgres container without Macromolecule Hub:
 
@@ -49,7 +49,7 @@ Recommended requirements for Docker server hosting On-Site Lattice and WebCSD co
 
 - 30GB free HD space, 16GB RAM, 8 core CPU.
 
-If self-hosting the postgres server, see [Setting up your Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server)
+If self-hosting the postgres server, see [Setting up a self-hosted Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server)
 for system requirements.
 
 On-Site Lattice and WebCSD should work with any OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
@@ -112,7 +112,7 @@ docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 The postgres CSD database will be provided via a download link. To obtain this, please contact CCDC Support.
 
-If self-hosting the postgres server please follow the instructions at [Setting up your Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-your-PostgreSQL-server)
+If self-hosting the postgres server please follow the instructions at [Setting up a self-hosted Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server)
 
 ### CCDC User Account
 
@@ -128,9 +128,8 @@ sudo adduser ccdc --uid=1397
 sudo usermod -u 1397 ccdc
 ```
 
-We recommend running the installer from the `ccdc` account so that all file permissions are
-set up correctly. If the installer is run from a different account, make sure the `ccdc` account
-has read access to any in-house or CSP databases by running this command after installation.
+**The installer must be run from the `ccdc` account so that all file permissions are
+set up correctly.**
 
 ```sh
 # You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases.
