@@ -116,7 +116,7 @@ If self-hosting the postgres server please follow the instructions at [Setting u
 
 ### CCDC User Account
 
-Containers run as the account with numeric uid 1397 and you will need to create this account.
+Containers run as the account with numeric uid 1397 and you will need to create this account and add it to the `docker` group.
 We suggest giving it the username `ccdc`.
 
 ```sh
@@ -126,6 +126,10 @@ sudo adduser ccdc --uid=1397
 
 # If you are upgrading from an older version to v4.0.0, ensure the user id is set to 1397
 sudo usermod -u 1397 ccdc
+
+# Create the docker group and add the CCDC user to it.
+sudo groupadd docker
+sudo usermod -aG docker ccdc
 ```
 
 **The installer must be run from the `ccdc` account so that all file permissions are
