@@ -18,7 +18,7 @@
   - [In-House Database Configuration](#in-house-database-configuration)
   - [CSD-Theory Web Database Configuration](#csd-theory-web-database-configuration)
   - [Other Customisations](#other-customisations)
-- [Changing License Keys](#changing-license-keys)
+- [Changing license Keys](#changing-license-keys)
 - [Updates](#updates)
   - [Installer](#installer)
   - [Manual Updates](#manual-updates)
@@ -187,7 +187,7 @@ to run either via a GUI or command-line interface.
    alt="A screenshot of the On-Site WebCSD installer" style="width:4.70in;height:4.33in" />
 
 4. At the next stage, the configuration details required for setting up the server are required. This
-   includes the location of the .pfx file and the associated password, the CCDC licence key and the public URI
+   includes the location of the .pfx file and the associated password, the CCDC license key and the public URI
    for the server.
 
    - If no .pfx file is provided a built-in self-signed certificate will be used. This is not recommended as
@@ -307,14 +307,14 @@ along with a blank `CSPDatabase.db` CSD-Theory metadata database.
 
 For other optional customisations to your WebCSD server please see [WebCSD Configuration and Customisation](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-Configuration-&-Customisation).
 
-## Changing License Keys
+## Changing license Keys
 
 To change your license key you must delete the license volume and restart the stack:
 
 ```sh
 # Append -f docker-compose.insecure-configuration.yml and docker-compose.postgres.yml if needed.
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
-rm -r <onsite-installation-directory>/.lic
+rm -r lic
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
 
