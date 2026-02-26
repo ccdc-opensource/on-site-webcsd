@@ -18,7 +18,12 @@
   - [In-House Database Configuration](#in-house-database-configuration)
   - [CSD-Theory Web Database Configuration](#csd-theory-web-database-configuration)
   - [Other Customisations](#other-customisations)
+- [Changing license Keys](#changing-license-keys)
 - [Updates](#updates)
+  - [Installer](#installer)
+  - [Manual Updates](#manual-updates)
+- [Known Issues](#known-issues)
+  - [Restart the message queue](#restart-the-message-queue)
 - [Contacting Support](#contacting-support)
 
 ## Introduction
@@ -84,7 +89,24 @@ sudo apt-get install libnss3 libxss1 libopengl0 libgfortran5 libxkbcommon-x11-0 
 - A valid CCDC activation key (a 36-character key in the format ######-######-######-######-######-######)
   will be required to use the software.
 - Connecting to your WebCSD server via https is now required. To configure this you will need a password-protected .pfx
-  certificate. Ask your local IT staff to set this up for you.
+  certificate.
+
+```sh
+# To generate a self-signed certificate
+
+# Generate private key (OpenSSL will prompt for a password)
+openssl genrsa -out private.key 2048
+
+# Generate certificate signing request (CSR)
+openssl req -new -key private.key -out request.csr
+
+# Generate self-signed certificate (valid for 365 days)
+openssl x509 -req -days 365 -in request.csr -signkey private.key -out certificate.crt
+
+# Bundle into .pfx
+openssl pkcs12 -export -out certificate.pfx -inkey private.key -in certificate.crt
+```
+
 - On-Site WebCSD is installed via Docker, which requires access to the CCDC docker container registry.
   To obtain a username and password please contact CCDC Support.
 
@@ -132,13 +154,12 @@ sudo groupadd docker
 sudo usermod -aG docker ccdc
 ```
 
-**The installer must be run from the `ccdc` account so that all file permissions are
-set up correctly.**
+**All installation methods (manual/installer) must be run from the `ccdc` account so that all file permissions are set up correctly.**
 
 ```sh
-# You will also need to ensure the user "ccdc" has read access to any in-house or CSP databases.
-# E.g. if these are in the csd-data directory:
-sudo chown -R ccdc:ccdc csd-data/ 
+# For updating to 4.3.0, "ccdc" needs read access to the necessary docker volumes.
+sudo chown -R ccdc:ccdc lic
+sudo chown -R ccdc:ccdc userdata
 ```
 
 ## Basic Configuration And Installation
@@ -166,7 +187,7 @@ to run either via a GUI or command-line interface.
    alt="A screenshot of the On-Site WebCSD installer" style="width:4.70in;height:4.33in" />
 
 4. At the next stage, the configuration details required for setting up the server are required. This
-   includes the location of the .pfx file and the associated password, the CCDC licence key and the public URI
+   includes the location of the .pfx file and the associated password, the CCDC license key and the public URI
    for the server.
 
    - If no .pfx file is provided a built-in self-signed certificate will be used. This is not recommended as
@@ -286,14 +307,51 @@ along with a blank `CSPDatabase.db` CSD-Theory metadata database.
 
 For other optional customisations to your WebCSD server please see [WebCSD Configuration and Customisation](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-Configuration-&-Customisation).
 
+## Changing license Keys
+
+To change your license key you must delete the license volume and restart the stack:
+
+```sh
+# Append -f docker-compose.insecure-configuration.yml and docker-compose.postgres.yml if needed.
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
+rm -r lic
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+```
+
 ## Updates
+
+### Installer
 
 To update your installation, re-run the maintenance tool and select the same installation folder.
 Click Ok when a warning message pops up.
 This will automatically pull the latest versions of all containers and restart the stack.
 
-If a new database dump file is required the installer will let you know. Please contact
-CCDC Support for the latest download link.
+For major releases a new database dump file is shipped. The installer will prompt for the location. It will then overwrite the csd database volume with the update, please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
+
+Contact CCDC Support for the latest download link.
+
+### Manual Updates
+
+For major releases export any in-house databases, recreate the csd-database and [restore](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server#restore-database) it with a new database dump provided by Support.
+
+```sh
+# Append -f docker-compose.insecure-configuration.yml and docker-compose.postgres.yml if needed.
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
+docker compose pull
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+```
+
+Now from lattice -> database management, reimport your in-house databases.
+
+## Known Issues
+
+### Restart the message queue
+
+With 4.3.0 rabbitmq needs to be rerun. If you are installing manually please run the following:
+
+```sh
+docker compose -f docker-compose.yml up -d
+```
 
 ## Contacting Support
 
