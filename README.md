@@ -326,7 +326,7 @@ To update your installation, re-run the maintenance tool and select the same ins
 Click Ok when a warning message pops up.
 This will automatically pull the latest versions of all containers and restart the stack.
 
-For major releases a new database dump file is shipped. The installer will prompt the location. It will then overwrite the csd database volume with the update, please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
+For major releases a new database dump file is shipped. The installer will prompt for the location. It will then overwrite the csd database volume with the update, please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
 
 Contact CCDC Support for the latest download link.
 
