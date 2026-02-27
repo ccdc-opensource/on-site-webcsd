@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Prerequisites and Setup](#prerequisites-and-setup)
   - [System Requirements](#system-requirements)
+  - [SELinux](#selinux)
   - [Authentication](#authentication)
   - [Docker Installation](#docker-installation)
   - [Postgres CSD Database](#postgres-csd-database)
@@ -82,6 +83,14 @@ On Ubuntu:
 
 ```sh
 sudo apt-get install libnss3 libxss1 libopengl0 libgfortran5 libxkbcommon-x11-0 libxcb-xinerama0 libxcb-cursor0 libxcb-keysyms1 libatomic1 libtk8.6 tk8.6
+```
+
+### SELinux
+
+The Qt installer will not run correctly if SELinux is in enforcing mode. If using RHEL / Rocky Linux, temporarily set SELinux to permissive mode.
+
+```sh
+sudo setenforce 0
 ```
 
 ### Authentication
