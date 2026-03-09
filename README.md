@@ -243,8 +243,10 @@ which should show the state of the services to all be `Up`. If any services have
 Take care to include the right config files as in the commands below.
 
 ```sh
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+# Omit docker-compose.postgres.yml if self-hosting your postgres server
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d
 ```
 
 If the issues persist then please contact CCDC Support.
@@ -321,10 +323,11 @@ For other optional customisations to your WebCSD server please see [WebCSD Confi
 To change your license key you must delete the license volume and restart the stack:
 
 ```sh
-# Append -f docker-compose.insecure-configuration.yml and docker-compose.postgres.yml if needed.
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
+# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+# Omit docker-compose.postgres.yml if self-hosting your postgres server
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
 rm -r lic
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d
 ```
 
 ## Updates
@@ -344,10 +347,11 @@ Contact CCDC Support for the latest download link.
 For major releases export any in-house databases, recreate the csd-database and [restore](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server#restore-database) it with a new database dump provided by Support.
 
 ```sh
-# Append -f docker-compose.insecure-configuration.yml and docker-compose.postgres.yml if needed.
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
+# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+# Omit docker-compose.postgres.yml if self-hosting your postgres server
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
 docker compose pull
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d
 ```
 
 Now from lattice -> database management, reimport your in-house databases.
