@@ -343,7 +343,7 @@ For major releases a new database dump file is shipped. The maintenance tool wil
 To update from the command line:
 
 ```sh
-./maintenancetool update dbDumpFile="<path to database dump file>" overwriteDb="True"
+./maintenancetool update dbDumpFile="<path to database dump file>" overWriteDb="True"
 ```
 
 Contact CCDC Support for the latest download link.
