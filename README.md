@@ -23,6 +23,7 @@
 - [Updates](#updates)
   - [Installer](#installer)
   - [Manual Updates](#manual-updates)
+- [Uninstallation](#uninstallation)
 - [Known Issues](#known-issues)
   - [Restart the message queue](#restart-the-message-queue)
 - [Contacting Support](#contacting-support)
@@ -334,7 +335,9 @@ docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose
 
 ### Installer
 
-To update your installation, re-run the maintenance tool and select the same installation folder.
+To update your installation, run the maintenance tool and select "Update components".
+
+Or re-run the installer and select the same installation folder.
 Click Ok when a warning message pops up.
 This will automatically pull the latest versions of all containers and restart the stack.
 
@@ -355,6 +358,10 @@ docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose
 ```
 
 Now from lattice -> database management, reimport your in-house databases.
+
+## Uninstallation
+
+To uninstall On-Site WebCSD run the GUI maintenance tool and select "Remove all components". Or run it from the command line with the `purge` option.
 
 ## Known Issues
 
