@@ -250,6 +250,7 @@ docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
 
 If the csd-database container is unhealthy then do a full restart of the stack and bring it up before the other containers.
+
 ```sh
 # Follow the above instructions instead if using a self-hosted postgres server
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
