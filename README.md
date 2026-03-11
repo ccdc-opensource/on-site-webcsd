@@ -23,6 +23,7 @@
 - [Updates](#updates)
   - [Installer](#installer)
   - [Manual Updates](#manual-updates)
+- [Uninstallation](#uninstallation)
 - [Known Issues](#known-issues)
   - [Restart the message queue](#restart-the-message-queue)
 - [Contacting Support](#contacting-support)
@@ -334,11 +335,16 @@ docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose
 
 ### Installer
 
-To update your installation, re-run the maintenance tool and select the same installation folder.
-Click Ok when a warning message pops up.
+To update your installation, run the maintenance tool and select "Update components". Click Ok when a warning message pops up.
 This will automatically pull the latest versions of all containers and restart the stack.
 
-For major releases a new database dump file is shipped. The installer will prompt for the location. It will then overwrite the csd database volume with the update, please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
+For major releases a new database dump file is shipped. The maintenance tool will prompt for the location. It will then overwrite the csd database volume with the update, please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
+
+To update from the command line:
+
+```sh
+./maintenancetool update dbDumpFile="<path to database dump file>" overWriteDb="True"
+```
 
 Contact CCDC Support for the latest download link.
 
@@ -355,6 +361,14 @@ docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose
 ```
 
 Now from lattice -> database management, reimport your in-house databases.
+
+## Uninstallation
+
+To uninstall On-Site WebCSD run the GUI maintenance tool and select "Remove all components". Or run it from the command line with the `purge` option.
+
+```sh
+./maintenancetool purge
+```
 
 ## Known Issues
 
