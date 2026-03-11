@@ -241,12 +241,21 @@ docker compose ps
 ```
 
 which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack.
-Take care to include the right config files as in the commands below.
+In most cases it is best to leave the postgres server running as in the commands below.
 
 ```sh
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
-# Omit docker-compose.postgres.yml if self-hosting your postgres server
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
+```
+
+If the csd-database container is unhealthy then do a full restart of the stack and bring it up before the other containers.
+```sh
+# Follow the above instructions instead if using a self-hosted postgres server
+# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
+
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d csd-database
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d
 ```
 
@@ -325,10 +334,9 @@ To change your license key you must delete the license volume and restart the st
 
 ```sh
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
-# Omit docker-compose.postgres.yml if self-hosting your postgres server
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
 rm -r lic
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
 
 ## Updates
@@ -354,10 +362,9 @@ For major releases export any in-house databases, recreate the csd-database and 
 
 ```sh
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
-# Omit docker-compose.postgres.yml if self-hosting your postgres server
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
 docker compose pull
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
 
 Now from lattice -> database management, reimport your in-house databases.
