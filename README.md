@@ -244,7 +244,9 @@ which should show the state of the services to all be `Up`. If any services have
 In most cases it is best to leave the postgres server running as in the commands below.
 
 ```sh
+# Replace `INSTALLDIR` by your WebCSD installation directory
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
@@ -253,7 +255,9 @@ If the csd-database container is unhealthy then do a full restart of the stack a
 
 ```sh
 # Follow the above instructions instead if using a self-hosted postgres server
+# Replace `INSTALLDIR` by your WebCSD installation directory
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml down
 
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.postgres.yml up -d csd-database
@@ -334,7 +338,9 @@ For other optional customisations to your WebCSD server please see [WebCSD Confi
 To change your license key you must delete the license volume and restart the stack:
 
 ```sh
+# Replace `INSTALLDIR` by your WebCSD installation directory
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
 rm -r lic
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
@@ -362,7 +368,9 @@ Contact CCDC Support for the latest download link.
 For major releases export any in-house databases, recreate the csd-database and [restore](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server#restore-database) it with a new database dump provided by Support.
 
 ```sh
+# Replace `INSTALLDIR` by your WebCSD installation directory
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
 docker compose pull
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
@@ -385,6 +393,8 @@ To uninstall On-Site WebCSD run the GUI maintenance tool and select "Remove all 
 With 4.3.0 rabbitmq needs to be rerun. If you are installing manually please run the following:
 
 ```sh
+# Replace `INSTALLDIR` by your WebCSD installation directory
+cd INSTALLDIR
 docker compose -f docker-compose.yml up -d
 ```
 
