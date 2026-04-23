@@ -24,6 +24,7 @@ services:
       Logging__LogLevel__Default: *loglevel
       ApplicationSettings__debug: true
       Serilog__WriteTo__Name: Console
+      Serilog__MinimumLevel: *loglevel
 
   webcsdbackend:
     environment:
@@ -80,6 +81,7 @@ services:
   webcsd-theory:
     environment:
       Logging__LogLevel__Default: *loglevel
+      Serilog__MinimumLevel: *loglevel
 
   ccdc-csd-database-management:
     environment:
