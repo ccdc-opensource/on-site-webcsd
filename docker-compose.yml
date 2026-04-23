@@ -8,9 +8,13 @@ x-loglevel: &loglevel "Warning"
 x-default-healthcheck: &default-healthcheck
   interval: "30s"
 
+volumes:
+  rabbitmq_data:
+
 services:
   csd-platform:
     image: ccdcrepository.azurecr.io/onsite/ccdc-lattice:4.3.1
+    user: 1397:1397
     environment:
       # Services__Identity__https: https://ccdc-identity:8080  # left commented as original
       Services__Entitlements__http__0: http://entitlements:8080
@@ -35,11 +39,6 @@ services:
       - ${PLATFORM_PORT}:8443
       # This is required for csd theory ingestion python script to work
       #- 80:8080
-    restart: unless-stopped
-    labels:
-      <<: *k8s-labels
-      kompose.service.type: LoadBalancer
-      kompose.service.expose: "true"
     depends_on:
       # No healthcheck endpoint currently for identity
       ccdc-identity:
@@ -49,11 +48,18 @@ services:
       # No healthcheck endpoint currently for platform gateway
       ccdc-platformgateway:
         condition: service_started
+    restart: unless-stopped
     logging:
       driver: local
+    labels:
+      <<: *k8s-labels
+      kompose.service.type: LoadBalancer
+      kompose.service.expose: "true"
 
   ccdc-platformgateway:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-platform-gateway-api:4.3.1
+    environment:
+      APIHost: ccdc-platformgateway:8080
     depends_on:
       ccdc-csd-deposition:
         condition: service_healthy
@@ -63,14 +69,13 @@ services:
         condition: service_healthy
       csd-request-entry:
         condition: service_healthy
-    environment:
-      APIHost: ccdc-platformgateway:8080
     restart: unless-stopped
     logging:
       driver: local
 
   ccdc-identity:
     image: ccdcrepository.azurecr.io/onsite/ccdc-identity:4.3.1
+    user: 1397:1397
     environment:
       ConnectionStrings__identitydb: ${DB_CONNECTIONSTRING};Database=${IDENTITY_DATABASE}
       PATHBASE_OVERRIDE: /identity/
@@ -85,7 +90,14 @@ services:
       PlatformClientSettings__RedirectUris__0: ${PUBLIC_URI}/authentication/login-callback
       PlatformClientSettings__PostLogoutRedirectUris__0: ${PUBLIC_URI}/authentication/logout-callback
       WebCsdClientSettings__RedirectUris__0: ${PUBLIC_URI}/structures/signin-oidc
-      WebCsdClientSettings__PostLogoutRedirectUris__0: ${PUBLIC_URI}/structures/signout-oidc
+      WebCsdClientSettings__PostLogoutRedirectUris__0: ${PUBLIC_URI}/structures/signout-callback-oidc
+
+      ApplicationSettings__ExternalLinks__0__Text: "Lattice home"
+      ApplicationSettings__ExternalLinks__0__Icon: "Home"
+      ApplicationSettings__ExternalLinks__0__Url: ${PUBLIC_URI}
+      ApplicationSettings__ExternalLinks__1__Text: "WebCSD"
+      ApplicationSettings__ExternalLinks__1__Icon: "Globe"
+      ApplicationSettings__ExternalLinks__1__Url: ${PUBLIC_URI}/structures
       ## SMTP
       # SMTP__HOST: smtp.azurecomm.net
       # SMTP__PORT: 587
@@ -95,6 +107,7 @@ services:
       ## End SMTP
     volumes:
       - ${SSL_CERT_LOC}:/https/ssl_cert.pfx:ro
+    restart: unless-stopped
     logging:
       driver: local
 
@@ -106,19 +119,21 @@ services:
       OpenIddict__Applications__0__RedirectUris__0: ${PUBLIC_URI}/signin-oidc
       OpenIddict__Applications__0__PostLogoutRedirectUris__0: ${PUBLIC_URI}/signout-callback-oidc
       OpenIddict__Applications__1__RedirectUris__0: ${PUBLIC_URI}/structures/signin-oidc
-      OpenIddict__Applications__1__PostLogoutRedirectUris__0: ${PUBLIC_URI}/structures/signout-oidc
+      OpenIddict__Applications__1__PostLogoutRedirectUris__0: ${PUBLIC_URI}/structures/signout-callback-oidc
     volumes:
       - ./OpenIddictApplicationsConfig.json:/app/OpenIddictApplicationsConfig.json:ro
 
   entitlements:
     image: ccdcrepository.azurecr.io/onsite/ccdc-entitlements:4.3.1
+    user: 1397:1397
     environment:
       services__identity__http__0: http://ccdc-identity:8080
       DANGEROUS_DISABLE_VALIDATE_ISSUER: "true"
       Cryptlex__CryptlexDataPath: /ccdc/lic
-    user: 1397:1397
+      CCDC_LICENSING_CONFIGURATION: ${CCDC_LICENSING_CONFIGURATION}
     volumes:
       - ./lic:/ccdc/lic
+    restart: unless-stopped
 
   webcsd:
     image: ccdcrepository.azurecr.io/onsite/webcsd:4.3.1
@@ -131,72 +146,86 @@ services:
       PATHBASE_OVERRIDE: /structures/
       Logging__LogLevel__Default: *loglevel
       DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+      CspRepository__ServiceLocation: http://webcsd-theory:8080
+    volumes:
+      - ./csd-theory:/app/csd-theory:ro
     depends_on:
       ccdc-csd-searchservice:
         condition: service_healthy
       csd-request-entry:
         condition: service_healthy
-    volumes:
-      - ./userdata:/app/OnSite
-    labels:
-      <<: *k8s-labels
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
+    labels:
+      <<: *k8s-labels
 
   webcsdbackend:
+    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.3.1
+    environment:
+      CCDC_LICENSING_CONFIGURATION: ${CCDC_LICENSING_CONFIGURATION}
+      Logging__LogLevel__Default: *loglevel
+      ServiceSettings__Databases__0__ConnectionString: /app/csd-theory/CSPLandscape.csdsqlx
+      ServiceSettings__Databases__0__Name: "CSP database"
+      ServiceSettings__Databases__0__Specialty: '[ "CSP" ]'
+      ServiceSettings__Databases__0__DbeDatabaseId: c13c7a2e-4b81-4d5f-9c2a-6e7b1a8d3c54
+      ServiceSettings__StructureInfoLocation: /app/csd-theory/StructureLinks.csv
+    volumes:
+      - ./csd-theory:/app/csd-theory:ro
     depends_on:
       ccdc-csd-searchservice:
         condition: service_healthy
       csd-request-entry:
         condition: service_healthy
-    image: ccdcrepository.azurecr.io/onsite/webcsdbackend:4.3.1
-    environment:
-      CCDC_LICENSING_CONFIGURATION: ${CCDC_LICENSING_CONFIGURATION}
-      Logging__LogLevel__Default: *loglevel
-    labels:
-      <<: *k8s-labels
+    restart: unless-stopped
     logging:
       driver: local
-
-  ccdc-csd-deposition:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-deposition:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-deposition-api:4.3.1
     environment:
       CsdDepositionReadConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=csd_schema
       CsdDepositionWriteConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=csd_schema
       Logging__LogLevel__Default: *loglevel
       MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
-    restart: unless-stopped
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
     depends_on:
       message-broker:
         condition: service_healthy
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-textnumericsearch:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-textnumericsearch:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-textnumericsearch-api:4.3.1
     environment:
       CsdDepositionReadConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=csd_schema
       MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
       Logging__LogLevel__Default: *loglevel
-    healthcheck:
-      <<: *default-healthcheck
+    restart: unless-stopped
     logging:
       driver: local
-
-  ccdc-csd-searchservice:
+    healthcheck:
+      <<: *default-healthcheck
     labels:
       <<: *k8s-labels
-    restart: unless-stopped
+
+  ccdc-csd-searchservice:
+    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:4.3.1
+    environment:
+      SearchServiceConnectionString: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=searchstore
+      MessagingOnSiteUsername: queueuser
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
+      Logging__LogLevel__Default: *loglevel
     depends_on:
       message-broker:
         condition: service_healthy
@@ -206,24 +235,23 @@ services:
         condition: service_healthy
       ccdc-csd-similaritysearch:
         condition: service_healthy
-    image: ccdcrepository.azurecr.io/onsite/ccdc-csd-searchservice-api:4.3.1
-    environment:
-      SearchServiceConnectionString: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=searchstore
-      MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
-      Logging__LogLevel__Default: *loglevel
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
+    labels:
+      <<: *k8s-labels
 
   ccdc-csd-substructuresearch:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructuresearch-api:4.3.1
-    labels:
-      <<: *k8s-labels
-    restart: unless-stopped
-    # Note this also references ccdc-csd-searchservice but that would create a circular dependency so is omitted.
-    # It is reasonable to assume it is already running as this service is a dependency
+    environment:
+      MessagingOnSiteUsername: queueuser
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
+      SubstructureSearchDatabaseWriterConnectionString: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=substructure
+      Logging__LogLevel__Default: *loglevel
+    # Note substructures earch depends on search service but is omitted as would create a circular dependency.
+    # It is reasonable to assume search service is already running as this service is a dependency.
     depends_on:
       ccdc-csd-substructure-filter:
         condition: service_healthy
@@ -233,112 +261,112 @@ services:
         condition: service_healthy
       message-broker:
         condition: service_healthy
-    environment:
-      MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
-      SubstructureSearchDatabaseWriterConnectionString: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=substructure
-      Logging__LogLevel__Default: *loglevel
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  csd-request-entry:
     labels:
       <<: *k8s-labels
+
+  csd-request-entry:
+    image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:4.3.1
+    environment:
+      Logging__LogLevel__Default: *loglevel
     depends_on:
       ccdc-csd-deposition:
         condition: service_healthy
       ccdc-csd-crystal-structure-export:
         condition: service_healthy
-    image: ccdcrepository.azurecr.io/onsite/csd-request-entry-api:4.3.1
-    environment:
-      Logging__LogLevel__Default: *loglevel
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-formulasearch:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-formulasearch:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-formulasearch-api:4.3.1
     environment:
       FormulaSearchReadConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=formula
       FormulaSearchWriteConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=formula
       Logging__LogLevel__Default: *loglevel
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-unitcellsearch:
     labels:
       <<: *k8s-labels
-    depends_on:
-      ccdc-csd-reducedcell-calculation-service:
-        condition: service_healthy
+
+  ccdc-csd-unitcellsearch:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-unit-cell-search:4.3.1
     environment:
       UnitCellSearchReadConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=unitcell
       UnitCellSearchWriteConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=unitcell
       Logging__LogLevel__Default: *loglevel
+    depends_on:
+      ccdc-csd-reducedcell-calculation-service:
+        condition: service_healthy
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-similaritysearch:
     labels:
       <<: *k8s-labels
-    depends_on:
-      ccdc-csd-fingerprint:
-        condition: service_healthy
+
+  ccdc-csd-similaritysearch:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-structure-similarity-search:4.3.1
     environment:
       StructureSimilaritySearchReadConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=similarity
       StructureSimilaritySearchWriteConnection: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=similarity
       Logging__LogLevel__Default: *loglevel
+    depends_on:
+      ccdc-csd-fingerprint:
+        condition: service_healthy
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-fingerprint:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-fingerprint:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-fingerprint-service:4.3.1
     restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-substructure-filter:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-substructure-filter:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-substructure-filter-service:4.3.1
     restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-crystal-structure-export:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-crystal-structure-export:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-crystal-structure-export-service:4.3.1
     restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-sqlite-crystal-structure-access:
-    user: 1397:1397
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-sqlite-crystal-structure-access:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-sqlite-crystal-structure-access-service:4.3.1
+    user: 1397:1397
     volumes:
       - ./userdata:/app/OnSite
     restart: unless-stopped
@@ -346,62 +374,72 @@ services:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-crystal-structure-curation:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-crystal-structure-curation:
     image: ccdcrepository.azurecr.io/onsite/ccdc-crystal-structure-curation-service:4.3.1
     restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-reducedcell-calculation-service:
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-reducedcell-calculation-service:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-reducedcell-calculation-service:4.3.1
     restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  webcsd-theory:
     labels:
       <<: *k8s-labels
+
+  webcsd-theory:
     image: ccdcrepository.azurecr.io/onsite/csd-theory:4.3.1
     environment:
       CCDC_LICENSING_CONFIGURATION: ${CCDC_LICENSING_CONFIGURATION}
       Logging__LogLevel__Default: *loglevel
+      ReportSettings__CspStructureDatabaseFilePath: /app/csd-theory/CSPLandscape.csdsqlx
+      ReportSettings__CspMetadataDatabaseFilePath: /app/csd-theory/CSPDatabase.db
+    volumes:
+      - ./csd-theory:/app/csd-theory
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
+    labels:
+      <<: *k8s-labels
 
   message-broker:
     image: ccdcrepository.azurecr.io/onsite/rabbitmq:4.3.1
+    hostname: rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: queueuser
-      RABBITMQ_DEFAULT_PASS: ${CCDC_LICENSING_CONFIGURATION}
+      RABBITMQ_DEFAULT_PASS: ${MESSAGING_PASSWORD}
+      RABBITMQ_NODENAME: rabbit@rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
+    logging:
+      driver: local
     healthcheck:
       <<: *default-healthcheck
       test: ["CMD", "rabbitmqctl", "await_startup"]
       timeout: 10s
       retries: 5
       start_period: 30s
-    logging:
-      driver: local
 
   ccdc-file-generation:
-    restart: unless-stopped
     image: ccdcrepository.azurecr.io/onsite/ccdc-structure-file-generation:4.3.1
     environment:
       CacheSettings__ConnectionString: ${DB_CONNECTIONSTRING};Database=structure_file_cache;SearchPath=cache
       MessagingProvider: RabbitMQ
       MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
       MessagingHost: message-broker
       Logging__LogLevel__Default: *loglevel
       Identity__Authority: ${PUBLIC_URI}/identity/
@@ -410,6 +448,7 @@ services:
         condition: service_healthy
       ccdc-csd-crystal-structure-export:
         condition: service_healthy
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
@@ -417,29 +456,28 @@ services:
 
   ccdc-csd-database-management:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-database-management-api:4.3.1
-    labels:
-      <<: *k8s-labels
     environment:
       DatabaseManagementConnectionString: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=database_management
       ServiceDatabaseConnectionString: ${DB_CONNECTIONSTRING}
       Logging__LogLevel__Default: *loglevel
       Identity__Authority: ${PUBLIC_URI}/identity/
       DANGEROUS_ACCEPT_ANY_SERVER_CERTIFICATE: "true"
+    restart: unless-stopped
     logging:
       driver: local
     healthcheck:
       <<: *default-healthcheck
-
-  ccdc-csd-entry-ingestion:
-    user: 1397:1397
     labels:
       <<: *k8s-labels
+
+  ccdc-csd-entry-ingestion:
     image: ccdcrepository.azurecr.io/onsite/ccdc-csd-entry-ingestion-api:4.3.1
+    user: 1397:1397
     volumes:
       - ./userdata:/app/OnSite
     environment:
       MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
       EntryIngestionDatabaseWriterConnectionString: ${DB_CONNECTIONSTRING};Database=${CSD_DATABASE};SearchPath=entry_ingestion
       Logging__LogLevel__Default: *loglevel
       Identity__Authority: ${PUBLIC_URI}/identity/
@@ -457,16 +495,19 @@ services:
       driver: local
     healthcheck:
       <<: *default-healthcheck
+    labels:
+      <<: *k8s-labels
 
   ccdc-csd-crystal-structure-change-queue-consumer:
     image: ccdcrepository.azurecr.io/onsite/csd-queueconsumer-crystalstructurechanged:4.3.1
     environment:
       MessagingOnSiteUsername: queueuser
-      MessagingOnSitePassword: ${CCDC_LICENSING_CONFIGURATION}
+      MessagingOnSitePassword: ${MESSAGING_PASSWORD}
     depends_on:
       ccdc-csd-deposition:
         condition: service_healthy
       message-broker:
         condition: service_healthy
+    restart: unless-stopped
     healthcheck:
       <<: *default-healthcheck
