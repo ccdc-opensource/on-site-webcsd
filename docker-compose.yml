@@ -1,5 +1,3 @@
-# On-Site Version 4.3.1
-
 x-labels: &k8s-labels
   kompose.image-pull-secret: pullsecret
 
