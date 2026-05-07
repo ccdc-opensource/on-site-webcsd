@@ -38,7 +38,7 @@ Terms and conditions can be found in the `LICENSE.md` file.
 
 Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
 
-:warning: **Note, the latest 4.3.0 release does not support CSD-Theory, Macromolecule Hub or the Prototypes plugin. Do not
+:warning: **Note, the 4.3.0 release does not support CSD-Theory, Macromolecule Hub or the Prototypes plugin. Do not
 update to this version if you are currently using those components.**
 
 ## Prerequisites and Setup
@@ -96,18 +96,18 @@ sudo setenforce 0
 
 ### Authentication
 
-- A valid CCDC activation key (a 36-character key in the format ######-######-######-######-######-######)
-  will be required to use the software.
+- A valid CCDC activation key (a 36-character key in the format ######-######-######-######-######-######) or local license server
+  URL will be required to use the software.
 - Connecting to your WebCSD server via https is now required. To configure this you will need a password-protected .pfx
   certificate.
 
 ```sh
 # To generate a self-signed certificate
 
-# Generate private key (OpenSSL will prompt for a password)
+# Generate private key
 openssl genrsa -out private.key 2048
 
-# Generate certificate signing request (CSR)
+# Generate certificate signing request (CSR) (OpenSSL will prompt for a password)
 openssl req -new -key private.key -out request.csr
 
 # Generate self-signed certificate (valid for 365 days)
@@ -201,14 +201,16 @@ to run either via a GUI or command-line interface.
    alt="A screenshot of the On-Site WebCSD installer" style="width:4.70in;height:4.33in" />
 
 4. At the next stage, the configuration details required for setting up the server are required. This
-   includes the location of the .pfx file and the associated password, the CCDC license key and the public URI
+   includes the location of the .pfx file and the associated password, the CCDC license key (or local license server URL) and the public URI
    for the server.
 
    - If no .pfx file is provided a built-in self-signed certificate will be used. This is not recommended as
      it is insecure, and will not work with SSO authentication.
 
    - The public URI has the format `https://full.docker.hostname:PORT` where `full.docker.hostname` is your
-     Docker host and `PORT` is a port number of your choice (e.g. 443).
+     Docker host and `PORT` is a port number of your choice.
+     :information: if using the default 443 port this should *not* be included in
+     the URI as it may be automatically stripped from the address by the browser.
 
      <img src="onsite-webcsd-media/installer_screenshot_4.png"
      alt="A screenshot of the On-Site WebCSD installer" style="width:4.70in;height:4.33in" />
@@ -246,6 +248,9 @@ docker compose ps
 
 which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack.
 In most cases it is best to leave the postgres server running as in the commands below.
+
+:information: if the postgres server is kept running, the output from taking down the stack may include the warning ```!Network onsitewebcsdinstallation_default Resource is still in use``` -
+this is expected and does not require further action.
 
 ```sh
 # Replace `INSTALLDIR` by your WebCSD installation directory
@@ -357,7 +362,8 @@ docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 To update your installation, run the maintenance tool and select "Update components". Click Ok when a warning message pops up.
 This will automatically pull the latest versions of all containers and restart the stack.
 
-For major releases a new database dump file is shipped. The maintenance tool will prompt for the location. It will then overwrite the csd database volume with the update, please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
+For major releases a new database dump file is shipped. The maintenance tool will prompt for the location. It will then overwrite the csd database volume with the update,
+please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
 
 To update from the command line:
 
@@ -369,7 +375,8 @@ Contact CCDC Support for the latest download link.
 
 ### Manual Updates
 
-For major releases export any in-house databases, recreate the csd-database and [restore](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server#restore-database) it with a new database dump provided by Support.
+For major releases export any in-house databases, recreate the csd-database and [restore](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server#restore-database)
+it with a new database dump provided by Support.
 
 ```sh
 # Replace `INSTALLDIR` by your WebCSD installation directory
