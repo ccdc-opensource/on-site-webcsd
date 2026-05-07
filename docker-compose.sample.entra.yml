@@ -1,0 +1,8 @@
+# Enable Microsoft Entra single sign-on
+
+services:
+  ccdc-identity:
+    environment:
+      - OpenIddict__EnableExternalLogin=true
+      - OpenIddict__MicrosoftClientId=<Microsoft Client ID>
+      - OpenIddict__MicrosoftClientSecret=<Microsoft Client Secret>
