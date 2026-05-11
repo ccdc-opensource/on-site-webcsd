@@ -163,9 +163,9 @@ sudo usermod -u 1397 ccdc
 sudo groupadd docker
 sudo usermod -aG docker ccdc
 
-# The pfx certificate created earlier must be owned by the ccdc user and group and must be world-readable
+# The pfx certificate created earlier must be owned by the ccdc user and group and should be only user readable
 sudo chown ccdc:ccdc certificate.pfx
-sudo chmod 644 certificate.pfx
+sudo chmod 400 certificate.pfx
 ```
 
 **All installation methods (manual/installer) must be run from the `ccdc` account so that all file permissions are set up correctly.**
