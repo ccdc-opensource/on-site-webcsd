@@ -38,8 +38,8 @@ Terms and conditions can be found in the `LICENSE.md` file.
 
 Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
 
-:warning: **Note, the 4.3.0 release does not support CSD-Theory, Macromolecule Hub or the Prototypes plugin. Do not
-update to this version if you are currently using those components.**
+:warning: **Note, the 4.3.0 and 4.3.1 releases do not support Macromolecule Hub. Do not
+update past version 4.2.1 if you are currently using this component.**
 
 ## Prerequisites and Setup
 
@@ -60,7 +60,7 @@ If self-hosting the postgres server, see [Setting up a self-hosted Postgresql se
 for system requirements.
 
 On-Site Lattice and WebCSD should work with any OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
-Note that these match the 2025.3 CSD Portfolio Desktop release.
+Note that these match the 2026.1 CSD Portfolio Desktop release.
 
 - RedHat Enterprise Linux 8, 9 and 10
 - Rocky Linux 8, 9 and 10
@@ -171,7 +171,7 @@ sudo chmod 400 certificate.pfx
 **All installation methods (manual/installer) must be run from the `ccdc` account so that all file permissions are set up correctly.**
 
 ```sh
-# For updating to 4.3.0, "ccdc" needs read access to the necessary docker volumes.
+# For updating to 4.3.1, "ccdc" needs read access to the necessary docker volumes.
 sudo chown -R ccdc:ccdc lic
 sudo chown -R ccdc:ccdc userdata
 ```
@@ -194,7 +194,7 @@ to run either via a GUI or command-line interface.
    <img src="onsite-webcsd-media/installer_screenshot_2.png"
    alt="A screenshot of the On-Site WebCSD installer" style="width:4.70in;height:4.33in" />
 
-3. The next screen details the components that will be installed, the current 4.3.0 release contains
+3. The next screen details the components that will be installed, the current 4.3.1 release contains
    a single main package.
 
    <img src="onsite-webcsd-media/installer_screenshot_3.png"
@@ -283,15 +283,15 @@ To check that you can search the CSD you must create an account.
 If you have problems check your `.env` file.
 
 - The correct format for the `CCDC_LICENSING_CONFIGURATION` line is
-  `CCDC_LICENSING_CONFIGURATION=la-code;ACTIVATION_KEY;`.
-- `PUBLIC_URI` should be set to the full URL of your WebCSD server including the port number.
+  `CCDC_LICENSING_CONFIGURATION=la-code;ACTIVATION_KEY;` or `CCDC_LICENSING_CONFIGURATION=lf-server;http://SERVER_NAME:PORT_NO`
+- `PUBLIC_URI` should be set to the full URL of your WebCSD server, including the port number unless this is the default 443.
   This must resolve to your docker host.
 - `PLATFORM_PORT` must match the port number in `PUBLIC_URI` (default is 443).
 
 ## Further Configuration
 
-Your On-Site WebCSD server is now up and running but you will probably need to configure user access control
-and in-house databases. This is done via docker compose files
+Your On-Site WebCSD server is now up and running but you will probably need to configure it, for example to set up
+user access control via SSO. This is done via docker compose files
 (see [WebCSD Configuration Files](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-configuration-files) in the wiki).
 After making any changes to these files, restart the stack as described above, adding any docker compose files
 which you have customised into the `docker compose ... up -d` command.
@@ -308,10 +308,10 @@ On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
 Provided within the installation is a sample database `teaching-subset.csdsql` which can be found in the `sample-data` folder in the root of the installation.
 
-For the latest version 4.3.0 release, details on in-house database configuration are available from the
+For versions 4.3.0 and later, details on in-house database configuration are available from the
 [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Updating-your-in‐house-databases)
 
-For earlier releases (version 4.2.1) the following information is still applicable:
+For earlier releases (version 4.2.1 and earlier) the following information is still applicable:
 
 To enable in-house databases:
 
@@ -401,7 +401,7 @@ To uninstall On-Site WebCSD run the GUI maintenance tool and select "Remove all 
 
 ### Restart the message queue
 
-With 4.3.0 rabbitmq needs to be rerun. If you are installing manually please run the following:
+With 4.3.0 and 4.3.1 rabbitmq needs to be rerun. If you are installing manually please run the following:
 
 ```sh
 # Replace `INSTALLDIR` by your WebCSD installation directory
