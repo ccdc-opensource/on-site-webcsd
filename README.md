@@ -19,7 +19,7 @@
   - [In-House Database Configuration](#in-house-database-configuration)
   - [CSD-Theory Web Database Configuration](#csd-theory-web-database-configuration)
   - [Other Customisations](#other-customisations)
-- [Changing license Keys](#changing-license-keys)
+- [Changing licence Keys](#changing-licence-keys)
 - [Updates](#updates)
   - [Installer](#installer)
   - [Manual Updates](#manual-updates)
@@ -209,7 +209,7 @@ to run either via a GUI or command-line interface.
 
    - The public URI has the format `https://full.docker.hostname:PORT` where `full.docker.hostname` is your
      Docker host and `PORT` is a port number of your choice.
-     :information: if using the default 443 port this should *not* be included in
+     If using the default 443 port this should *not* be included in
      the URI as it may be automatically stripped from the address by the browser.
 
      <img src="onsite-webcsd-media/installer_screenshot_4.png"
@@ -249,7 +249,7 @@ docker compose ps
 which should show the state of the services to all be `Up`. If any services have the state `Up (unhealthy)` or `Exit` then restart the stack.
 In most cases it is best to leave the postgres server running as in the commands below.
 
-:information: if the postgres server is kept running, the output from taking down the stack may include the warning ```!Network onsitewebcsdinstallation_default Resource is still in use``` -
+If the postgres server is kept running, the output from taking down the stack may include the warning ```!Network onsitewebcsdinstallation_default Resource is still in use``` -
 this is expected and does not require further action.
 
 ```sh
@@ -342,18 +342,44 @@ along with a blank `CSPDatabase.db` CSD-Theory metadata database.
 
 For other optional customisations to your WebCSD server please see [WebCSD Configuration and Customisation](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-Configuration-&-Customisation).
 
-## Changing license Keys
+## Changing licence Keys
 
-To change your license key you must delete the license volume and restart the stack:
+To change your licence key you must update licence information in the .env file,
+delete the licence file with the current licence details, and restart the stack:
+
+An example of the process:
+
+- Bring down the server e.g.
 
 ```sh
 # Replace `INSTALLDIR` by your WebCSD installation directory
 # Include docker-compose.insecure-configuration.yml if using a self-signed certificate
 cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
-rm -r lic
+```
+
+- Edit the `.env` file to enter the new license key e.g.
+
+`vi .env`
+
+Change the content after `CCDC_LICENSING_CONFIGURATION=` to include the new key
+(press `i` to insert new text, `Esc` to leave editing mode and `:wq` to save edits)
+
+- Remove the current licence information e.g.
+
+`cd lic` followed by `rm data.conf` to remove the file
+
+- Finally, bring up the server to use the new licence information
+
+```sh
+# Replace `INSTALLDIR` by your WebCSD installation directory
+# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
+cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
+
+To use a local licence server, the server URL should have the prefix `lf-server:`
+in the `CCDC_LICENSING_CONFIGURATION=` field, as opposed to `la-code:` as used for a licence key.
 
 ## Updates
 
