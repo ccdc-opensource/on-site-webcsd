@@ -378,8 +378,8 @@ cd INSTALLDIR
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
 
-To use a local licence server, the server URL should have the prefix `lf-server:`
-in the `CCDC_LICENSING_CONFIGURATION=` field, as opposed to `la-code:` as used for a licence key.
+To use a local licence server, the server URL should have the prefix `lf-server;`
+in the `CCDC_LICENSING_CONFIGURATION=` field, as opposed to `la-code;` as used for a licence key.
 
 ## Updates
 
