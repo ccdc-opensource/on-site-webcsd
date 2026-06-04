@@ -170,12 +170,6 @@ sudo chmod 400 certificate.pfx
 
 **All installation methods (manual/installer) must be run from the `ccdc` account so that all file permissions are set up correctly.**
 
-```sh
-# For updating to 4.3.1, "ccdc" needs read access to the necessary docker volumes.
-sudo chown -R ccdc:ccdc lic
-sudo chown -R ccdc:ccdc userdata
-```
-
 ## Basic Configuration And Installation
 
 The installer is available from [the release tab](https://github.com/ccdc-opensource/on-site-webcsd/releases)
@@ -382,6 +376,16 @@ To use a local licence server, the server URL should have the prefix `lf-server;
 in the `CCDC_LICENSING_CONFIGURATION=` field, as opposed to `la-code;` as used for a licence key.
 
 ## Updates
+
+### File ownerships
+
+For updating from pre-4.3.0 versions, the `ccdc` account needs access to the necessary
+docker volumes.
+
+```sh
+sudo chown -R ccdc:ccdc lic
+sudo chown -R ccdc:ccdc userdata
+```
 
 ### Installer
 
