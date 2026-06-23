@@ -36,7 +36,8 @@ This readme contains information required for installation and updates of On-Sit
 
 Terms and conditions can be found in the `LICENSE.md` file.
 
-Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
+Additional information including user configuration and troubleshooting can be found
+in the documentation folder at <https://github.com/ccdc-opensource/on-site-webcsd/docs/>.
 
 :warning: **Note, the 4.3.0 and 4.3.1 releases do not support Macromolecule Hub. Do not
 update past version 4.2.1 if you are currently using this component.**
@@ -56,7 +57,7 @@ Recommended requirements for Docker server hosting On-Site Lattice and WebCSD co
 
 - 30GB free HD space, 16GB RAM, 8 core CPU.
 
-If self-hosting the postgres server, see [Setting up a self-hosted Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server)
+If self-hosting the postgres server, see [Setting up a self-hosted Postgresql server](docs/self-hosted-postgresql-server.md)
 for system requirements.
 
 On-Site Lattice and WebCSD should work with any OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
@@ -100,6 +101,8 @@ sudo setenforce 0
   URL will be required to use the software.
 - Connecting to your WebCSD server via https is now required. To configure this you will need a password-protected .pfx
   certificate.
+- Ask your local IT staff to obtain a valid CA-signed certificate for you, or generate a self-signed certificate as shown below.
+- Note that SSO authentication and CSD-Theory Web will not work with self-signed certificates.
 
 ```sh
 # To generate a self-signed certificate
@@ -144,7 +147,7 @@ docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 The postgres CSD database will be provided via a download link. To obtain this, please contact CCDC Support.
 
-If self-hosting the postgres server please follow the instructions at [Setting up a self-hosted Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server)
+If self-hosting the postgres server please follow the instructions at [Setting up a self-hosted Postgresql server](docs/self-hosted-postgresql-server.md).
 
 ### CCDC User Account
 
@@ -229,7 +232,7 @@ These are docker compose config files and can be edited to customise your instal
 ### Command Line Installation
 
 It is also possible to run the WebCSD installer from the command line. This process is documented on the
-wiki under [Alternative ways to setup On-Site WebCSD](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Alternative-ways-to-setup-On-Site-WebCSD)
+wiki under [Alternative ways to setup On-Site WebCSD](docs/alternative-setup-approaches.md).
 
 ### Post-Installation Checks
 
@@ -286,7 +289,7 @@ If you have problems check your `.env` file.
 
 Your On-Site WebCSD server is now up and running but you will probably need to configure it, for example to set up
 user access control via SSO. This is done via docker compose files
-(see [WebCSD Configuration Files](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-configuration-files) in the wiki).
+(see [WebCSD Configuration Files](docs/technical-information.md#webcsd-configuration-files)).
 After making any changes to these files, restart the stack as described above, adding any docker compose files
 which you have customised into the `docker compose ... up -d` command.
 
@@ -294,7 +297,7 @@ which you have customised into the `docker compose ... up -d` command.
 
 User access control can be managed via local accounts or Single Sign-On (SSO). You must configure roles to allow
 access to in-house databases as by default even admin roles can only access the CSD.
-For details please see [Access Control To In-House Databases](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Access-control-to-in-house-databases).
+For details please see [Access Control To In-House Databases](docs/user-access-control.md).
 
 ### In-house Database Configuration
 
