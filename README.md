@@ -18,15 +18,7 @@
   - [User Access Control](#user-access-control)
   - [In-House Database Configuration](#in-house-database-configuration)
   - [CSD-Theory Web Database Configuration](#csd-theory-web-database-configuration)
-  - [Other Customisations](#other-customisations)
-- [Changing licence Keys](#changing-licence-keys)
-- [Updates](#updates)
-  - [Installer](#installer)
-  - [Manual Updates](#manual-updates)
-- [Uninstallation](#uninstallation)
-- [Known Issues](#known-issues)
-  - [Restart the message queue](#restart-the-message-queue)
-- [Contacting Support](#contacting-support)
+- [Additional Documentation](#additional-documentation)
 
 ## Introduction
 
