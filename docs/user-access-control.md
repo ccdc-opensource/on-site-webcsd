@@ -43,62 +43,63 @@ Alternatively, different user groups can be selected on a per-database level, al
 
 1. Navigate to the User Admin section via WebCSD or the New Lattice Platform.
 
-![image](https://github.com/user-attachments/assets/1b75c2af-4daf-4832-8b32-459de9d2450f)
+   ![image](https://github.com/user-attachments/assets/1b75c2af-4daf-4832-8b32-459de9d2450f)
 
 2. Go to Databases tab. Here you can see an index assigned to each database which is taken from the container configuration.
 
-![image](https://github.com/user-attachments/assets/6c303687-8ec1-46a9-993d-b6b6f9f0d6da)
+   ![image](https://github.com/user-attachments/assets/6c303687-8ec1-46a9-993d-b6b6f9f0d6da)
 
 3. Go to Roles tab. Here you can see the name of available roles and indices of the databases accessible for the users with this role.
 
-![image](https://github.com/user-attachments/assets/be3fab60-458b-4895-bb58-dc5e9663dadf)
+   ![image](https://github.com/user-attachments/assets/be3fab60-458b-4895-bb58-dc5e9663dadf)
 
 4. You can add a new role by entering its name into the relevant field and clicking Add New Role.
 
-![image](https://github.com/user-attachments/assets/1203218b-bb26-49c5-99e2-a9c0309d812a)
+   ![image](https://github.com/user-attachments/assets/1203218b-bb26-49c5-99e2-a9c0309d812a)
 
-5. You can click on the Edit button to the right of each role and tick those databases which you want to make available for the users with this role. Click on Submit when all the relevant databases are selected.
+5. You can click on the Edit button to the right of each role and tick those databases which you want to make available for the users with this role.
+   Click on Submit when all the relevant databases are selected.
 
-![image](https://github.com/user-attachments/assets/a691132f-06fc-41a6-a016-95bbe808a344)
+   ![image](https://github.com/user-attachments/assets/a691132f-06fc-41a6-a016-95bbe808a344)
 
 6. You can assign roles separately for each user or in a bulk manner (described in the next section). To assign role(s) to one user, go to Users and click Manage roles to the right of their email.
 
-![image](https://github.com/user-attachments/assets/4380b95f-5ff9-4a1d-84eb-5b47fb543b54)
+   ![image](https://github.com/user-attachments/assets/4380b95f-5ff9-4a1d-84eb-5b47fb543b54)
 
 ### Bulk user management (Admin)
 
 1. Navigate to the User Admin section via WebCSD or the New Lattice Platform.
 
-![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/9f95d3f8-7839-4adf-abcc-70dbb1c95069)
+   ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/9f95d3f8-7839-4adf-abcc-70dbb1c95069)
 
-![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/f47d846f-0146-4645-a249-0813aad7115f)
+   ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/f47d846f-0146-4645-a249-0813aad7115f)
 
 2. Select Bulk Change Users.
 
-![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/29d6e760-93c4-4bd3-ae01-ef1e47055200)
+   ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/29d6e760-93c4-4bd3-ae01-ef1e47055200)
 
 3. Create a CSV file with user data in the following format.
 
-```sh
-FirstName,LastName,EmailAddress,Roles
-Joe,Bloggs,joe@joe.com,"Basic"
-```
+   ```sh
+   FirstName,LastName,EmailAddress,Roles
+   Joe,Bloggs,joe@joe.com,"Basic"
+   ```
 
-You should then have a file that looks something like this:
+   You should then have a file that looks something like this:
 
-![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/0121f31a-4e3c-42cc-a526-a224880ea573)
+   ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/0121f31a-4e3c-42cc-a526-a224880ea573)
 
-1. Select Bulk Change CSV File to upload the populated CSV file and hit the Upload Bulk Change CSV File button to upload and validate the provided user details.
+4. Select Bulk Change CSV File to upload the populated CSV file and hit the Upload Bulk Change CSV File button to upload and validate the provided user details.
 
-2. Validation results will be displayed. If any errors are found, you'll be alerted to make the necessary corrections and re-upload the file.
+5. Validation results will be displayed. If any errors are found, you'll be alerted to make the necessary corrections and re-upload the file.
 
-File with failed validation:
+   File with failed validation:
 
-![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/c9be5dc9-2fff-4dc4-a9b8-02096084e069)
+   ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/c9be5dc9-2fff-4dc4-a9b8-02096084e069)
 
-File with successful validation:
+   File with successful validation:
 
-![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/720a8c71-414b-4339-99f8-929978bca8df)
+   ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/720a8c71-414b-4339-99f8-929978bca8df)
 
 6. After carefully reviewing the user data, click Submit User Changes to finalize the bulk registration/change process.
 
@@ -216,7 +217,7 @@ services:
       - ThirdPartyCredentials__DisplayName={Name of SSO provider. Eg. Microsoft}
 ```
 
-**Note: Admin can disable local authentication and require users to strictly sign in with only SSO by setting the OnSiteLoginSetup__EnableFormBasedLogin variable to false**
+**Note: Admin can disable local authentication and require users to strictly sign in with only SSO by setting the OnSiteLoginSetup__EnableFormBasedLogin variable to false.**
 
 Finally, include the docker-compose.enable-sso.yml in the start-up command:
 
@@ -233,9 +234,9 @@ before using the sign-in button on the login page. This is necessary to avoid ch
 
 First, sign in with your local account.
 
-* Navigate to the My Profile area
+* Navigate to the My Profile area.
 
-* Select External Logins
+* Select External Logins.
 
 * Select the configured SSO provider (Microsoft, Google, etc.) to link your local account. You’ll be redirected to the provider’s page for sign in and authorisation.
 
@@ -243,13 +244,13 @@ First, sign in with your local account.
 
 ![image](https://github.com/ccdc-opensource/on-site-webcsd/assets/84066349/974d6d58-ead0-4be9-a63f-d89a9718d744)
 
-**Info: This process is only required on first login with SSO. Subsequent logins can be done straight away from the login page by clicking on the Continue with**
+**Info: This process is only required on first login with SSO. Subsequent logins can be done straight away from the login page by clicking on the Continue with.**
 
 ### For New Users
 
 From the Log in page, click Continue with you’ll be redirected to the SSO provider to sign in (if you’re not already signed in).
 
-On successful authentication, The Identity Gateway will initiate an account registration process which will create a local profile and link it with the third party account you just signed into.
+On successful authentication, the Identity Gateway will initiate an account registration process which will create a local profile and link it with the third party account you just signed into.
 
 You will be presented with the Register page as shown below. Enter your email in the space provided if it was not pre-populated, and click Register.
 

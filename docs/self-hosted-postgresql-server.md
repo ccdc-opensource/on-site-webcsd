@@ -54,4 +54,4 @@ The best way to do this is at install time.
 * If running the CLI installer, set the databaseConnectionString parameter.
 ```./OnSiteInstaller databaseConnectionString="DB_CONNECTIONSTRING=Server=database-server;Port=5432;User Id=postgres;Password=< passwordhere >"```
 
-Alternatively, after installation you can set the DB_CONNECTIONSTRING variable in the .env file as above.
+Alternatively, after installation you can set the DB_CONNECTIONSTRING variable in the `.env` file as above.

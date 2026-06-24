@@ -24,14 +24,16 @@ This will automatically pull the latest versions of all containers and restart t
 
 For major releases a new database dump file is shipped. Contact CCDC Support for the database download link. The maintenance tool will prompt for the location.
 It will then overwrite the csd database volume with the update,
-please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
+please export any in-house databases beforehand. Once the update has completed they will need to be reimported within Lattice -> Database Management.
 
 ### Using the maintenance tool from the command line
 
 The maintenance tool can be run non-interactively from the command line too.
 
 ```sh
-# To upgrade (ensure in-house database have been exported and if using the installer setup postgres server that the database dump file has been replaced with the update in the same location originally specified - can be found in docker-compose.postgres.yml)
+# To upgrade (ensure in-house database have been exported and if using the installer setup postgres server
+# that the database dump file has been replaced with the update in the same location originally specified -
+# can be found in docker-compose.postgres.yml)
 ./maintenancetool update dbDumpFile="<path to database dump file>" overWriteDb="True"
 ```
 
@@ -49,7 +51,7 @@ docker compose pull
 docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
 ```
 
-Now from lattice -> database management, reimport your in-house databases.
+Now from Lattice -> Database Management, reimport your in-house databases.
 
 ## Updating the SSL certificate
 

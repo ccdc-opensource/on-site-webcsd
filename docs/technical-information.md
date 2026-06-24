@@ -48,7 +48,8 @@ CCDC support staff may ask you to include `docker-compose.debug.yml` to obtain m
 
 ## Configuring service ports
 
-The port on which users connect to the On-Site Lattice and WebCSD services is controlled by the PLATFORM_PORT variable in your .env file which is set to port 443 by default but can be set to a different value at install time.
+The port on which users connect to the On-Site Lattice and WebCSD services is controlled by the PLATFORM_PORT variable in your .env file
+which is set to port 443 by default but can be set to a different value at install time.
 
 By default the On-Site Lattice and WebCSD services are configured to run using port 8080 for all inter-service communication.
 

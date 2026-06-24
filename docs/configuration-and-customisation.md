@@ -3,7 +3,7 @@
 ## Introduction
 
 This section details a number of customisations you can make to WebCSD. In order to keep these settings from being accidentally over-written,
-we recommend putting any customisations in a separate docker-compose file, e.g. docker-compose.customisations.yml. This acts as an [override file](https://docs.docker.com/compose/extends/)
+we recommend putting any customisations in a separate docker-compose file, e.g. `docker-compose.customisations.yml`. This acts as an [override file](https://docs.docker.com/compose/extends/)
 which you will have to include in the startup command. Alternatively you could add these settings into the aforementioned db-config file to keep all of your configuration in one place.
 
 ## Formatting conventions
@@ -79,13 +79,13 @@ and add the following setting to the webcsd volumes section of your own docker-c
 - /path/to/<Custom_Information.html>:/app/wwwroot/static/Information.html
 ```
 
-**PLEASE NOTE:** The content of these pages is rendered by the site as is, without encoding or validation. Any embedded scripts in HomeHeader.html or Information.html will run.
+**PLEASE NOTE:** The content of these pages is rendered by the site as is, without encoding or validation. Any embedded scripts in `HomeHeader.html` or `Information.html` will run.
 It is the site administrator's responsibility to ensure that these pages are properly secured.
 
 ## Associated Structure Links Configuration
 
 On-Site WebCSD can be configured to display links associated with a structure, e.g DOI links or File links. To do this you will need a CSV file containing structures with their associated data
-and any files you may want to download, with a separate CSV file for each database hosted on the server. 
+and any files you may want to download, with a separate CSV file for each database hosted on the server.
 
 The CSV file should have three headers - Identifier,Key,Value. The Identifier refers to the database identifier for the individual structure in the database.
 The Key is `StructureLink` - other keys have been used in previous version of the On-Site platform but are no longer used. The value is the link required e.g. DOI links or File links.
@@ -117,7 +117,7 @@ services:
       - ServiceSettings__StructureInfoLocation=/csd-data/structure-links.csv
 ```
 
-This mounts the structure-links.csv in the csd-data directory. Change the location to where the csv file you are using is located.
+This mounts the `structure-links.csv` in the `csd-data` directory. Change the location to where the csv file you are using is located.
 
 The related files themselves are used by webcsd and their location is configured in the volumes section of the in-house database yml file, i.e.
 
@@ -127,7 +127,7 @@ webcsd:
       - ./path/to/structure/files:/structure-files
 ```
 
-Here the structure files in ./path/to/structure/files is mounted as /structure-files, which is where WebCSD will expect to find them.
+Here the structure files folder `./path/to/structure/files` is mounted as `/structure-files`, which is where WebCSD will expect to find them.
 
 The related files can be stored within a folder structure. It is important to note that any file links set up in the CSV file must point to the correct location of these files,
 otherwise the file will not download when the link is clicked. For example, given the folder structure:

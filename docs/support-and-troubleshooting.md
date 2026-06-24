@@ -11,7 +11,7 @@ If you would like to provide some feedback our support team would be happy to he
 
 ## Licensing Options
 
-The environment variable `CCDC_LICENSING_CONFIGURATION` needs to be set in the `.env file`. This will normally happen automatically when you enter your licence key at install time.
+The environment variable `CCDC_LICENSING_CONFIGURATION` needs to be set in the `.env` file. This will normally happen automatically when you enter your licence key at install time.
 You may also need to edit it after installation, for example if your licence key has changed.
 
 For best performance we recommend that this variable is set to use our standard node-locked licensing using this format
@@ -116,7 +116,7 @@ error_uri:https://documentation.openiddict.com/errors/ID2043
 ```
 
 This is likely to indicate a mismatch between the `PUBLIC_URI` field set in the .env file and the server URL specified in the browser.
-A common cause is specifying the default port `:443` in the PUBLIC_URI field; the port should only be specified if it is non-standard (not the default 443)
+A common cause is specifying the default port `:443` in the PUBLIC_URI field; the port should only be specified if it is non-standard (not the default 443).
 
 To resolve the issue, first edit the .env file to ensure the PUBLIC_URI is the same as the URL given in the browser.
 Once the .env file has been updated, restart the docker containers for the change to take effect.
