@@ -8,9 +8,11 @@ WebCSD configuration is handled via a number of `.yml` files which can be includ
 
 `docker compose -f docker-compose.yml -f file1.yml -f file2.yml up -d`
 
-`docker-compose.yml` is the main configuration file. We do not recommend editing it - instead put your changes in a separate "override file" and add it into the `docker compose` command. Example changes are listed at [WebCSD Configuration And Customisation](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-Configuration-&-Customisation).
+`docker-compose.yml` is the main configuration file. We do not recommend editing it - instead put your changes in a separate "override file" and add it into the `docker compose` command.
+Example changes are listed at [WebCSD Configuration And Customisation](configuration-and-customisation.md).
 
-Configuration files other than the main file may be renamed, particularly those with "sample" in the name. Which of these files you need to use depends on your WebCSD configuration. The installer should take care of including the correct files but the information below is helpful if you need to restart the stack.
+Configuration files other than the main file may be renamed, particularly those with "sample" in the name. Which of these files you need to use depends on your WebCSD configuration.
+The installer should take care of including the correct files but the information below is helpful if you need to restart the stack.
 
 ### SSL
 
@@ -43,3 +45,15 @@ functionality granted to users with administrator rights.
 ### Troubleshooting
 
 CCDC support staff may ask you to include `docker-compose.debug.yml` to obtain more informative logs.
+
+## Configuring service ports
+
+The port on which users connect to the On-Site Lattice and WebCSD services is controlled by the PLATFORM_PORT variable in your .env file which is set to port 443 by default but can be set to a different value at install time.
+
+By default the On-Site Lattice and WebCSD services are configured to run using port 8080 for all inter-service communication.
+
+## Identity Gateway (User Management Database)
+
+[Information about the Identity Gateway](identity-gateway.md).
+If you are upgrading from version 3.0 or earlier and want to keep your user management database,
+please see instructions in the above page.

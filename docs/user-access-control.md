@@ -130,7 +130,7 @@ To Enable SSO for On-Site users, site admin must first register an application w
 Client id, Client secret, Authority and CallbackPath. The following sub-sections provide guidelines on how to register an application with major identity providers
 such as Microsoft - Azure Active Directory (AAD), Google and LDAP providers such as Windows server Active Directory.
 
-**To use OpenID Connect (SSO), SSL must be enabled please see information [here](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Configuring-SSL) for how to set that up.**
+**To use OpenID Connect (SSO), SSL must be enabled. please see [Updating the SSL certificate](updates-and-uninstallation.md#updating-the-ssl-certificate) for how to set that up.**
 
 ### Azure Active Directory (AAD)
 
@@ -144,7 +144,7 @@ such as Microsoft - Azure Active Directory (AAD), Google and LDAP providers such
 
 * Enter a Name for your application, for example CCDC-WebCSD. Users of your app might see this name, and you can change it later.
 
-* Add the URL https://{webcsd-url}/identity/signin-oidc in Redirect URI as a Web platform.
+* Add the URL `https://{webcsd-url}/identity/signin-oidc` in Redirect URI as a Web platform.
 
 * Select Register.
 
@@ -187,7 +187,7 @@ Sign in as a [Google developer](http://console.developers.google.com/).
 
 * Copy the generated Credentials and/or download the generated JSON file which includes all the necessary credentials.
 
-* **Use https://accounts.google.com/ as the Authority and /signin-google as CallbackPath**
+* **Use `https://accounts.google.com/` as the Authority and `/signin-google` as CallbackPath**
 
 ## Enabling single sign-on
 
@@ -258,7 +258,9 @@ You will be presented with the Register page as shown below. Enter your email in
 You can now proceed to login.
 
 ### Disabled Local Authentication
+
 Your site admin, based on company policy, may decide to restrict users to sign in to the application using only SSO, and hence can disable the option to sign in locally with a username and password.
 
 ## Changes from the 4.3.0 release
+
 For earlier versions of the On-Site platform it was possible to disable all user access control. This ability has now been removed due to additional functionality granted to users with administrator rights.
