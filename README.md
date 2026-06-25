@@ -18,15 +18,7 @@
   - [User Access Control](#user-access-control)
   - [In-House Database Configuration](#in-house-database-configuration)
   - [CSD-Theory Web Database Configuration](#csd-theory-web-database-configuration)
-  - [Other Customisations](#other-customisations)
-- [Changing licence Keys](#changing-licence-keys)
-- [Updates](#updates)
-  - [Installer](#installer)
-  - [Manual Updates](#manual-updates)
-- [Uninstallation](#uninstallation)
-- [Known Issues](#known-issues)
-  - [Restart the message queue](#restart-the-message-queue)
-- [Contacting Support](#contacting-support)
+- [Additional Documentation](#additional-documentation)
 
 ## Introduction
 
@@ -36,7 +28,8 @@ This readme contains information required for installation and updates of On-Sit
 
 Terms and conditions can be found in the `LICENSE.md` file.
 
-Additional information including user configuration and troubleshooting can be found in the wiki at <https://github.com/ccdc-opensource/on-site-webcsd/wiki>.
+Additional information including user configuration and troubleshooting can be found
+in the documentation folder at <https://github.com/ccdc-opensource/on-site-webcsd/docs/>.
 
 :warning: **Note, the 4.3.0 and 4.3.1 releases do not support Macromolecule Hub. Do not
 update past version 4.2.1 if you are currently using this component.**
@@ -56,7 +49,7 @@ Recommended requirements for Docker server hosting On-Site Lattice and WebCSD co
 
 - 30GB free HD space, 16GB RAM, 8 core CPU.
 
-If self-hosting the postgres server, see [Setting up a self-hosted Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server)
+If self-hosting the postgres server, see [Setting up a self-hosted Postgresql server](docs/self-hosted-postgresql-server.md)
 for system requirements.
 
 On-Site Lattice and WebCSD should work with any OS that meets the requirements to run Docker, but official support is provided by CCDC on the following platforms.
@@ -100,6 +93,8 @@ sudo setenforce 0
   URL will be required to use the software.
 - Connecting to your WebCSD server via https is now required. To configure this you will need a password-protected .pfx
   certificate.
+- Ask your local IT staff to obtain a valid CA-signed certificate for you, or generate a self-signed certificate as shown below.
+- Note that SSO authentication and CSD-Theory Web will not work with self-signed certificates.
 
 ```sh
 # To generate a self-signed certificate
@@ -144,7 +139,7 @@ docker login -u <user> --password-stdin ccdcrepository.azurecr.io
 
 The postgres CSD database will be provided via a download link. To obtain this, please contact CCDC Support.
 
-If self-hosting the postgres server please follow the instructions at [Setting up a self-hosted Postgresql server](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server)
+If self-hosting the postgres server please follow the instructions at [Setting up a self-hosted Postgresql server](docs/self-hosted-postgresql-server.md).
 
 ### CCDC User Account
 
@@ -228,8 +223,7 @@ These are docker compose config files and can be edited to customise your instal
 
 ### Command Line Installation
 
-It is also possible to run the WebCSD installer from the command line. This process is documented on the
-wiki under [Alternative ways to setup On-Site WebCSD](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Alternative-ways-to-setup-On-Site-WebCSD)
+It is also possible to run the WebCSD installer from the command line. This process is documented under [Alternative ways to setup On-Site WebCSD](docs/alternative-setup-approaches.md).
 
 ### Post-Installation Checks
 
@@ -286,7 +280,7 @@ If you have problems check your `.env` file.
 
 Your On-Site WebCSD server is now up and running but you will probably need to configure it, for example to set up
 user access control via SSO. This is done via docker compose files
-(see [WebCSD Configuration Files](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-configuration-files) in the wiki).
+(see [WebCSD Configuration Files](docs/technical-information.md#webcsd-configuration-files)).
 After making any changes to these files, restart the stack as described above, adding any docker compose files
 which you have customised into the `docker compose ... up -d` command.
 
@@ -294,7 +288,7 @@ which you have customised into the `docker compose ... up -d` command.
 
 User access control can be managed via local accounts or Single Sign-On (SSO). You must configure roles to allow
 access to in-house databases as by default even admin roles can only access the CSD.
-For details please see [Access Control To In-House Databases](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Access-control-to-in-house-databases).
+For details please see [Access Control To In-House Databases](docs/user-access-control.md).
 
 ### In-house Database Configuration
 
@@ -302,8 +296,8 @@ On-Site Lattice and WebCSD can be configured to read from in-house databases.
 
 Provided within the installation is a sample database `teaching-subset.csdsql` which can be found in the `sample-data` folder in the root of the installation.
 
-For versions 4.3.0 and later, details on in-house database configuration are available from the
-[wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Updating-your-in‐house-databases)
+For versions 4.3.0 and later, details on in-house database configuration are available in the documentation:
+[Updating Your In-House Databases](docs/updating-in-house-databases.md)
 
 For earlier releases (version 4.2.1 and earlier) the following information is still applicable:
 
@@ -327,118 +321,22 @@ More information is given in the notes & example sections of the sample file. Th
 
 ### CSD-Theory Web Database Configuration
 
-Instructions on setting up CSD-Theory Web can be found in the [wiki](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-CSD%E2%80%90Theory-Web).
+Instructions on setting up CSD-Theory Web can be found in the documentation:
+[Setting Up CSD-Theory Web](docs/csd-theory-web.md).
 
 Provided within the installation is a sample CSD-Theory landscape database `CSPLandscape.csdsqlx` which can be found in the `sample-data` folder in the root of the installation,
 along with a blank `CSPDatabase.db` CSD-Theory metadata database.
 
-### Other Customisations
+## Additional Documentation
 
-For other optional customisations to your WebCSD server please see [WebCSD Configuration and Customisation](https://github.com/ccdc-opensource/on-site-webcsd/wiki/WebCSD-Configuration-&-Customisation).
-
-## Changing licence Keys
-
-To change your licence key you must update licence information in the .env file,
-delete the licence file with the current licence details, and restart the stack:
-
-An example of the process:
-
-- Bring down the server e.g.
-
-```sh
-# Replace `INSTALLDIR` by your WebCSD installation directory
-# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
-cd INSTALLDIR
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
-```
-
-- Edit the `.env` file to enter the new license key e.g.
-
-`vi .env`
-
-Change the content after `CCDC_LICENSING_CONFIGURATION=` to include the new key
-(press `i` to insert new text, `Esc` to leave editing mode and `:wq` to save edits)
-
-- Remove the current licence information e.g.
-
-`cd lic` followed by `rm data.conf` to remove the file
-
-- Finally, bring up the server to use the new licence information
-
-```sh
-# Replace `INSTALLDIR` by your WebCSD installation directory
-# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
-cd INSTALLDIR
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
-```
-
-To use a local licence server, the server URL should have the prefix `lf-server;`
-in the `CCDC_LICENSING_CONFIGURATION=` field, as opposed to `la-code;` as used for a licence key.
-
-## Updates
-
-### File ownerships
-
-For updating from pre-4.3.0 versions, the `ccdc` account needs access to the necessary
-docker volumes.
-
-```sh
-sudo chown -R ccdc:ccdc lic
-sudo chown -R ccdc:ccdc userdata
-```
-
-### Installer
-
-To update your installation, run the maintenance tool and select "Update components". Click Ok when a warning message pops up.
-This will automatically pull the latest versions of all containers and restart the stack.
-
-For major releases a new database dump file is shipped. The maintenance tool will prompt for the location. It will then overwrite the csd database volume with the update,
-please export any in-house databases beforehand. Once the update has completed they will need to be reimported within lattice -> database management.
-
-To update from the command line:
-
-```sh
-./maintenancetool update dbDumpFile="<path to database dump file>" overWriteDb="True"
-```
-
-Contact CCDC Support for the latest download link.
-
-### Manual Updates
-
-For major releases export any in-house databases, recreate the csd-database and [restore](https://github.com/ccdc-opensource/on-site-webcsd/wiki/Setting-up-a-self%E2%80%90hosted-PostgreSQL-server#restore-database)
-it with a new database dump provided by Support.
-
-```sh
-# Replace `INSTALLDIR` by your WebCSD installation directory
-# Include docker-compose.insecure-configuration.yml if using a self-signed certificate
-cd INSTALLDIR
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml down
-docker compose pull
-docker compose -f docker-compose.yml -f docker-compose.ssl.yml up -d
-```
-
-Now from lattice -> database management, reimport your in-house databases.
-
-## Uninstallation
-
-To uninstall On-Site WebCSD run the GUI maintenance tool and select "Remove all components". Or run it from the command line with the `purge` option.
-
-```sh
-./maintenancetool purge
-```
-
-## Known Issues
-
-### Restart the message queue
-
-With 4.3.0 and 4.3.1 rabbitmq needs to be rerun. If you are installing manually please run the following:
-
-```sh
-# Replace `INSTALLDIR` by your WebCSD installation directory
-cd INSTALLDIR
-docker compose -f docker-compose.yml up -d
-```
-
-## Contacting Support
-
-If you experience any difficulties with installing or using On-Site Lattice and WebCSD, please contact our support team at <support@ccdc.cam.ac.uk> who will be happy to assist you.
+- [Known Issues](docs/known-issues.md)
+- [Alternative Ways To Set Up On-Site WebCSD](docs/alternative-setup-approaches.md)
+- [Setting Up A Self-Hosted PostgreSQL Server](docs/self-hosted-postgresql-server.md)
+- [In-House Database Configuration](docs/updating-in-house-databases.md)
+- [User Access Control](docs/user-access-control.md)
+- [Setting Up CSD-Theory Web](docs/csd-theory-web.md)
+- [WebCSD Configuration And Customisation](docs/configuration-and-customisation.md)
+- [Updates And Uninstallation](docs/updates-and-uninstallation.md)
+- [Support And Troubleshooting](docs/support-and-troubleshooting.md)
+- [Technical Information](docs/technical-information.md)
+- [Identity Gateway (User Management Database)](docs/identity-gateway.md)
