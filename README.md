@@ -288,7 +288,7 @@ which you have customised into the `docker compose ... up -d` command.
 
 User access control can be managed via local accounts or Single Sign-On (SSO). You must configure roles to allow
 access to in-house databases as by default even admin roles can only access the CSD.
-For details please see [Access Control To In-House Databases](docs/user-access-control.md).
+For details please see [Access Control To In-House Databases](docs/user-access-control.md) and [Single Sign-On (SSO)](docs/single-sign-on.md).
 
 ### In-house Database Configuration
 
@@ -334,6 +334,7 @@ along with a blank `CSPDatabase.db` CSD-Theory metadata database.
 - [Setting Up A Self-Hosted PostgreSQL Server](docs/self-hosted-postgresql-server.md)
 - [In-House Database Configuration](docs/updating-in-house-databases.md)
 - [User Access Control](docs/user-access-control.md)
+- [Single Sign-On (SSO)](docs/single-sign-on.md)
 - [Setting Up CSD-Theory Web](docs/csd-theory-web.md)
 - [WebCSD Configuration And Customisation](docs/configuration-and-customisation.md)
 - [Updates And Uninstallation](docs/updates-and-uninstallation.md)
