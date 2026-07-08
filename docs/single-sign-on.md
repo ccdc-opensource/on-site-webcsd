@@ -2,9 +2,85 @@
 
 ## Setting up single sign-on (Admin)
 
-:information_source: **These instructions apply to both the 4.3.0 and 4.2.1 releases**
+:information_source: **These instructions apply to the 4.3.1 release**
 
-### Prerequisites
+### Prerequisites for version 4.3.1
+
+**To use OpenID Connect (SSO), SSL must be enabled. please see [Updating the SSL certificate](updates-and-uninstallation.md#updating-the-ssl-certificate) for how to set that up.**
+
+The 4.3.1 release supports both LDAP providers (such as Windows server Active Directory) and Microsoft Entra ID (formerly Azure AAD).
+If your organisation has other preferred options, please contact our support team at [support@ccdc.cam.ac.uk](mailto:support@ccdc.cam.ac.uk) to discuss requirements.
+
+### Microsoft Entra ID
+
+#### Azure App Registration
+
+* Sign in to the [Azure portal](https://portal.azure.com/) and select **Add application registration**
+
+* Provide an application name
+
+* Select the option **Multiple Entra ID tenants** - Note: this option can be configured to use a single tenant
+
+* This option gives an additional radio button selection - choose **Allow only certain tenants (Preview)**
+
+* As no tenants have currently been specified, click on the **Manage allowed tenants (0)** link to add your information
+
+* The Tenant ID can be found by searching 'Tenant ID' and selecting the [Tenant properties](https://portal.azure.com/#view/Microsoft_AAD_IAM/TenantProperties.ReactView) service
+
+* The Tenant ID should be added to the allowed list and click **Apply**
+
+* Set the Redirect URI:
+  * From the 'Select a platform' dropdown pick the **Web** option
+  * The URI will have the format `https://{yourserver}/identity/callback/login/microsoft`
+
+* Note the **Application (client) ID** from the overview page as this is required for your server set up as the
+`<Microsoft Client ID>` (see below)
+
+* Navigate to **Certificates & secrets** and click on **+ New client secret**
+
+* Provide a description for the secret and copy the value for your server set up as the `<Microsoft Client Secret>` (see below)
+
+#### Configure Entra on your On-Site installation
+
+* Your On-Site installation comes with a sample file `docker-compose.sample.entra.yml`, create a new version
+`docker-compose.entra.yml`
+
+* Update the file with your specific information as follows:
+
+```sh
+# Enable Microsoft Entra single sign-on
+
+services:
+  ccdc-identity:
+    environment:
+      - OpenIddict__EnableExternalLogin=true
+      - OpenIddict__MicrosoftClientId=<Microsoft Client ID>
+      - OpenIddict__MicrosoftClientSecret=<Microsoft Client Secret>
+```
+
+* Restart the stack with the following command:
+`docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.entra.yml up -d`
+
+* The login page for your On-Site installation should now include an Entra ID option
+
+<img src="onsite-webcsd-media/login_screenshot.png"
+   alt="A screenshot of the On-Site WebCSD login page with Entra ID option"/>
+
+### LDAP SSO
+
+A sample LDAP yml configuration file `docker-compose.sample.ldap.yml`, which should allow for use of LDAP for user authentication, can be found in the top level of the github repository.
+This can be used as the basis for a file `docker-compose.ldap.yml` that contains custom settings for your organisation.
+However as there are various types of LDAP service available this may require some modification based on the type in use. For additional help with configuration,
+please contact [support@ccdc.cam.ac.uk](mailto:support@ccdc.cam.ac.uk) for assistance but please note that due to the breadth of potential systems that could be used,
+the help we can offer for setup may be limited.
+
+Once the configuration is complete, restart the stack with the command
+
+`docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.ldap.yml up -d`
+
+:information_source: **These instructions apply to the 4.2.1 release**
+
+### Prerequisites for version 4.2.1
 
 To Enable SSO for On-Site users, site admin must first register an application with a preferred OpenID Connect identity provider, and obtain these open id access credentials:
 Client id, Client secret, Authority and CallbackPath. The following sub-sections provide guidelines on how to register an application with major identity providers
