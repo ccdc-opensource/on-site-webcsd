@@ -8,14 +8,14 @@ MD033:
   # Allowed elements
   allowed_elements: [
     # Image elements
-    img, 
+    img,
     # Table elements
     table,
     thead,
     tbody,
-    th, 
-    td, 
-    tr, 
+    th,
+    td,
+    tr,
     col,
     colgroup,
     hr,
