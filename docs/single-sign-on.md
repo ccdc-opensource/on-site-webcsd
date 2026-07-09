@@ -15,7 +15,10 @@ If your organisation has other preferred options, please contact our support tea
 
 #### Azure App Registration
 
-* Sign in to the [Azure portal](https://portal.azure.com/) and select **Add application registration**
+* Sign in to the [Azure portal](https://portal.azure.com/)
+
+* Search for the **Microsoft Entra ID** service, and from that page select **App Registration** from
+the '+ Add' dropdown option near the top of the page.
 
 * Provide an application name
 
@@ -58,13 +61,13 @@ services:
       - OpenIddict__MicrosoftClientSecret=<Microsoft Client Secret>
 ```
 
-* Restart the stack with the following command:
+* Restart the stack with a command including all the necessary yml files e.g.:
 `docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.entra.yml up -d`
 
 * The login page for your On-Site installation should now include an Entra ID option
 
-<img src="onsite-webcsd-media/login_screenshot.png"
-   alt="A screenshot of the On-Site WebCSD login page with Entra ID option"/>
+   <img src="../onsite-webcsd-media/login_screenshot.png"
+   alt="A screenshot of the On-Site WebCSD login page with Entra login" style="width:3.62in;height:5.00in" />  
 
 ### LDAP SSO
 
@@ -74,7 +77,7 @@ However as there are various types of LDAP service available this may require so
 please contact [support@ccdc.cam.ac.uk](mailto:support@ccdc.cam.ac.uk) for assistance but please note that due to the breadth of potential systems that could be used,
 the help we can offer for setup may be limited.
 
-Once the configuration is complete, restart the stack with the command
+Once the configuration is complete, restart the stack with a command including all the necessary yml files e.g.
 
 `docker compose -f docker-compose.yml -f docker-compose.ssl.yml -f docker-compose.ldap.yml up -d`
 
