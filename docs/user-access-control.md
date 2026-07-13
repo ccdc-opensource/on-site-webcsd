@@ -12,7 +12,13 @@ To create accounts users have two options:
 The first user to register will be set as the admin and they have the ability to grant admin rights to other users; there is no limit on the number of admin accounts allowed.
 
 Users with administrator rights will have the ability to see functionality in the **Settings** section: Manage users, Manage groups and Manage databases.
-Users without these rights will only see options for searching databases in the **WebCSD** section: Simple Search and CSD-Theory Web (if applicable).
+To access this functionality go to the Lattice Home page. Click the Lattice tab on any WebCSD search page
+or click Lattice Home in the sidebar on your profile page.
+If the sidebar on the Lattice Home page shows only icons then click the hamburger menu at the top left to expand it.
+
+<img src="../onsite-webcsd-media/lattice sidebar.png" alt="A screenshot of the Lattice Home sidebar">
+
+Users without admin rights will only see options for searching databases in the **WebCSD** section: Simple Search and CSD-Theory Web (if applicable).
 
 By default all non-admin users start with _no_ access to any in-house databases but will be able to see and search the CSD; by contrast users with admin rights are able to see all databases.
 Users who are not logged in cannot access any databases.
